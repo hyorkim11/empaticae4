@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize vars that reference UI components
+        // Initialize variables that reference UI components
         statusLabel = (TextView) findViewById(R.id.status);
         dataCnt = (RelativeLayout) findViewById(R.id.dataArea);
         accel_xLabel = (TextView) findViewById(R.id.accel_x);
@@ -138,11 +138,13 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
 
         // The device manager is ready for use
         if (status == EmpaStatus.READY) {
+
             updateLabel(statusLabel, status.name() + " - Turn on your device");
             // Start scanning
             deviceManager.startScanning();
             // The device manager has established a connection
         } else if (status == EmpaStatus.CONNECTED) {
+
             // Stop streaming after STREAMING_TIME
             runOnUiThread(new Runnable() {
                 @Override
@@ -161,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
             });
             // The device manager disconnected from a device
         } else if (status == EmpaStatus.DISCONNECTED) {
+
             updateLabel(deviceNameLabel, "");
         }
     }
