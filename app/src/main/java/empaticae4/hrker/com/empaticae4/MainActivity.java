@@ -1,11 +1,14 @@
 package empaticae4.hrker.com.empaticae4;
 
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -22,6 +25,9 @@ import com.empatica.empalink.delegate.EmpaStatusDelegate;
 
 
 public class MainActivity extends AppCompatActivity implements EmpaDataDelegate, EmpaStatusDelegate {
+
+    NotificationManager notiManager = (NotificationManager)
+            getSystemService(NOTIFICATION_SERVICE);
 
     private static final int REQUEST_ENABLE_BT = 1;
     private static final long STREAMING_TIME = 10000;
@@ -68,9 +74,8 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
         deviceManager.authenticateWithAPIKey(EMPATICA_API_KEY);
 
 
-        // writing to external csv file in internal-storage of phone
-        //String csvFile = "C:" + "\"" + "output.csv" + "\"";
-        //CSVWriter writer = new CSVWriter(new FileWriter(csvFile));
+
+
 
     }
 
@@ -82,8 +87,15 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
 
     @Override
     protected void onDestroy() {
+
+        // export captured data into a csv file before destroying cache
+
+        /*writing to external csv file in internal-storage of phone
+        String csvFile = "C:" + "\"" + "output.csv" + "\"";
+        CSVWriter writer = new CSVWriter(new FileWriter(csvFile));*/
         super.onDestroy();
         deviceManager.cleanUp();
+
     }
 
     @Override
@@ -208,5 +220,23 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
                 label.setText(text);
             }
         });
+    }
+
+    // Notifications
+    public void sendNoti(View v) {
+
+        Intent intent = new Intent(this, Notification.class);
+        PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+        builder.setContentTitle("Notification from RiskWatch");
+        builder.setContentText("Please click to continue");
+        builder.setSmallIcon(R.drawable.ic_drawer);
+        builder.setContentIntent(pIntent);
+        builder.setAutoCancel(true);
+        builder.addAction(R.drawable.ic_drawer, "Call", pIntent);
+        builder.addAction(R.drawable.ic_drawer, "More", pIntent);
+        builder.addAction(R.drawable.ic_drawer, "And more", pIntent).build();
+
     }
 }
