@@ -1,7 +1,6 @@
 package empaticae4.hrker.com.empaticae4;
 
 import android.app.Activity;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
@@ -34,8 +33,6 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
     private static final int REQUEST_ENABLE_BT = 1;
     private static final long STREAMING_TIME = 10000;
     // Stops streaming 10 seconds after connection
-
-    private static final String EMPATICA_API_KEY = "6c8d1b1459ff473fbc6e71d6ae76aa19";
     // insert your API Key here
 
     private EmpaDeviceManager deviceManager;
@@ -78,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
         // Create a new Empatica DeviceManager. MainActivity is both its data and status delegate.
         deviceManager = new EmpaDeviceManager(getApplicationContext(), this, this);
         // Initialize the Device Manager using your API key. You need to have Internet access at this point.
-        deviceManager.authenticateWithAPIKey(EMPATICA_API_KEY);
+        deviceManager.authenticateWithAPIKey("6c8d1b1459ff473fbc6e71d6ae76aa19");
 
     }
 
@@ -102,10 +99,9 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
     }
 
     @Override
-    public void didDiscoverDevice(BluetoothDevice bluetoothDevice, String deviceName, int rssi, boolean allowed) {
-        // Check if the discovered device can be used with your API key. If allowed is always false,
-        // the device is not linked with your API key. Please check your developer area at
-        // https://www.empatica.com/connect/developer.php
+    public void didDiscoverDevice(BluetoothDevice bluetoothDevice,
+                                  String deviceName, int rssi, boolean allowed) {
+
         if (allowed) {
             // Stop scanning. The first allowed device will do.
             deviceManager.stopScanning();
@@ -115,7 +111,8 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
                 updateLabel(deviceNameLabel, "To: " + deviceName);
             } catch (ConnectionNotAllowedException e) {
                 // This should happen only if you try to connect when allowed == false.
-                Toast.makeText(MainActivity.this, "Sorry, there was an error connecting to this device", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Sorry, there was an " +
+                        "error connecting to this device", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -218,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
 
     @Override
     public void didReceiveTemperature(float temp, double timestamp) {
-        
+
         updateLabel(temperatureLabel, "" + temp);
     }
 
@@ -234,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
     }
 
     // Notifications
-    public void sendNoti(View v) {
+    public void sendNotification(View v) {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_drawer)
@@ -258,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         // hide the notification after its selected
-        builder.flags |= NotificationCompat.FLAG_AUTO_CANCEL;
+        //builder.flags |= NotificationCompat.FLAG_AUTO_CANCEL;
 
         manager.notify(notificationID, builder.build());
 
