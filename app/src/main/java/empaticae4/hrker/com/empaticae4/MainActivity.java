@@ -24,6 +24,7 @@ import com.empatica.empalink.config.EmpaStatus;
 import com.empatica.empalink.delegate.EmpaDataDelegate;
 import com.empatica.empalink.delegate.EmpaStatusDelegate;
 
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
     // insert your API Key here
 
     private EmpaDeviceManager deviceManager;
+    private Calendar c;
 
     private TextView accel_xLabel;
     private TextView accel_yLabel;
@@ -90,14 +92,17 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
 
         // export captured data into a csv file before destroying cache
 
-        /*writing to external csv file in internal-storage of phone
-        String csvFile = "C:" + "\"" + "output.csv" + "\"";
-        CSVWriter writer = new CSVWriter(new FileWriter(csvFile));*/
         super.onDestroy();
         deviceManager.cleanUp();
 
     }
 
+    public void saveLog() {
+
+        String FILENAME = "log.csv";
+        int entry = c.get(Calendar.DATE);
+
+    }
     @Override
     public void didDiscoverDevice(BluetoothDevice bluetoothDevice,
                                   String deviceName, int rssi, boolean allowed) {
