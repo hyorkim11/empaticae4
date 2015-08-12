@@ -88,7 +88,7 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
                 onBackPressed();
             }
         });
-        mToolBarTextView.setText("Samantha");
+        mToolBarTextView.setText("My Empatica");
     }
 
     protected void addFragment(Fragment fragment, boolean addToBackStack, int containerId) {
