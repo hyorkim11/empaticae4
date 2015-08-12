@@ -22,6 +22,10 @@
             android:name=".AssessmentActivity"
             android:label="@string/title_activity_assessment" >
         </activity>
+        <activity
+            android:name=".LiveStreamActivity"
+            android:label="@string/title_activity_live_stream" >
+        </activity>
     </application>
 
 </manifest>
