@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/menu_item_background"
+    android:background="#0099cc"
     android:orientation="vertical">
 
     <include layout="@layout/toolbar" />
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="100dp"
-        android:text="Make a Report"
+        android:text="MAKE A REPORT"
         android:textSize="30sp" />
 
     <Button
@@ -27,7 +27,7 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Live Stream"
+        android:text="CURRENT STATUS"
         android:textSize="30sp" />
 
     <Button
@@ -35,7 +35,7 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Good Moves"
+        android:text="GOOD MOVES"
         android:textSize="30sp" />
 
 </LinearLayout>

@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -72,8 +73,8 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
             @Override
             public void onClick(View view) {
 
-                //Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                //startActivity(i);
+                Intent i = new Intent(getApplicationContext(), LiveStreamActivity.class);
+                startActivity(i);
             }
         });
         b3.setOnClickListener(new View.OnClickListener() {
@@ -137,7 +138,8 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
                 //startActivity(i);
             }
         });
-        mToolBarTextView.setText("My Empatica");
+        mToolBarTextView.setText("MY EMPATICA");
+        mToolBarTextView.setTextColor(Color.GRAY);
     }
 
     protected void addFragment(Fragment fragment, boolean addToBackStack, int containerId) {

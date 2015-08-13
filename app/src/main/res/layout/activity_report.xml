@@ -1,23 +1,95 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0099cc"
+    android:paddingTop="@dimen/abc_action_bar_default_height_material"
     tools:context="empaticae4.hrker.com.empaticae4.ReportActivity">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
          TextureView, etc. -->
+
     <TextView
         android:id="@+id/fullscreen_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:keepScreenOn="true"
-        android:text="@string/dummy_content"
+        android:text="How are you feeling?"
         android:textColor="#33b5e5"
-        android:textSize="50sp"
+        android:textSize="30sp"
         android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="30dp"
+        android:orientation="horizontal">
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fullscreen_content"
+            android:layout_marginTop="10dp"
+            android:checkedButton="@+id/btn1">
+
+            <RadioButton
+                android:id="@+id/btn1"
+                android:textSize="20sp"
+                android:buttonTint="@color/material_blue_grey_800"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Anxious | Nervous" />
+
+            <RadioButton
+                android:id="@+id/btn2"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Stressed" />
+
+            <RadioButton
+                android:id="@+id/btn3"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sad" />
+
+            <RadioButton
+                android:id="@+id/btn4"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Frustrated" />
+
+            <RadioButton
+                android:id="@+id/btn5"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Embarrassed" />
+
+            <RadioButton
+                android:id="@+id/btn6"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tired" />
+
+            <RadioButton
+                android:id="@+id/btn7"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Other"
+                android:onClick="openOtherDialogue"/>
+
+        </RadioGroup>
+    </LinearLayout>
+
+
+
 
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
@@ -47,4 +119,4 @@
         </LinearLayout>
     </FrameLayout>
 
-</FrameLayout>
+</RelativeLayout>

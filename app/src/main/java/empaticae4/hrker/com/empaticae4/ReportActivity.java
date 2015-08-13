@@ -2,13 +2,18 @@ package empaticae4.hrker.com.empaticae4;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
 
 import empaticae4.hrker.com.empaticae4.util.SystemUiHider;
 
@@ -48,9 +53,11 @@ public class ReportActivity extends Activity {
     private SystemUiHider mSystemUiHider;
 
     private Button mCancel;
+    private RadioButton mOther;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_report);
@@ -71,6 +78,7 @@ public class ReportActivity extends Activity {
                     @Override
                     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
                     public void onVisibilityChange(boolean visible) {
+
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
                             // If the ViewPropertyAnimator API is available
                             // (Honeycomb MR2 and later), use it to animate the
@@ -118,16 +126,27 @@ public class ReportActivity extends Activity {
         findViewById(R.id.btn_cancel).setOnTouchListener(mDelayHideTouchListener);
         mCancel = (Button) findViewById(R.id.btn_cancel);
         mCancel.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(i);
             }
         });
+        mOther = (RadioButton) findViewById(R.id.btn7);
+        mOther.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                openOtherDialogue();
+            }
+        });
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
+
         super.onPostCreate(savedInstanceState);
 
         // Trigger the initial hide() shortly after the activity has been
@@ -136,13 +155,13 @@ public class ReportActivity extends Activity {
         delayedHide(100);
     }
 
-
     /**
      * Touch listener to use for in-layout UI controls to delay hiding the
      * system UI. This is to prevent the jarring behavior of controls going away
      * while interacting with activity UI.
      */
     View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
+
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
             if (AUTO_HIDE) {
@@ -154,6 +173,7 @@ public class ReportActivity extends Activity {
 
     Handler mHideHandler = new Handler();
     Runnable mHideRunnable = new Runnable() {
+
         @Override
         public void run() {
             mSystemUiHider.hide();
@@ -165,7 +185,34 @@ public class ReportActivity extends Activity {
      * previously scheduled calls.
      */
     private void delayedHide(int delayMillis) {
+
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
+    }
+
+    private void openOtherDialogue() {
+
+        final EditText edittext= new EditText(this);
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("How are you feeling?");
+        alert.setView(edittext);
+
+        alert.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                // what to do when custom answer is pressed
+                Editable temp = edittext.getText();
+                mOther.setText(temp);
+            }
+        });
+
+        alert.setNegativeButton("Nevermind", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.cancel();
+            }
+        });
+
+        alert.show();
     }
 }
