@@ -64,7 +64,7 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
             @Override
             public void onClick(View view) {
 
-                Intent i = new Intent(getApplicationContext(), AssessmentActivity.class);
+                Intent i = new Intent(getApplicationContext(), ReportActivity.class);
                 startActivity(i);
             }
         });
@@ -107,7 +107,7 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
 
         MenuObject settings = new MenuObject("Settings");
         contact.setResource(R.mipmap.ic_launcher);
-        // // TODO: 8/13/15 enlarge the size of the icons
+        // TODO: 8/13/15 enlarge the size of the icons
 
         menuObjects.add(close);
         menuObjects.add(contact);
@@ -157,7 +157,7 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
     // Notifications
     public void sendNotification(View v) {
 
-        Intent notificationIntent = new Intent(this, AssessmentActivity.class);
+        Intent notificationIntent = new Intent(this, ReportActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
