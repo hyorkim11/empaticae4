@@ -1,13 +1,41 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/menu_item_background">
+    android:background="@color/menu_item_background"
+    android:orientation="vertical">
 
     <include layout="@layout/toolbar" />
 
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"></FrameLayout>
+
+
+    <Button
+        android:id="@+id/b1"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="100dp"
+        android:text="Make a Report"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/b2"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Live Stream"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/b3"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Good Moves"
+        android:textSize="30sp" />
+
 </LinearLayout>

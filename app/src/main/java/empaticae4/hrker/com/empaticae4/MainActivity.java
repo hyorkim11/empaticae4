@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +38,9 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
     private FragmentManager fragmentManager;
     private DialogFragment mMenuDialogFragment;
 
+    private Button b1, b2, b3;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -46,9 +50,42 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
         fragmentManager = getSupportFragmentManager();
         initToolbar();
         initMenuFragment();
+        init();
         addFragment(new MainFragment(), true, R.id.container);
     }
 
+    private void init() {
+
+        b1 = (Button)findViewById(R.id.b1);
+        b2 = (Button)findViewById(R.id.b2);
+        b3 = (Button)findViewById(R.id.b3);
+
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent i = new Intent(getApplicationContext(), AssessmentActivity.class);
+                startActivity(i);
+            }
+        });
+        b2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                //startActivity(i);
+            }
+        });
+        b3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                //startActivity(i);
+            }
+        });
+
+    }
     private void initMenuFragment() {
 
         MenuParams menuParams = new MenuParams();
@@ -65,11 +102,16 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
         MenuObject close = new MenuObject();
         close.setResource(R.mipmap.ic_close);
 
-        MenuObject send = new MenuObject("Send message");
-        send.setResource(R.mipmap.ic_launcher);
+        MenuObject contact = new MenuObject("Contact Us");
+        contact.setResource(R.mipmap.ic_launcher);
+
+        MenuObject settings = new MenuObject("Settings");
+        contact.setResource(R.mipmap.ic_launcher);
+        // // TODO: 8/13/15 enlarge the size of the icons
 
         menuObjects.add(close);
-        menuObjects.add(send);
+        menuObjects.add(contact);
+        menuObjects.add(settings);
         return menuObjects;
     }
 
@@ -81,17 +123,25 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setElevation(5);
         mToolbar.setNavigationIcon(R.drawable.ic_drawer);
+
+        // TODO: 8/13/15 set logo here on the navigation icon and change onclick response to change activity to home
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+
+                //MainActivity.this.getClass().getSimpleName()
+                //onBackPressed();
+                //Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                //startActivity(i);
             }
         });
         mToolBarTextView.setText("My Empatica");
     }
 
     protected void addFragment(Fragment fragment, boolean addToBackStack, int containerId) {
+
         invalidateOptionsMenu();
         String backStackName = fragment.getClass().getName();
         boolean fragmentPopped = fragmentManager.popBackStackImmediate(backStackName, 0);
@@ -143,6 +193,7 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
+
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
         return true;
@@ -150,6 +201,7 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
             case R.id.context_menu:
                 if (fragmentManager.findFragmentByTag(ContextMenuDialogFragment.TAG) == null) {
@@ -162,6 +214,7 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
 
     @Override
     public void onBackPressed() {
+
         if (mMenuDialogFragment != null && mMenuDialogFragment.isAdded()) {
             mMenuDialogFragment.dismiss();
         } else {
@@ -171,12 +224,14 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
 
     @Override
     public void onMenuItemClick(View clickedView, int position) {
-        Toast.makeText(this, "Clicked on position: " + position, Toast.LENGTH_SHORT).show();
+
+        //Toast.makeText(this, "Clicked on position: " + position, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onMenuItemLongClick(View clickedView, int position) {
-        Toast.makeText(this, "Long clicked on position: " + position, Toast.LENGTH_SHORT).show();
+
+        Toast.makeText(this, "hehe that tickles", Toast.LENGTH_SHORT).show();
     }
 
 }
