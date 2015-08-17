@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
@@ -24,7 +25,7 @@ public class ReportActivity extends AppCompatActivity {
 
     BootstrapButton bContinue, bCancel;
     RadioGroup form1, form2;
-    RadioButton chk1, chk2;
+    RadioButton chk1, chk2, mOther;
     TextView chkText;
     Boolean formChked;
     //final SeekBar sbIntensity;
@@ -49,6 +50,7 @@ public class ReportActivity extends AppCompatActivity {
         form2.setOnCheckedChangeListener(listener2);
         chk1 = (RadioButton)form1.findViewById(form1.getCheckedRadioButtonId());
         chk2 = (RadioButton)form2.findViewById(form2.getCheckedRadioButtonId());
+        mOther = (RadioButton) findViewById(R.id.bOther);
         chkText = (TextView) findViewById(R.id.chkText);
         chkText.setText("");
 
@@ -74,6 +76,12 @@ public class ReportActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 openAlert(view);
+            }
+        });
+        mOther.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openCustom(view);
             }
         });
 
@@ -149,6 +157,34 @@ public class ReportActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
+    private void openCustom(View view) {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ReportActivity.this);
+        alertDialogBuilder.setTitle("");
+        alertDialogBuilder.setMessage("Please enter your feeling");
+
+        final EditText editor = new EditText(this);
+        alertDialogBuilder.setView(editor);
+        alertDialogBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int id) {
+
+                mOther.setText(editor.getText());
+                dialog.cancel();
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
     private void openIntensity(View view) {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ReportActivity.this);
@@ -179,31 +215,6 @@ public class ReportActivity extends AppCompatActivity {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
-
-
-
-        /*
-        sbIntensity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progress = 0;
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progressValue, boolean fromUser) {
-                progress = progressValue;
-                Toast.makeText(getApplicationContext(), "Changing intensity", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                tvIntensity.setText("Intensity: " + progress + "/" + sbIntensity.getMax());
-                //Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT).show();
-            }
-
-        });*/
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
