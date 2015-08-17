@@ -17,10 +17,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import empaticae4.hrker.com.empaticae4.util.ReportActivity;
+
 
 public class MainActivity extends ActionBarActivity implements OnMenuItemClickListener,
         OnMenuItemLongClickListener {
@@ -39,7 +41,7 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
     private FragmentManager fragmentManager;
     private DialogFragment mMenuDialogFragment;
 
-    private Button b1, b2, b3;
+    private BootstrapButton b1, b2, b3;
 
 
     @Override
@@ -57,14 +59,15 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
 
     private void init() {
 
-        b1 = (Button)findViewById(R.id.b1);
-        b2 = (Button)findViewById(R.id.b2);
-        b3 = (Button)findViewById(R.id.b3);
+        b1 = (BootstrapButton)findViewById(R.id.b1);
+        b2 = (BootstrapButton)findViewById(R.id.b2);
+        b3 = (BootstrapButton)findViewById(R.id.b3);
 
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                b1.setBootstrapType("success");
                 Intent i = new Intent(getApplicationContext(), ReportActivity.class);
                 startActivity(i);
             }
@@ -73,6 +76,7 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
             @Override
             public void onClick(View view) {
 
+                b2.setBootstrapType("success");
                 Intent i = new Intent(getApplicationContext(), LiveStreamActivity.class);
                 startActivity(i);
             }
@@ -81,6 +85,7 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
             @Override
             public void onClick(View view) {
 
+                b3.setBootstrapType("success");
                 //Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 //startActivity(i);
             }

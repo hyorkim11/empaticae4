@@ -1,122 +1,149 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc"
-    android:paddingTop="@dimen/abc_action_bar_default_height_material"
-    tools:context="empaticae4.hrker.com.empaticae4.ReportActivity">
-
-    <!-- The primary full-screen view. This can be replaced with whatever view
-         is needed to present your content, e.g. VideoView, SurfaceView,
-         TextureView, etc. -->
+    android:padding="20dp"
+    android:background="@android:color/holo_blue_light"
+    tools:context="empaticae4.hrker.com.empaticae4.util.ReportActivity">
 
     <TextView
-        android:id="@+id/fullscreen_content"
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:keepScreenOn="true"
+        android:layout_margin="20dp"
+        android:gravity="center_horizontal"
         android:text="How are you feeling?"
-        android:textColor="#33b5e5"
+        android:textColor="@android:color/holo_blue_bright"
         android:textSize="30sp"
         android:textStyle="bold" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/form"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="30dp"
+        android:layout_below="@+id/title"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal">
 
-        <RadioGroup
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/column1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/fullscreen_content"
-            android:layout_marginTop="10dp"
-            android:checkedButton="@+id/btn1">
+            android:orientation="vertical">
 
-            <RadioButton
-                android:id="@+id/btn1"
-                android:textSize="20sp"
-                android:buttonTint="@color/material_blue_grey_800"
+            <RadioGroup
+                android:id="@+id/form1"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Anxious | Nervous" />
+                android:layout_height="wrap_content">
 
-            <RadioButton
-                android:id="@+id/btn2"
-                android:textSize="20sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Stressed" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Anxious | Nervous" />
 
-            <RadioButton
-                android:id="@+id/btn3"
-                android:textSize="20sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sad" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Stressed" />
 
-            <RadioButton
-                android:id="@+id/btn4"
-                android:textSize="20sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Frustrated" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sad" />
 
-            <RadioButton
-                android:id="@+id/btn5"
-                android:textSize="20sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Embarrassed" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Frustrated" />
 
-            <RadioButton
-                android:id="@+id/btn6"
-                android:textSize="20sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tired" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Embarrassed" />
 
-            <RadioButton
-                android:id="@+id/btn7"
-                android:textSize="20sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Other"
-                android:onClick="openOtherDialogue"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tired" />
 
-        </RadioGroup>
-    </LinearLayout>
-
-
-
-
-    <!-- This FrameLayout insets its children based on system windows using
-         android:fitsSystemWindows. -->
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Other" />
+            </RadioGroup>
+        </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/fullscreen_content_controls"
-            style="?metaButtonBarStyle"
-            android:layout_width="match_parent"
+            android:id="@+id/column2"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:background="@color/black_overlay"
-            android:orientation="horizontal"
-            tools:ignore="UselessParent">
+            android:layout_marginLeft="20dp"
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/btn_cancel"
-                style="?metaButtonBarButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Cancel" />
+            <RadioGroup
+                android:id="@+id/form2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Happy" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Excited | Energized" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Relieved" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Satisfied" />
+
+            </RadioGroup>
 
         </LinearLayout>
-    </FrameLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/form2"
+        android:layout_marginTop="50dp"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:id="@+id/bCancel"
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            bootstrap:bb_roundedCorners="true"
+            bootstrap:bb_type="danger" />
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:id="@+id/bContinue"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Continue"
+            bootstrap:bb_roundedCorners="true"
+            bootstrap:bb_type="success" />
+
+        <TextView
+            android:id="@+id/chkText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+    </RelativeLayout>
 
 </RelativeLayout>

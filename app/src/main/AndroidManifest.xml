@@ -23,10 +23,8 @@
             android:label="@string/title_activity_live_stream" >
         </activity>
         <activity
-            android:name=".ReportActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_report"
-            android:theme="@style/FullscreenTheme" >
+            android:name=".util.ReportActivity"
+            android:label="@string/title_activity_report" >
         </activity>
     </application>
 
