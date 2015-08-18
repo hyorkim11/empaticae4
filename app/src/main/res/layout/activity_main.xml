@@ -2,7 +2,7 @@
     xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc"
+    android:background="@drawable/pink_1_tsbs"
     android:orientation="vertical">
 
     <include layout="@layout/toolbar" />
@@ -10,8 +10,7 @@
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"></FrameLayout>
+        android:layout_height="wrap_content"></FrameLayout>
 
 
     <com.beardedhen.androidbootstrap.BootstrapButton
@@ -24,7 +23,7 @@
         android:textSize="20sp"
         bootstrap:bb_roundedCorners="true"
         bootstrap:bb_size="large"
-        bootstrap:bb_type="warning" />
+        bootstrap:bb_type="danger" />
 
     <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/b2"
@@ -36,7 +35,7 @@
         android:textSize="20sp"
         bootstrap:bb_roundedCorners="true"
         bootstrap:bb_size="large"
-        bootstrap:bb_type="warning" />
+        bootstrap:bb_type="danger" />
 
     <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/b3"
@@ -48,6 +47,11 @@
         android:textSize="20sp"
         bootstrap:bb_roundedCorners="true"
         bootstrap:bb_size="large"
-        bootstrap:bb_type="warning" />
+        bootstrap:bb_type="danger" />
 
+    <Button
+        android:id="@+id/resetPrefs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RESET SHAREDPREFS"/>
 </LinearLayout>

@@ -6,7 +6,7 @@
     <item
         android:id="@+id/context_menu"
         android:title="Context Menu"
-        android:icon="@mipmap/ic_add"
+        android:icon="@drawable/ic_drawer"
         android:orderInCategory="100"
         app:showAsAction="always" />
 

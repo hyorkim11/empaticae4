@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_blue_light"
+    android:background="@drawable/pink_1_tsbs"
     android:padding="20dp"
     tools:context="empaticae4.hrker.com.empaticae4.util.ReportActivity">
 
@@ -15,7 +15,7 @@
         android:layout_margin="20dp"
         android:gravity="center_horizontal"
         android:text="How are you feeling?"
-        android:textColor="@android:color/holo_blue_bright"
+        android:textColor="@color/white"
         android:textSize="30sp"
         android:textStyle="bold" />
 
@@ -70,6 +70,11 @@
 
                 <RadioButton
                     android:id="@+id/bOther"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Other" />
+                <RadioButton
+                    android:id="@+id/bOther2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Other" />

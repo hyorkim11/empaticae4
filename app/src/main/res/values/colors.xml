@@ -1,5 +1,7 @@
 <resources>
 
     <color name="black_overlay">#66000000</color>
+    <color name="jadoo">#ea3d3d</color>
+    <color name="grey">#b2b2b2</color>
 
 </resources>

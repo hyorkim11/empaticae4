@@ -15,7 +15,8 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:text="Welcome!"
-            android:textSize="25sp"
+            android:textColor="@color/white"
+            android:textSize="40sp"
             android:textStyle="bold" />
 
         <TextView
@@ -24,8 +25,11 @@
             android:layout_below="@+id/title"
             android:layout_centerHorizontal="true"
             android:text="Have you made a report today?"
+            android:textColor="@color/grey"
             android:textSize="15sp"
             android:textStyle="italic" />
+
+
     </RelativeLayout>
 
 </ScrollView>

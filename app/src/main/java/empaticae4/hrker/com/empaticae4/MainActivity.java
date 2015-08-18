@@ -4,8 +4,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,6 +19,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +46,7 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
     private DialogFragment mMenuDialogFragment;
 
     private BootstrapButton b1, b2, b3;
+    private Button resetButton;
 
 
     @Override
@@ -62,12 +67,12 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
         b1 = (BootstrapButton)findViewById(R.id.b1);
         b2 = (BootstrapButton)findViewById(R.id.b2);
         b3 = (BootstrapButton)findViewById(R.id.b3);
+        resetButton = (Button) findViewById(R.id.resetPrefs);
 
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                b1.setBootstrapType("success");
                 Intent i = new Intent(getApplicationContext(), ReportActivity.class);
                 startActivity(i);
             }
@@ -76,7 +81,6 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
             @Override
             public void onClick(View view) {
 
-                b2.setBootstrapType("success");
                 Intent i = new Intent(getApplicationContext(), LiveStreamActivity.class);
                 startActivity(i);
             }
@@ -85,9 +89,20 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
             @Override
             public void onClick(View view) {
 
-                b3.setBootstrapType("success");
+                sendNotification(view);
                 //Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 //startActivity(i);
+
+            }
+        });
+
+        /* TESTING BUTTON TO RESET SHARED PREFS*/
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences settings = getSharedPreferences("userData", Context.MODE_MULTI_PROCESS);
+                settings.edit().clear().commit();
+                Toast.makeText(MainActivity.this, "sharedprefs have been cleared", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -107,17 +122,21 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
 
         MenuObject close = new MenuObject();
         close.setResource(R.mipmap.ic_close);
+        close.setScaleType(ImageView.ScaleType.FIT_XY);
 
         MenuObject contact = new MenuObject("Contact Us");
         contact.setResource(R.mipmap.ic_launcher);
+        contact.setScaleType(ImageView.ScaleType.FIT_XY);
 
         MenuObject settings = new MenuObject("Settings");
-        contact.setResource(R.mipmap.ic_launcher);
+        settings.setResource(R.mipmap.ic_launcher);
+        settings.setScaleType(ImageView.ScaleType.FIT_XY);
         // TODO: 8/13/15 enlarge the size of the icons
 
         menuObjects.add(close);
         menuObjects.add(contact);
         menuObjects.add(settings);
+
         return menuObjects;
     }
 
@@ -130,7 +149,7 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setElevation(5);
-        mToolbar.setNavigationIcon(R.drawable.ic_drawer);
+        //mToolbar.setNavigationIcon(R.drawable.ic_drawer);
 
         // TODO: 8/13/15 set logo here on the navigation icon and change onclick response to change activity to home
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -164,15 +183,22 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
     // Notifications
     public void sendNotification(View v) {
 
+        Vibrator vNoti = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        vNoti.vibrate(500);
+
         Intent notificationIntent = new Intent(this, ReportActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
+        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_SINGLE_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_drawer)
+                .setAutoCancel(true)
                 .setContentTitle("Nudge from Your Empatica")
-                .setContentText("Would you like to make a report?")
-                .addAction(R.drawable.ic_drawer, "No", null)
+                .setContentText("Would you like to make a report? \n (swipe to dismiss)")
                 .addAction(R.drawable.ic_drawer, "Sure", contentIntent);
 
         builder.setContentIntent(contentIntent);
@@ -191,11 +217,6 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
 
         manager.notify(notificationID, builder.build());
 
-    }
-
-    private void shootToast(String s) {
-
-        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -232,13 +253,13 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
     @Override
     public void onMenuItemClick(View clickedView, int position) {
 
-        //Toast.makeText(this, "Clicked on position: " + position, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Made this choice: " + position, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onMenuItemLongClick(View clickedView, int position) {
 
-        Toast.makeText(this, "hehe that tickles", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
     }
 
 }
