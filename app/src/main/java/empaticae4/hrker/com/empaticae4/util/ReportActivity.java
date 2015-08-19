@@ -1,7 +1,6 @@
 package empaticae4.hrker.com.empaticae4.util;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,7 +25,9 @@ import empaticae4.hrker.com.empaticae4.R;
 public class ReportActivity extends AppCompatActivity {
 
     public static final String DATAFILE = "userData";
+
     SharedPreferences sharedP = null;
+
     BootstrapButton bContinue, bCancel;
     RadioGroup form1, form2;
     RadioButton chk1, chk2, mOther, mOther2;
@@ -48,6 +49,10 @@ public class ReportActivity extends AppCompatActivity {
 
     private void init() {
 
+        sharedP = getSharedPreferences(DATAFILE, MODE_MULTI_PROCESS);
+        String tempString = sharedP.getString("custom", "Other");
+
+
         bContinue = (BootstrapButton) findViewById(R.id.bContinue);
         bCancel = (BootstrapButton) findViewById(R.id.bCancel);
         form1 = (RadioGroup) findViewById(R.id.form1);
@@ -59,21 +64,17 @@ public class ReportActivity extends AppCompatActivity {
         chk1 = (RadioButton)form1.findViewById(form1.getCheckedRadioButtonId());
         chk2 = (RadioButton)form2.findViewById(form2.getCheckedRadioButtonId());
         mOther = (RadioButton) findViewById(R.id.bOther);
+
+        if (tempString == "Other")  {
+            mOther.setText("Other");
+        }  else {
+            mOther.setText(tempString);
+        }
+
         mOther2 = (RadioButton) findViewById(R.id.bOther2);
         chkText = (TextView) findViewById(R.id.chkText);
         chkText.setText("");
         firstOrNot = sharedP.getBoolean("first", false);
-
-
-        if (!firstOrNot) {
-
-            // if it is NOT the first time
-            mOther.setText(sharedP.getString("custom", "N/A"));
-        } else {
-
-            // if it IS the first time
-            mOther.setText("Other");
-        }
 
         //sbIntensity = (SeekBar) findViewById(R.id.sbIntensity);
         //tvIntensity = (TextView) findViewById(R.id.tvIntensity);
@@ -106,12 +107,13 @@ public class ReportActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (firstOrNot) {
+                sharedP = getSharedPreferences(DATAFILE, MODE_MULTI_PROCESS);
+                String temp = sharedP.getString("custom", "Other");
 
-                    // ONLY if it IS the first time
+                if (temp == "Other") {
                     openCustom(view);
-                    sharedP.edit().putBoolean("first", false).commit();
                 }
+
             }
         });
         mOther2.setOnClickListener(new View.OnClickListener() {
@@ -134,7 +136,7 @@ public class ReportActivity extends AppCompatActivity {
                 form2.setOnCheckedChangeListener(null);
                 form2.clearCheck();
                 form2.setOnCheckedChangeListener(listener2); //reset the listener
-                chkText.setText("" + form1.getCheckedRadioButtonId());
+                chkText.setText("" + form2.getCheckedRadioButtonId());
             }
         }
     };
@@ -155,16 +157,6 @@ public class ReportActivity extends AppCompatActivity {
     };
 
     private Boolean checkForm() {
-
-//        if ((chkText.getText() == null)&&(!formChked)) {
-//            return false;
-//        }
-//        else if ((chkText.getText() != "")&&(formChked)) {
-//            return true;
-//        }
-//        else {
-//            return false;
-//        }
 
         if ((chkText.getText()!= "")&&(formChked)) {
             return true;
@@ -205,14 +197,12 @@ public class ReportActivity extends AppCompatActivity {
 
     private void openCustom(View view) {
 
-        SharedPreferences sharedprefs = getSharedPreferences(DATAFILE, Context.MODE_MULTI_PROCESS);
-        SharedPreferences.Editor prefsEditor = sharedprefs.edit();
-
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ReportActivity.this);
         alertDialogBuilder.setTitle("");
         alertDialogBuilder.setMessage("Please enter your custom feeling");
 
         final EditText editor = new EditText(this);
+        final SharedPreferences.Editor spEditor = sharedP.edit();
         alertDialogBuilder.setView(editor);
 
 
@@ -220,8 +210,10 @@ public class ReportActivity extends AppCompatActivity {
 
             public void onClick(DialogInterface dialog, int id) {
 
-                mOther.setText(editor.getText());
-                temp = editor.getText().toString();
+                String tempString = editor.getText().toString();
+                mOther.setText(tempString);
+                spEditor.putString("custom", tempString).commit();
+
                 dialog.cancel();
             }
         });
@@ -234,8 +226,6 @@ public class ReportActivity extends AppCompatActivity {
             }
         });
 
-        prefsEditor.putString("custom", temp);
-        prefsEditor.commit();
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
 

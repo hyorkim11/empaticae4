@@ -41,7 +41,7 @@ import empaticae4.hrker.com.empaticae4.util.ReportActivity;
 public class MainActivity extends ActionBarActivity implements OnMenuItemClickListener,
         OnMenuItemLongClickListener {
 
-
+    public static final String DATAFILE = "userData";
     private FragmentManager fragmentManager;
     private DialogFragment mMenuDialogFragment;
 
@@ -100,7 +100,7 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences settings = getSharedPreferences("userData", Context.MODE_MULTI_PROCESS);
+                SharedPreferences settings = getSharedPreferences(DATAFILE, Context.MODE_MULTI_PROCESS);
                 settings.edit().clear().commit();
                 Toast.makeText(MainActivity.this, "sharedprefs have been cleared", Toast.LENGTH_SHORT).show();
             }
@@ -150,8 +150,8 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setElevation(5);
         //mToolbar.setNavigationIcon(R.drawable.ic_drawer);
-
         // TODO: 8/13/15 set logo here on the navigation icon and change onclick response to change activity to home
+
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -162,7 +162,7 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
                 //startActivity(i);
             }
         });
-        mToolBarTextView.setText("MY EMPATICA");
+        mToolBarTextView.setText("Mind the Moment");
         mToolBarTextView.setTextColor(Color.GRAY);
     }
 

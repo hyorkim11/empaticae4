@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Empatica</string>
+    <string name="app_name">Mind the Moment</string>
 
     <string name="action_example"> </string>
 
@@ -18,12 +18,10 @@
     <string name="emptyText">-</string>
     <string name="temp_label">Temperature</string>
     <string name="battery_label">Battery</string>
-    <string name="title_activity_assessment">AssessmentActivity</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_live_stream">LiveStreamActivity</string>
 
     <string name="title_activity_report">ReportActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+
 </resources>
