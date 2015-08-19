@@ -8,10 +8,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class SettingsActivity extends Activity {
 
-    private Button resetButton;
+    private Button resetButton, showCustomFeeling1;
     public static final String DATAFILE = "userData";
 
     @Override
@@ -24,6 +25,8 @@ public class SettingsActivity extends Activity {
     private void init() {
 
         resetButton = (Button) findViewById(R.id.resetPrefs);
+        showCustomFeeling1 = (Button) findViewById(R.id.showCustomFeeling1);
+
 
         /* TESTING BUTTON TO RESET SHARED PREFS*/
         resetButton.setOnClickListener(new View.OnClickListener() {
@@ -31,7 +34,14 @@ public class SettingsActivity extends Activity {
             public void onClick(View view) {
                 SharedPreferences settings = getSharedPreferences(DATAFILE, Context.MODE_MULTI_PROCESS);
                 settings.edit().clear().commit();
-                //Toast.makeText(this,"SharedPref has been reset", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingsActivity.this, "SharedPref has been reset", Toast.LENGTH_SHORT).show();
+            }
+        });
+        showCustomFeeling1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences fetchCustom = getSharedPreferences(DATAFILE, Context.MODE_MULTI_PROCESS);
+                Toast.makeText(SettingsActivity.this, "Custom Feeling 1 is set as: "+ fetchCustom.getString("custom", "N/A"), Toast.LENGTH_SHORT).show();
 
             }
         });

@@ -178,8 +178,9 @@ public class ReportActivity extends AppCompatActivity {
 
             public void onClick(DialogInterface dialog, int id) {
 
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(i);
+                //Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                //startActivity(i);
+                finish();
                 Toast.makeText(getApplicationContext(), "You have quit your report", Toast.LENGTH_SHORT).show();
             }
         });

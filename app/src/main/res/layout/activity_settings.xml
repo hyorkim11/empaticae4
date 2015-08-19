@@ -6,6 +6,7 @@
     tools:context="empaticae4.hrker.com.empaticae4.SettingsActivity">
 
     <TextView
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -14,8 +15,17 @@
 
     <Button
         android:id="@+id/resetPrefs"
+        android:layout_below="@+id/title"
+        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="RESET SHAREDPREFS"/>
+        android:text="Reset SharedPrefs"/>
 
+    <Button
+        android:id="@+id/showCustomFeeling1"
+        android:layout_below="@+id/resetPrefs"
+        android:layout_centerHorizontal="true"
+        android:text="Custom Feeling 1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </RelativeLayout>

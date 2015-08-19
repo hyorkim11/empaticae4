@@ -136,10 +136,10 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         TextView mToolBarTextView = (TextView) findViewById(R.id.text_view_toolbar_title);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setElevation(5);
+        getSupportActionBar().setElevation(10);
         //mToolbar.setNavigationIcon(R.drawable.ic_drawer);
         // TODO: 8/13/15 set logo here on the navigation icon and change onclick response to change activity to home
 
@@ -273,9 +273,6 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
     @Override
     public void onMenuItemClick(View clickedView, int position) {
 
-        //Toast.makeText(this, "Made this choice: " + position, Toast.LENGTH_SHORT).show();
-        //Intent i = new Intent(getApplicationContext(), MainActivity.class);
-        //startActivity(i);
         switch (position)  {
             case 1:
                 openContact();
