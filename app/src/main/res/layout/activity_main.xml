@@ -49,9 +49,4 @@
         bootstrap:bb_size="large"
         bootstrap:bb_type="danger" />
 
-    <Button
-        android:id="@+id/resetPrefs"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="RESET SHAREDPREFS"/>
 </LinearLayout>

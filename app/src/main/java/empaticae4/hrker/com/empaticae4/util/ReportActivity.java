@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 
+import java.util.Objects;
+
 import empaticae4.hrker.com.empaticae4.MainActivity;
 import empaticae4.hrker.com.empaticae4.R;
 
@@ -61,13 +63,13 @@ public class ReportActivity extends AppCompatActivity {
         form2.clearCheck();
         form1.setOnCheckedChangeListener(listener1);
         form2.setOnCheckedChangeListener(listener2);
-        chk1 = (RadioButton)form1.findViewById(form1.getCheckedRadioButtonId());
-        chk2 = (RadioButton)form2.findViewById(form2.getCheckedRadioButtonId());
+        chk1 = (RadioButton) form1.findViewById(form1.getCheckedRadioButtonId());
+        chk2 = (RadioButton) form2.findViewById(form2.getCheckedRadioButtonId());
         mOther = (RadioButton) findViewById(R.id.bOther);
 
-        if (tempString == "Other")  {
+        if (Objects.equals(tempString, "Other")) {
             mOther.setText("Other");
-        }  else {
+        } else {
             mOther.setText(tempString);
         }
 
@@ -88,7 +90,7 @@ public class ReportActivity extends AppCompatActivity {
 
                 if (checkForm()) {
 
-                    openIntensity(view);
+                    openIntensity();
                 } else {
 
                     Toast.makeText(getApplicationContext(), "Please make a selection", Toast.LENGTH_SHORT).show();
@@ -99,7 +101,7 @@ public class ReportActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                openAlert(view);
+                openAlert();
             }
         });
         mOther.setOnClickListener(new View.OnClickListener() {
@@ -111,7 +113,7 @@ public class ReportActivity extends AppCompatActivity {
                 String temp = sharedP.getString("custom", "Other");
 
                 if (temp == "Other") {
-                    openCustom(view);
+                    openCustom();
                 }
 
             }
@@ -120,7 +122,7 @@ public class ReportActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                openCustom2(view);
+                openCustom2();
             }
         });
 
@@ -158,15 +160,14 @@ public class ReportActivity extends AppCompatActivity {
 
     private Boolean checkForm() {
 
-        if ((chkText.getText()!= "")&&(formChked)) {
+        if ((chkText.getText() != "") && (formChked)) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
-    private void openAlert(View view) {
+    private void openAlert() {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ReportActivity.this);
         alertDialogBuilder.setTitle("");
@@ -195,7 +196,7 @@ public class ReportActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    private void openCustom(View view) {
+    private void openCustom() {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ReportActivity.this);
         alertDialogBuilder.setTitle("");
@@ -231,7 +232,7 @@ public class ReportActivity extends AppCompatActivity {
 
     }
 
-    private void openCustom2(View view) {
+    private void openCustom2() {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ReportActivity.this);
         alertDialogBuilder.setTitle("");
@@ -259,7 +260,7 @@ public class ReportActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    private void openIntensity(View view) {
+    private void openIntensity() {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ReportActivity.this);
         alertDialogBuilder.setTitle("Please rate how strong this feeling is");
@@ -313,5 +314,11 @@ public class ReportActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        openAlert();
     }
 }

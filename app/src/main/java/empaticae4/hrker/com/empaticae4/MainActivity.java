@@ -1,11 +1,13 @@
 package empaticae4.hrker.com.empaticae4;
 
+import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v4.app.DialogFragment;
@@ -19,10 +21,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
@@ -46,7 +46,7 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
     private DialogFragment mMenuDialogFragment;
 
     private BootstrapButton b1, b2, b3;
-    private Button resetButton;
+
 
 
     @Override
@@ -67,7 +67,7 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
         b1 = (BootstrapButton)findViewById(R.id.b1);
         b2 = (BootstrapButton)findViewById(R.id.b2);
         b3 = (BootstrapButton)findViewById(R.id.b3);
-        resetButton = (Button) findViewById(R.id.resetPrefs);
+
 
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,15 +96,6 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
             }
         });
 
-        /* TESTING BUTTON TO RESET SHARED PREFS*/
-        resetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SharedPreferences settings = getSharedPreferences(DATAFILE, Context.MODE_MULTI_PROCESS);
-                settings.edit().clear().commit();
-                Toast.makeText(MainActivity.this, "sharedprefs have been cleared", Toast.LENGTH_SHORT).show();
-            }
-        });
 
     }
     private void initMenuFragment() {
@@ -236,6 +227,7 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
                     mMenuDialogFragment.show(fragmentManager, ContextMenuDialogFragment.TAG);
                 }
                 break;
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -250,10 +242,53 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
         }
     }
 
+    private void openContact() {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+        alertDialogBuilder.setTitle("Contact Administrators");
+        alertDialogBuilder.setMessage("Dr. Noelle Leonard");
+
+        alertDialogBuilder.setPositiveButton("Call", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int id) {
+
+                String number = "000000000";
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" + number));
+                startActivity(intent);
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
     @Override
     public void onMenuItemClick(View clickedView, int position) {
 
         //Toast.makeText(this, "Made this choice: " + position, Toast.LENGTH_SHORT).show();
+        //Intent i = new Intent(getApplicationContext(), MainActivity.class);
+        //startActivity(i);
+        switch (position)  {
+            case 1:
+                openContact();
+                break;
+            case 2:
+                Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
+                startActivity(i);
+                break;
+            default:
+
+                break;
+
+        }
     }
 
     @Override
