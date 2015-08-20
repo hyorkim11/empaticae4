@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import empaticae4.hrker.com.empaticae4.util.ReportActivity;
+import empaticae4.hrker.com.empaticae4.Reports.ReportActivity;
 
 
 public class MainActivity extends ActionBarActivity implements OnMenuItemClickListener,

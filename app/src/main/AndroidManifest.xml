@@ -24,7 +24,7 @@
             android:name=".LiveStreamActivity"
             android:label="@string/title_activity_live_stream" />
         <activity
-            android:name=".util.ReportActivity"
+            android:name=".Reports.ReportActivity"
             android:label="@string/title_activity_report" />
         <activity
             android:name=".SettingsActivity"

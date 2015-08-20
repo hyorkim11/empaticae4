@@ -8,10 +8,11 @@ import java.util.Calendar;
 
 public class Logger {
 
+    static final String FILENAME = "log.csv";
+
     public void saveLog(Context context) {
 
         // file written and saved in: data/data/empaticae4.hrker.com.empaticae4/files/log.csv
-        String FILENAME = "log.csv";
         Calendar c = Calendar.getInstance();
         FileOutputStream fos;
 
@@ -36,5 +37,27 @@ public class Logger {
 
     }
 
+        /*
+            * String baseDir = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
+        String fileName = "AnalysisData.csv";
+        String filePath = baseDir + File.separator + fileName;
+        File f = new File(filePath );
+        CSVWriter writer;
+        // File exist
+        if(f.exists() && !f.isDirectory()){
+        mFileWriter = new FileWriter(filePath , true);
+        writer = new CSVWriter(mFileWriter);
+        }
+        else {
+        writer = new CSVWriter(new FileWriter(filePath));
+        }
+        String[] data = {"Ship Name","Scientist Name", "...",new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").formatter.format(date)});
+
+        writer.writeNext(data);
+
+        writer.close();
+        *
+        *
+        * */
 
 }
