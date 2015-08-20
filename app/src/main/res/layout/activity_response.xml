@@ -1,0 +1,5 @@
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/fragment"
+    android:name="empaticae4.hrker.com.empaticae4.Reports.ResponseActivityFragment"
+    tools:layout="@layout/fragment_negative_response" android:layout_width="match_parent"
+    android:layout_height="match_parent" />
