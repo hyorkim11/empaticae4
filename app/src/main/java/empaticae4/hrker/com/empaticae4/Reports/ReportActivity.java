@@ -21,7 +21,6 @@ import com.beardedhen.androidbootstrap.BootstrapButton;
 
 import java.util.Objects;
 
-import empaticae4.hrker.com.empaticae4.MainActivity;
 import empaticae4.hrker.com.empaticae4.R;
 
 public class ReportActivity extends AppCompatActivity {
@@ -276,7 +275,7 @@ public class ReportActivity extends AppCompatActivity {
 
             public void onClick(DialogInterface dialog, int id) {
 
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                Intent i = new Intent(getApplicationContext(), ResponseActivity.class);
                 startActivity(i);
             }
         });

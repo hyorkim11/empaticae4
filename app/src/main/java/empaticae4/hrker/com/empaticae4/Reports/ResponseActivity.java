@@ -1,5 +1,6 @@
 package empaticae4.hrker.com.empaticae4.Reports;
 
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,10 +10,22 @@ import empaticae4.hrker.com.empaticae4.R;
 
 public class ResponseActivity extends AppCompatActivity {
 
+    public static final String DATAFILE = "userData";
+    SharedPreferences sharedP = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_response);
+        sharedP = getSharedPreferences(DATAFILE, MODE_MULTI_PROCESS);
+        init();
+    }
+
+    private void init() {
+
+
+
     }
 
 
