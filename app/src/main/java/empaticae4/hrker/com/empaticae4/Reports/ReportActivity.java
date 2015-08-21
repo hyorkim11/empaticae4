@@ -264,7 +264,7 @@ public class ReportActivity extends AppCompatActivity {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ReportActivity.this);
         alertDialogBuilder.setTitle("Please rate how strong this feeling is");
-        alertDialogBuilder.setMessage("on a scale from 0 to 10 \n (not at all to very strong)");
+        alertDialogBuilder.setMessage("on a scale from 0 to 10 (not at all to very strong)");
 
         final SeekBar sbIntensity = new SeekBar(this);
         sbIntensity.setMax(10);

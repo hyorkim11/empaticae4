@@ -59,7 +59,8 @@
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="In A New or Uncomfortable Situation"/>
+                android:text="In a New or Uncomfortable Situation"
+                android:checked="false" />
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
