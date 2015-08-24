@@ -6,9 +6,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -35,9 +37,6 @@ public class ReportActivity extends AppCompatActivity {
     TextView chkText;
     Boolean formChked;
     Boolean firstOrNot;
-    public String temp;
-    //final SeekBar sbIntensity;
-    //final TextView tvIntensity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,11 +75,6 @@ public class ReportActivity extends AppCompatActivity {
         chkText = (TextView) findViewById(R.id.chkText);
         chkText.setText("");
         firstOrNot = sharedP.getBoolean("first", false);
-
-        //sbIntensity = (SeekBar) findViewById(R.id.sbIntensity);
-        //tvIntensity = (TextView) findViewById(R.id.tvIntensity);
-
-        //tvIntensity.setText("Intensity: " + sbIntensity.getProgress() + "/" + sbIntensity.getMax());
 
         bContinue.setOnClickListener(new View.OnClickListener() {
 
@@ -157,11 +151,32 @@ public class ReportActivity extends AppCompatActivity {
         }
     };
 
+
     private Boolean checkForm() {
+        // Checks to see if a selection was made within either forms
 
         if ((chkText.getText() != "") && (formChked)) {
             return true;
         } else {
+            return false;
+        }
+    }
+
+    private Boolean PoN() {
+        // Checks to see if a selection made was either Positive or Negative
+        // Positive = True
+        // Negative = False (default)
+
+        if ((form1.getCheckedRadioButtonId() == -1)&&(form2.getCheckedRadioButtonId() == -1)) {
+            // no selection is made
+            return false;
+        } else if ((form2.getCheckedRadioButtonId() == -1)&&(form1.getCheckedRadioButtonId() != -1))  {
+            // positive form is empty && negative emotion is selected
+            return false;
+        } else if ((form1.getCheckedRadioButtonId() == -1)&&(form2.getCheckedRadioButtonId() != -1))  {
+            // negative form is empty && positive emotion is selected
+            return true;
+        } else { //default false
             return false;
         }
     }
@@ -262,25 +277,52 @@ public class ReportActivity extends AppCompatActivity {
 
     private void openIntensity() {
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ReportActivity.this);
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ReportActivity.this);
+        final LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        final View Viewlayout = inflater.inflate(R.layout.intensity_dialog, (ViewGroup) findViewById(R.id.layout_dialog));
+
+        final TextView tvIntensity = (TextView) Viewlayout.findViewById(R.id.tvIntensity);
+
         alertDialogBuilder.setTitle("Please rate how strong this feeling is");
-        alertDialogBuilder.setMessage("on a scale from 0 to 10 (not at all to very strong)");
+        alertDialogBuilder.setMessage("scale from 0(not at all) to 10(very strong)");
+        alertDialogBuilder.setView(Viewlayout);
 
-        final SeekBar sbIntensity = new SeekBar(this);
+        final SeekBar sbIntensity = (SeekBar) Viewlayout.findViewById(R.id.sbIntensity);
         sbIntensity.setMax(10);
-        alertDialogBuilder.setView(sbIntensity);
+        sbIntensity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
 
-        // set positive button: Yes
+                tvIntensity.setText("Intensity: " + sbIntensity.getProgress());
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+
         alertDialogBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int id) {
 
-                Intent i = new Intent(getApplicationContext(), ResponseActivity.class);
-                startActivity(i);
+                if (PoN()) {
+                    // if positive emotion selected
+                    Intent i = new Intent(getApplicationContext(), Response2Activity.class);
+                    startActivity(i);
+
+                } else {
+                    // negative emotion selected or default
+                    Intent j = new Intent(getApplicationContext(), ResponseActivity.class);
+                    startActivity(j);
+                }
+
+
             }
         });
 
-        // set negative button: No
         alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 

@@ -20,53 +20,90 @@
         android:textStyle="bold" />
 
     <LinearLayout
-        android:layout_below="@+id/title"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title">
 
         <RadioGroup
+            android:id="@+id/form1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="School or Work Issue"/>
+                android:text="School or Work Issue" />
+
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Relationship or Dating Issue"/>
+                android:text="Relationship or Dating Issue" />
+
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Friend Issue"/>
+                android:text="Friend Issue" />
+
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Family Issue"/>
+                android:text="Family Issue" />
+
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Getting Ready to Go Out"/>
+                android:text="Getting Ready to Go Out" />
+
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Talking to Someone Attractive"/>
+                android:text="Talking to Someone Attractive" />
+
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Pressured to Drink"/>
+                android:text="Pressured to Drink" />
+
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="In a New or Uncomfortable Situation"
-                android:checked="false" />
+                android:checked="false"
+                android:text="In a New or Uncomfortable Situation" />
+
             <RadioButton
+                android:id="@+id/bOther"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Other"/>
+                android:text="Other" />
 
         </RadioGroup>
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/form2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="50dp">
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:id="@+id/bCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="Cancel"
+            bootstrap:bb_roundedCorners="true"
+            bootstrap:bb_type="danger" />
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:id="@+id/bContinue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="Continue"
+            bootstrap:bb_roundedCorners="true"
+            bootstrap:bb_type="success" />
+
+    </RelativeLayout>
 
 </RelativeLayout>
