@@ -112,7 +112,7 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
         List<MenuObject> menuObjects = new ArrayList<>();
 
         MenuObject close = new MenuObject();
-        close.setResource(R.mipmap.ic_close);
+        close.setResource(R.mipmap.ic_close_big);
         close.setScaleType(ImageView.ScaleType.FIT_XY);
 
         MenuObject contact = new MenuObject("Contact Us");

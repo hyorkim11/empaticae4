@@ -1,6 +1,5 @@
 package empaticae4.hrker.com.empaticae4.Reports;
 
-import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,19 +7,12 @@ import android.view.MenuItem;
 
 import empaticae4.hrker.com.empaticae4.R;
 
-public class ResponseActivity extends AppCompatActivity {
-
-    // this is the response activity thereafter a negative response has been recorded
-
-    public static final String DATAFILE = "userData";
-    SharedPreferences sharedP = null;
+public class Response2Activity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_response);
-        sharedP = getSharedPreferences(DATAFILE, MODE_MULTI_PROCESS);
+        setContentView(R.layout.activity_response2);
         init();
     }
 
@@ -30,11 +22,10 @@ public class ResponseActivity extends AppCompatActivity {
 
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_response, menu);
+        getMenuInflater().inflate(R.menu.menu_response2, menu);
         return true;
     }
 
