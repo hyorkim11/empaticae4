@@ -31,11 +31,11 @@
             android:label="@string/title_activity_settings" >
         </activity>
         <activity
-            android:name=".Reports.ResponseActivity"
+            android:name=".Reports.NegativeActivity"
             android:label="@string/title_activity_response" >
         </activity>
         <activity
-            android:name=".Reports.Response2Activity"
+            android:name=".Reports.PositiveActivity"
             android:label="@string/title_activity_response2" >
         </activity>
     </application>

@@ -310,12 +310,12 @@ public class ReportActivity extends AppCompatActivity {
 
                 if (PoN()) {
                     // if positive emotion selected
-                    Intent i = new Intent(getApplicationContext(), Response2Activity.class);
+                    Intent i = new Intent(getApplicationContext(), PositiveActivity.class);
                     startActivity(i);
 
                 } else {
                     // negative emotion selected or default
-                    Intent j = new Intent(getApplicationContext(), ResponseActivity.class);
+                    Intent j = new Intent(getApplicationContext(), NegativeActivity.class);
                     startActivity(j);
                 }
 

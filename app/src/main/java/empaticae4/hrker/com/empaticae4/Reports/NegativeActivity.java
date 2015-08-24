@@ -4,12 +4,13 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
@@ -17,28 +18,32 @@ import com.beardedhen.androidbootstrap.BootstrapButton;
 import empaticae4.hrker.com.empaticae4.MainActivity;
 import empaticae4.hrker.com.empaticae4.R;
 
-// This is the Positive Response Activity
+// This is the Negative Response Activity
 
-public class Response2Activity extends AppCompatActivity {
+public class NegativeActivity extends AppCompatActivity {
 
-    EditText etResponse;
-    String temp;
-    BootstrapButton bContinue, bCancel;
+    RadioGroup form1;
+    RadioButton bOther;
+    BootstrapButton bCancel, bContinue;
+
     public static final String DATAFILE = "userData";
     SharedPreferences sharedP = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_response2);
+        setContentView(R.layout.activity_response);
+        sharedP = getSharedPreferences(DATAFILE, MODE_MULTI_PROCESS);
         init();
     }
 
     private void init() {
 
-        etResponse = (EditText)findViewById(R.id.etResponse);
-        bContinue = (BootstrapButton)findViewById(R.id.bContinue);
+        form1 = (RadioGroup)findViewById(R.id.form1);
+        bOther = (RadioButton)findViewById(R.id.bOther);
         bCancel = (BootstrapButton)findViewById(R.id.bCancel);
+        bContinue = (BootstrapButton)findViewById(R.id.bContinue);
 
         bContinue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,11 +62,28 @@ public class Response2Activity extends AppCompatActivity {
 
     }
 
+    private String getResponse() {
+        // get response choice from radio group form
+
+        String response;
+
+        if(form1.getCheckedRadioButtonId()!=-1)  {
+
+            RadioGroup rg = (RadioGroup)findViewById(R.id.form1);
+            response = ((RadioButton)findViewById(rg.getCheckedRadioButtonId())).getText().toString();
+
+        } else {
+            response = "N/A";
+        }
+
+        return response;
+    }
+
     private void openContinueAlert() {
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Response2Activity.this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(NegativeActivity.this);
         alertDialogBuilder.setTitle("");
-        alertDialogBuilder.setMessage("Glad to hear it! \n Keep up the good work!");
+        alertDialogBuilder.setMessage("");
 
         // set positive button: Yes
         alertDialogBuilder.setPositiveButton("Aw Yeah", new DialogInterface.OnClickListener() {
@@ -69,11 +91,10 @@ public class Response2Activity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
 
                 // TODO: 8/24/15  record data from String temp
-                temp = etResponse.getText().toString();
 
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(i);
-                Toast.makeText(getApplicationContext(), "Your response has been recorded", Toast.LENGTH_SHORT).show();
+//                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+//                startActivity(i);
+//                Toast.makeText(getApplicationContext(), "Your response has been recorded", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -83,7 +104,7 @@ public class Response2Activity extends AppCompatActivity {
 
     private void openCancelAlert() {
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Response2Activity.this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(NegativeActivity.this);
         alertDialogBuilder.setTitle("");
         alertDialogBuilder.setMessage("Are you sure you want to quit?");
 
@@ -110,10 +131,11 @@ public class Response2Activity extends AppCompatActivity {
         alertDialog.show();
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_response2, menu);
+        getMenuInflater().inflate(R.menu.menu_response, menu);
         return true;
     }
 
