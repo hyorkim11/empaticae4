@@ -1,41 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp">
+    android:padding="20dp">
 
-    <TextView
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/title1"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="50dp"
         android:text="FREEZE"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        bootstrap:bb_roundedCorners="true"
+        bootstrap:bb_size="small"
+        bootstrap:bb_type="primary" />
 
     <TextView
         android:id="@+id/tvFreeze"
-        android:layout_below="@+id/title1"
-        android:text="Stop what you're doing. Stay as still as possible."
-        android:layout_marginBottom="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/title2"
-        android:layout_below="@id/tvFreeze"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/title1"
+        android:layout_marginBottom="25dp"
+        android:text="Stop what you're doing. Stay as still as possible." />
+
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/title2"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_below="@id/tvFreeze"
         android:text="BREATHE"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        bootstrap:bb_roundedCorners="true"
+        bootstrap:bb_size="small"
+        bootstrap:bb_type="primary" />
 
     <TextView
         android:id="@+id/tvBreathe"
-        android:layout_below="@+id/title2"
-        android:text="Take 3 deep breaths. Count them. Only your lungs are moving. Settle yourself."
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title2"
+        android:layout_marginTop="10dp"
+        android:text="Take 3 deep breaths. Count them. Only your lungs are moving. Settle yourself." />
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/bChoose"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/tvBreathe"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="25dp"
+        android:text="CHOOSE"
+        bootstrap:bb_roundedCorners="true"
+        bootstrap:bb_size="medium"
+        bootstrap:bb_type="success" />
+
 
 </RelativeLayout>

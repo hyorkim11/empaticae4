@@ -4,8 +4,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,10 +41,10 @@ public class NegativeActivity extends AppCompatActivity {
 
     private void init() {
 
-        form1 = (RadioGroup)findViewById(R.id.form1);
-        bOther = (RadioButton)findViewById(R.id.bOther);
-        bCancel = (BootstrapButton)findViewById(R.id.bCancel);
-        bContinue = (BootstrapButton)findViewById(R.id.bContinue);
+        form1 = (RadioGroup) findViewById(R.id.form1);
+        bOther = (RadioButton) findViewById(R.id.bOther);
+        bCancel = (BootstrapButton) findViewById(R.id.bCancel);
+        bContinue = (BootstrapButton) findViewById(R.id.bContinue);
 
         bContinue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,10 +68,10 @@ public class NegativeActivity extends AppCompatActivity {
 
         String response;
 
-        if(form1.getCheckedRadioButtonId()!=-1)  {
+        if (form1.getCheckedRadioButtonId() != -1) {
 
-            RadioGroup rg = (RadioGroup)findViewById(R.id.form1);
-            response = ((RadioButton)findViewById(rg.getCheckedRadioButtonId())).getText().toString();
+            RadioGroup rg = (RadioGroup) findViewById(R.id.form1);
+            response = ((RadioButton) findViewById(rg.getCheckedRadioButtonId())).getText().toString();
 
         } else {
             response = "N/A";
@@ -82,19 +83,18 @@ public class NegativeActivity extends AppCompatActivity {
     private void openContinueAlert() {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(NegativeActivity.this);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View layout = inflater.inflate(R.layout.tip_dialog, null);
         alertDialogBuilder.setTitle("");
         alertDialogBuilder.setMessage("");
+        alertDialogBuilder.setView(layout);
 
-        // set positive button: Yes
-        alertDialogBuilder.setPositiveButton("Aw Yeah", new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int id) {
-
-                // TODO: 8/24/15  record data from String temp
-
-//                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-//                startActivity(i);
-//                Toast.makeText(getApplicationContext(), "Your response has been recorded", Toast.LENGTH_SHORT).show();
+        BootstrapButton bChoose = (BootstrapButton)findViewById(R.id.bChoose);
+        bChoose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), NegativeActivity2.class);
+                startActivity(i);
             }
         });
 
@@ -130,7 +130,6 @@ public class NegativeActivity extends AppCompatActivity {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

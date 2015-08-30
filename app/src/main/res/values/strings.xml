@@ -26,5 +26,6 @@
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="title_activity_response">ResponseActivity</string>
     <string name="title_activity_response2">Response2Activity</string>
+    <string name="title_activity_negative2">NegativeActivity2</string>
 
 </resources>
