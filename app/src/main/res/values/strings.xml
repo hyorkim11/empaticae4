@@ -27,5 +27,6 @@
     <string name="title_activity_response">ResponseActivity</string>
     <string name="title_activity_response2">Response2Activity</string>
     <string name="title_activity_negative2">NegativeActivity2</string>
+    <string name="title_activity_good_moves">GoodMovesActivity</string>
 
 </resources>
