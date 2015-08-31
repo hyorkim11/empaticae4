@@ -6,15 +6,17 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
+
+import java.util.Objects;
 
 import empaticae4.hrker.com.empaticae4.MainActivity;
 import empaticae4.hrker.com.empaticae4.R;
@@ -34,15 +36,31 @@ public class NegativeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_response);
-        sharedP = getSharedPreferences(DATAFILE, MODE_MULTI_PROCESS);
+        setContentView(R.layout.activity_negative);
         init();
     }
 
     private void init() {
 
+        sharedP = getSharedPreferences(DATAFILE, MODE_MULTI_PROCESS);
+        String tempString = sharedP.getString("custom_event", "Other");
+
         form1 = (RadioGroup) findViewById(R.id.form1);
         bOther = (RadioButton) findViewById(R.id.bOther);
+        bOther.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                openCustom();
+            }
+        });
+
+        if (Objects.equals(tempString, "Other")) {
+            bOther.setText("Other");
+        } else {
+            bOther.setText(tempString);
+        }
+
         bCancel = (BootstrapButton) findViewById(R.id.bCancel);
         bContinue = (BootstrapButton) findViewById(R.id.bContinue);
 
@@ -50,7 +68,14 @@ public class NegativeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                openContinueAlert();
+                if (form1.getCheckedRadioButtonId() != -1)  {
+
+                    Intent i = new Intent(getApplicationContext(), NegativeActivity2.class);
+                    startActivity(i);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Please make a selection", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
         bCancel.setOnClickListener(new View.OnClickListener() {
@@ -61,6 +86,41 @@ public class NegativeActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void openCustom() {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(NegativeActivity.this);
+        alertDialogBuilder.setTitle("");
+        alertDialogBuilder.setMessage("What is going on right now?");
+
+        final EditText editor = new EditText(this);
+        final SharedPreferences.Editor spEditor = sharedP.edit();
+        alertDialogBuilder.setView(editor);
+
+
+        alertDialogBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int id) {
+
+                String tempString = editor.getText().toString();
+                bOther.setText(tempString);
+                spEditor.putString("custom_event", tempString).commit();
+
+                dialog.cancel();
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int id) {
+
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     private String getResponse() {
@@ -78,28 +138,6 @@ public class NegativeActivity extends AppCompatActivity {
         }
 
         return response;
-    }
-
-    private void openContinueAlert() {
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(NegativeActivity.this);
-        LayoutInflater inflater = LayoutInflater.from(this);
-        View layout = inflater.inflate(R.layout.tip_dialog, null);
-        alertDialogBuilder.setTitle("");
-        alertDialogBuilder.setMessage("");
-        alertDialogBuilder.setView(layout);
-
-        BootstrapButton bChoose = (BootstrapButton)findViewById(R.id.bChoose);
-        bChoose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), NegativeActivity2.class);
-                startActivity(i);
-            }
-        });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
     }
 
     private void openCancelAlert() {

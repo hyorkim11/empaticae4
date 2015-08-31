@@ -75,5 +75,31 @@
 
     </RadioGroup>
 
+    <RelativeLayout
+        android:id="@+id/form2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="50dp">
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:id="@+id/bCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="Cancel"
+            bootstrap:bb_roundedCorners="true"
+            bootstrap:bb_type="danger" />
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:id="@+id/bContinue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="Continue"
+            bootstrap:bb_roundedCorners="true"
+            bootstrap:bb_type="success" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

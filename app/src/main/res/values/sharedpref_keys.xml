@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!--
+
+   public static final String DATAFILE = "userData";
+
+
+    KEY - TYPE/VALUE - DETAILS
+    first                   bool        first time to app or not
+    custom                  string      first negative custom feeling
+    custom_coolthought      string      custom coolthought
+    custom_event            string      custom what is happening right now
+
+
+
+-->
+</resources>
