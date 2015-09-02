@@ -6,7 +6,12 @@ public class curUser {
     private String userName;
 
     public String getName() {
-        return userName;
+
+        if (userName.isEmpty()) {
+            return "none";
+        } else {
+            return userName;
+        }
     }
     public void setName(String inputName) {
         userName = inputName;

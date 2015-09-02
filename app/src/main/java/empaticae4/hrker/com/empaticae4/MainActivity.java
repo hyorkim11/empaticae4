@@ -284,7 +284,7 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
     private void sendCSV() {
 
         String columnString = "\"Participant Name\", \"temp1\", \"temp2\", \"temp3\"";
-        String dataString = "\"" + user.getName() + "\"";
+        String dataString = "\"" + "temp" + "\"";
         String combinedString = columnString + "\n" + dataString;
 
         File file = null;
@@ -315,11 +315,12 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
         u1 = Uri.fromFile(file);
 
         Intent sendIntent = new Intent(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Person Details");
-        sendIntent.putExtra(Intent.EXTRA_STREAM, u1);
         sendIntent.setType("text/html");
-
-        startActivity(sendIntent);
+        sendIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { "hyorim@umich.edu" });
+        sendIntent.putExtra(Intent.EXTRA_SUBJECT, "MtM - Update");
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "This is an data update email");
+        sendIntent.putExtra(Intent.EXTRA_STREAM, u1);
+        startActivity(Intent.createChooser(sendIntent, "Send email..."));
     }
 
 
@@ -338,7 +339,7 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
                 break;
 
             case 3: //send testing scv file
-                //sendCSV();
+                sendCSV();
                 break;
 
             default:
