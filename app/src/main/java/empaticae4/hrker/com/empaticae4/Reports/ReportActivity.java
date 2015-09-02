@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +36,7 @@ public class ReportActivity extends AppCompatActivity {
     TextView chkText;
     Boolean formChked;
     Boolean firstOrNot;
+    int mIntensity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -277,30 +277,68 @@ public class ReportActivity extends AppCompatActivity {
 
     private void openIntensity() {
 
+        final AlertDialog intensityDialog;
+        final CharSequence[] intensity = {"0","1","2","3","4","5","6","7","8","9","10"};
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ReportActivity.this);
         final LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
         final View Viewlayout = inflater.inflate(R.layout.intensity_dialog, (ViewGroup) findViewById(R.id.layout_dialog));
-
         final TextView tvIntensity = (TextView) Viewlayout.findViewById(R.id.tvIntensity);
 
         alertDialogBuilder.setTitle("Please rate how strong this feeling is");
-        alertDialogBuilder.setMessage("scale from 0(not at all) to 10(very strong)");
+        alertDialogBuilder.setMessage("scale from not at all to very strong");
         alertDialogBuilder.setView(Viewlayout);
 
-        final SeekBar sbIntensity = (SeekBar) Viewlayout.findViewById(R.id.sbIntensity);
-        sbIntensity.setMax(10);
-        sbIntensity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+        alertDialogBuilder.setSingleChoiceItems(intensity, -1, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
 
-                tvIntensity.setText("Intensity: " + sbIntensity.getProgress());
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
+                switch (item) {
+                    case 0:
+                        tvIntensity.setText("0 - Not at all");
+                        mIntensity = 0;
+                        break;
+                    case 1:
+                        tvIntensity.setText("1");
+                        mIntensity = 1;
+                        break;
+                    case 2:
+                        tvIntensity.setText("2");
+                        mIntensity = 2;
+                        break;
+                    case 3:
+                        tvIntensity.setText("3");
+                        mIntensity = 3;
+                        break;
+                    case 4:
+                        tvIntensity.setText("4");
+                        mIntensity = 4;
+                        break;
+                    case 5:
+                        tvIntensity.setText("5");
+                        mIntensity = 5;
+                        break;
+                    case 6:
+                        tvIntensity.setText("6");
+                        mIntensity = 6;
+                        break;
+                    case 7:
+                        tvIntensity.setText("7");
+                        mIntensity = 7;
+                        break;
+                    case 8:
+                        tvIntensity.setText("8");
+                        mIntensity = 8;
+                        break;
+                    case 9:
+                        tvIntensity.setText("9");
+                        mIntensity = 9;
+                        break;
+                    case 10:
+                        tvIntensity.setText("10 - very strong");
+                        mIntensity = 10;
+                        break;
+                    default:
+                        break;
+                }
             }
         });
 
@@ -323,15 +361,8 @@ public class ReportActivity extends AppCompatActivity {
             }
         });
 
-        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-
-                dialog.cancel();
-            }
-        });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+        intensityDialog = alertDialogBuilder.create();
+        intensityDialog.show();
     }
 
     @Override

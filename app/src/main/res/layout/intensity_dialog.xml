@@ -5,19 +5,11 @@
     android:layout_height="match_parent"
     android:padding="10dp">
 
-    <SeekBar
-        android:id="@+id/sbIntensity"
-        android:layout_centerHorizontal="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:scrollbarStyle="insideInset"/>
+
     <TextView
         android:id="@+id/tvIntensity"
         android:text="Intensity: 0"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/sbIntensity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </RelativeLayout>

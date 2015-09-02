@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/exit_dialog"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_horizontal"
+        android:textColor="@color/grey"
+        android:textSize="15sp"
+        android:textStyle="italic"
+        android:text="'Feelings are like waves. We can't stop them from coming, but we can choose which ones to surf.'   Jonatan Martensson"/>
+
+</RelativeLayout>

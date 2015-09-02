@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Vibrator;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -31,6 +32,10 @@ import com.yalantis.contextmenu.lib.MenuParams;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemLongClickListener;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,9 +49,8 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
     public static final String DATAFILE = "userData";
     private FragmentManager fragmentManager;
     private DialogFragment mMenuDialogFragment;
-
+    private curUser user;
     private BootstrapButton b1, b2, b3;
-
 
 
     @Override
@@ -64,9 +68,9 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
 
     private void init() {
 
-        b1 = (BootstrapButton)findViewById(R.id.b1);
-        b2 = (BootstrapButton)findViewById(R.id.b2);
-        b3 = (BootstrapButton)findViewById(R.id.b3);
+        b1 = (BootstrapButton) findViewById(R.id.b1);
+        b2 = (BootstrapButton) findViewById(R.id.b2);
+        b3 = (BootstrapButton) findViewById(R.id.b3);
 
 
         b1.setOnClickListener(new View.OnClickListener() {
@@ -98,6 +102,7 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
 
 
     }
+
     private void initMenuFragment() {
 
         MenuParams menuParams = new MenuParams();
@@ -124,9 +129,14 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
         settings.setScaleType(ImageView.ScaleType.FIT_XY);
         // TODO: 8/13/15 enlarge the size of the icons
 
+        MenuObject sendTesting = new MenuObject("Send CSV");
+        sendTesting.setResource(R.mipmap.ic_add);
+        sendTesting.setScaleType(ImageView.ScaleType.FIT_XY);
+
         menuObjects.add(close);
         menuObjects.add(contact);
         menuObjects.add(settings);
+        menuObjects.add(sendTesting);
 
         return menuObjects;
     }
@@ -270,17 +280,67 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
         alertDialog.show();
     }
 
+
+    private void sendCSV() {
+
+        String columnString = "\"Participant Name\", \"temp1\", \"temp2\", \"temp3\"";
+        String dataString = "\"" + user.getName() + "\"";
+        String combinedString = columnString + "\n" + dataString;
+
+        File file = null;
+        File root = Environment.getExternalStorageDirectory();
+        if (root.canWrite()) {
+            File dir = new File(root.getAbsolutePath() + "/PersonData");
+            dir.mkdirs();
+            file = new File(dir, "Data.csv");
+            FileOutputStream out = null;
+            try {
+                out = new FileOutputStream(file);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            try {
+                out.write(combinedString.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Uri u1 = null;
+        u1 = Uri.fromFile(file);
+
+        Intent sendIntent = new Intent(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Person Details");
+        sendIntent.putExtra(Intent.EXTRA_STREAM, u1);
+        sendIntent.setType("text/html");
+
+        startActivity(sendIntent);
+    }
+
+
     @Override
     public void onMenuItemClick(View clickedView, int position) {
 
-        switch (position)  {
-            case 1:
+        switch (position) {
+
+            case 1: //contact
                 openContact();
                 break;
-            case 2:
+
+            case 2: //settings
                 Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
                 startActivity(i);
                 break;
+
+            case 3: //send testing scv file
+                //sendCSV();
+                break;
+
             default:
 
                 break;
