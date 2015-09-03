@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:allowBackup="true"
@@ -46,6 +46,10 @@
         <activity
             android:name=".Reports.GoodMovesActivity"
             android:label="@string/title_activity_good_moves" >
+        </activity>
+        <activity
+            android:name=".Reports.DrinkActivity"
+            android:label="@string/title_activity_drink" >
         </activity>
     </application>
 

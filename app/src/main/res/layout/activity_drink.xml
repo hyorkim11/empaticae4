@@ -1,0 +1,149 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/pink_1_tsbs"
+    android:padding="20dp"
+
+    tools:context="empaticae4.hrker.com.empaticae4.Reports.DrinkActivity">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dp"
+        android:gravity="center_horizontal"
+        android:text="Drinking?"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <RadioGroup
+        android:id="@+id/form"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title">
+
+        <RadioButton
+            android:id="@+id/b1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Drink slowly"
+            android:textSize="12sp" />
+
+        <RadioButton
+            android:id="@+id/b2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Put extra ice in your drink"
+            android:textSize="12sp" />
+
+        <RadioButton
+            android:id="@+id/b3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Decide when to leave ahead of time"
+            android:textSize="12sp" />
+
+        <RadioButton
+            android:id="@+id/b4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Eat something"
+            android:textSize="12sp" />
+
+        <RadioButton
+            android:id="@+id/b5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Decide how much to drink ahead of time"
+            android:textSize="12sp" />
+
+        <RadioButton
+            android:id="@+id/b6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Drink a chaser"
+            android:textSize="12sp" />
+
+        <RadioButton
+            android:id="@+id/b7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ask a friend to keep tabs on you"
+            android:textSize="12sp" />
+
+        <RadioButton
+            android:id="@+id/b8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Go home with a friend"
+            android:textSize="12sp" />
+
+        <RadioButton
+            android:id="@+id/b9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Call a cab or Uber"
+            android:textSize="12sp" />
+
+        <RadioButton
+            android:id="@+id/b10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Limit the amount you spend on alcohol"
+            android:textSize="12sp" />
+
+        <RadioButton
+            android:id="@+id/b11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Think of the consequences of drinking too much"
+            android:textSize="12sp" />
+
+        <RadioButton
+            android:id="@+id/bOther1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Other"
+            android:textSize="12sp" />
+
+        <RadioButton
+            android:id="@+id/bOther2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Other"
+            android:textSize="12sp" />
+
+    </RadioGroup>
+
+    <RelativeLayout
+        android:id="@+id/form2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="50dp">
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:id="@+id/bCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="Cancel"
+            bootstrap:bb_roundedCorners="true"
+            bootstrap:bb_type="danger" />
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:id="@+id/bContinue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="Continue"
+            bootstrap:bb_roundedCorners="true"
+            bootstrap:bb_type="success" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

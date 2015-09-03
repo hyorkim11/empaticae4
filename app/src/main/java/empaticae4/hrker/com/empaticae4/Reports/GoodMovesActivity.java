@@ -3,6 +3,7 @@ package empaticae4.hrker.com.empaticae4.Reports;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ public class GoodMovesActivity extends AppCompatActivity implements View.OnClick
 
     RadioButton rbContact, rbMp3, rbMeditation;
     BootstrapButton bCancel, bContinue;
+    MediaPlayer mPlayer;
     String temp;
 
     @Override
@@ -43,6 +45,8 @@ public class GoodMovesActivity extends AppCompatActivity implements View.OnClick
         bContinue = (BootstrapButton) findViewById(R.id.bContinue);
         bCancel.setOnClickListener(this);
         bContinue.setOnClickListener(this);
+
+        mPlayer = MediaPlayer.create(GoodMovesActivity.this, R.raw.meditation_audio);
     }
 
     @Override
