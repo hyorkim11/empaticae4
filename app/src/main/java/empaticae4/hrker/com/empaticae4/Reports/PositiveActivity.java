@@ -14,6 +14,10 @@ import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import empaticae4.hrker.com.empaticae4.MainActivity;
 import empaticae4.hrker.com.empaticae4.R;
 
@@ -21,17 +25,19 @@ import empaticae4.hrker.com.empaticae4.R;
 
 public class PositiveActivity extends AppCompatActivity {
 
+    public static final String DATAFILE = "userData";
+    SharedPreferences sharedP = null;
+
     EditText etResponse;
     String temp;
     BootstrapButton bContinue, bCancel;
-    public static final String DATAFILE = "userData";
-    SharedPreferences sharedP = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_response2);
+        sharedP = getSharedPreferences(DATAFILE, MODE_MULTI_PROCESS);
         init();
     }
 
@@ -58,19 +64,38 @@ public class PositiveActivity extends AppCompatActivity {
 
     }
 
+    private void recordTime() {
+
+        // Pass in current time in milli, record report duration in SharedPref
+        long startTime, endTime, duration;
+        String temp;
+        SharedPreferences.Editor spEditor = sharedP.edit();
+
+        startTime = sharedP.getLong("start_time", 0);
+        endTime = Calendar.getInstance().getTimeInMillis();
+
+        duration = endTime - startTime;
+        temp = (new SimpleDateFormat("mm:ss:SSS")).format(new Date(duration));
+        spEditor.putString("report_duration", temp).commit();
+
+    }
+
     private void openContinueAlert() {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(PositiveActivity.this);
         alertDialogBuilder.setTitle("");
-        alertDialogBuilder.setMessage("Glad to hear it! \n Keep up the good work!");
+        alertDialogBuilder.setMessage("Glad to hear it! \nKeep up the good work!");
 
         // set positive button: Yes
-        alertDialogBuilder.setPositiveButton("Aw Yeah", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton("Finish", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int id) {
 
-                // TODO: 8/24/15  record data from String temp
+                // Record Positive_Event data & Duration of Report
                 temp = etResponse.getText().toString();
+                SharedPreferences.Editor spEditor = sharedP.edit();
+                spEditor.putString("Positive_Event", temp).commit();
+                recordTime();
 
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(i);

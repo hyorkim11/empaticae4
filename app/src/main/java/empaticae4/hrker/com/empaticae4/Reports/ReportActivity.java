@@ -6,11 +6,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -20,6 +18,7 @@ import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 
+import java.util.Calendar;
 import java.util.Objects;
 
 import empaticae4.hrker.com.empaticae4.R;
@@ -27,9 +26,9 @@ import empaticae4.hrker.com.empaticae4.R;
 public class ReportActivity extends AppCompatActivity {
 
     public static final String DATAFILE = "userData";
-
     SharedPreferences sharedP = null;
 
+    public static long start;
     BootstrapButton bContinue, bCancel;
     RadioGroup form1, form2;
     RadioButton chk1, chk2, mOther, mOther2;
@@ -37,6 +36,7 @@ public class ReportActivity extends AppCompatActivity {
     Boolean formChked;
     Boolean firstOrNot;
     int mIntensity;
+    String intensityLevel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +49,13 @@ public class ReportActivity extends AppCompatActivity {
 
     private void init() {
 
-        sharedP = getSharedPreferences(DATAFILE, MODE_MULTI_PROCESS);
         String tempString = sharedP.getString("custom", "Other");
 
+        start = Calendar.getInstance().getTimeInMillis();
+        SharedPreferences.Editor spEditor = sharedP.edit();
+        spEditor.putLong("start_time", start).commit();
 
+        mIntensity = 0; // reset intensity
         bContinue = (BootstrapButton) findViewById(R.id.bContinue);
         bCancel = (BootstrapButton) findViewById(R.id.bCancel);
         form1 = (RadioGroup) findViewById(R.id.form1);
@@ -66,8 +69,10 @@ public class ReportActivity extends AppCompatActivity {
         mOther = (RadioButton) findViewById(R.id.bOther);
 
         if (Objects.equals(tempString, "Other")) {
+
             mOther.setText("Other");
         } else {
+
             mOther.setText(tempString);
         }
 
@@ -167,13 +172,13 @@ public class ReportActivity extends AppCompatActivity {
         // Positive = True
         // Negative = False (default)
 
-        if ((form1.getCheckedRadioButtonId() == -1)&&(form2.getCheckedRadioButtonId() == -1)) {
+        if ((form1.getCheckedRadioButtonId() == -1) && (form2.getCheckedRadioButtonId() == -1)) {
             // no selection is made
             return false;
-        } else if ((form2.getCheckedRadioButtonId() == -1)&&(form1.getCheckedRadioButtonId() != -1))  {
+        } else if ((form2.getCheckedRadioButtonId() == -1) && (form1.getCheckedRadioButtonId() != -1)) {
             // positive form is empty && negative emotion is selected
             return false;
-        } else if ((form1.getCheckedRadioButtonId() == -1)&&(form2.getCheckedRadioButtonId() != -1))  {
+        } else if ((form1.getCheckedRadioButtonId() == -1) && (form2.getCheckedRadioButtonId() != -1)) {
             // negative form is empty && positive emotion is selected
             return true;
         } else { //default false
@@ -192,8 +197,6 @@ public class ReportActivity extends AppCompatActivity {
 
             public void onClick(DialogInterface dialog, int id) {
 
-                //Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                //startActivity(i);
                 finish();
                 Toast.makeText(getApplicationContext(), "You have quit your report", Toast.LENGTH_SHORT).show();
             }
@@ -221,7 +224,6 @@ public class ReportActivity extends AppCompatActivity {
         final SharedPreferences.Editor spEditor = sharedP.edit();
         alertDialogBuilder.setView(editor);
 
-
         alertDialogBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int id) {
@@ -239,6 +241,7 @@ public class ReportActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
 
                 dialog.cancel();
+                form1.clearCheck();
             }
         });
 
@@ -277,92 +280,100 @@ public class ReportActivity extends AppCompatActivity {
 
     private void openIntensity() {
 
-        final AlertDialog intensityDialog;
-        final CharSequence[] intensity = {"0","1","2","3","4","5","6","7","8","9","10"};
-        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ReportActivity.this);
-        final LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
-        final View Viewlayout = inflater.inflate(R.layout.intensity_dialog, (ViewGroup) findViewById(R.id.layout_dialog));
-        final TextView tvIntensity = (TextView) Viewlayout.findViewById(R.id.tvIntensity);
+        // Intensity Levels
+        final CharSequence[] items = {" 0 - Not at all ", " 1 ", " 2 ", " 3 ",
+                " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 ", " 10 - Very strong "};
 
-        alertDialogBuilder.setTitle("Please rate how strong this feeling is");
-        alertDialogBuilder.setMessage("scale from not at all to very strong");
-        alertDialogBuilder.setView(Viewlayout);
+        // SharedP for intensity record
+        final SharedPreferences.Editor spEditor = sharedP.edit();
 
-        alertDialogBuilder.setSingleChoiceItems(intensity, -1, new DialogInterface.OnClickListener() {
+        // Create and Build Dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("How Strong Is This Feeling?");
+        builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+
             public void onClick(DialogInterface dialog, int item) {
 
                 switch (item) {
                     case 0:
-                        tvIntensity.setText("0 - Not at all");
                         mIntensity = 0;
                         break;
+
                     case 1:
-                        tvIntensity.setText("1");
                         mIntensity = 1;
                         break;
+
                     case 2:
-                        tvIntensity.setText("2");
                         mIntensity = 2;
                         break;
+
                     case 3:
-                        tvIntensity.setText("3");
                         mIntensity = 3;
                         break;
+
                     case 4:
-                        tvIntensity.setText("4");
                         mIntensity = 4;
                         break;
+
                     case 5:
-                        tvIntensity.setText("5");
                         mIntensity = 5;
                         break;
+
                     case 6:
-                        tvIntensity.setText("6");
                         mIntensity = 6;
                         break;
+
                     case 7:
-                        tvIntensity.setText("7");
                         mIntensity = 7;
                         break;
+
                     case 8:
-                        tvIntensity.setText("8");
                         mIntensity = 8;
                         break;
+
                     case 9:
-                        tvIntensity.setText("9");
                         mIntensity = 9;
                         break;
+
                     case 10:
-                        tvIntensity.setText("10 - very strong");
                         mIntensity = 10;
                         break;
+
                     default:
                         break;
                 }
             }
         });
+        builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
 
-        alertDialogBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
 
-            public void onClick(DialogInterface dialog, int id) {
+                // Save recorded response
+                // Records: Intensity, Negative_Mood #, Positive_Mood #
+                intensityLevel = String.valueOf(mIntensity);
+                spEditor.putString("Intensity", intensityLevel).commit();
+                spEditor.putString("Negative_Mood", String.valueOf(form1.getCheckedRadioButtonId()));
+                spEditor.putString("Positive_Mood", String.valueOf(form2.getCheckedRadioButtonId()));
+                spEditor.commit();
+                Toast.makeText(ReportActivity.this, "intensity set at: " + intensityLevel + "N: " + String.valueOf(form1.getCheckedRadioButtonId()) + "P: " + String.valueOf(form2.getCheckedRadioButtonId()), Toast.LENGTH_LONG).show();
 
                 if (PoN()) {
                     // if positive emotion selected
-                    Intent i = new Intent(getApplicationContext(), PositiveActivity.class);
-                    startActivity(i);
+                    Intent j = new Intent(getApplicationContext(), PositiveActivity.class);
+                    startActivity(j);
 
                 } else {
-                    // negative emotion selected or default
+                    // negative emotion selected or by default
                     Intent j = new Intent(getApplicationContext(), NegativeActivity.class);
                     startActivity(j);
                 }
-
-
             }
         });
 
-        intensityDialog = alertDialogBuilder.create();
-        intensityDialog.show();
+        final AlertDialog levelDialog;
+        levelDialog = builder.create();
+        levelDialog.show();
     }
 
     @Override

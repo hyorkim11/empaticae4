@@ -7,10 +7,8 @@
 
     KEY - TYPE/VALUE - DETAILS
     first                   bool        first time to app or not
-    custom                  string      first negative custom feeling
-    custom_coolthought      string      custom coolthought
-    custom_event            string      custom what is happening right now
 
+    RT = Report Type [S = Self-triggered ||  T = empatica Threshold || I = Inactivity 24hrs ||
 
 
 -->

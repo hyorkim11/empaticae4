@@ -78,6 +78,8 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
             public void onClick(View view) {
 
                 Intent i = new Intent(getApplicationContext(), ReportActivity.class);
+
+                i.putExtra("RT","value");
                 startActivity(i);
             }
         });
@@ -245,11 +247,12 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
     @Override
     public void onBackPressed() {
 
-        if (mMenuDialogFragment != null && mMenuDialogFragment.isAdded()) {
-            mMenuDialogFragment.dismiss();
-        } else {
-            finish();
-        }
+//        if (mMenuDialogFragment != null && mMenuDialogFragment.isAdded()) {
+//            mMenuDialogFragment.dismiss();
+//        } else {
+//            finish();
+//        }
+        finish();
     }
 
     private void openContact() {
