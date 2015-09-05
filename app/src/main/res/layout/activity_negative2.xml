@@ -31,47 +31,53 @@
         android:textStyle="italic" />
 
     <RadioGroup
-        android:id="@+id/form"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/caption"
+        android:id="@+id/form1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/caption"
+        android:layout_marginTop="20dp">
 
         <RadioButton
             android:id="@+id/b1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="This feeling is temporary"/>
+            android:text="This feeling is temporary" />
 
         <RadioButton
             android:id="@+id/b2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="I can choose how to respond"/>
+            android:text="I can choose how to respond" />
 
         <RadioButton
             android:id="@+id/b3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="My thoughts are not me"/>
+            android:text="My thoughts are not me" />
 
         <RadioButton
             android:id="@+id/b4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="If I drink too much, how will I feel tomorrow?"/>
+            android:text="If I drink too much, how will I feel tomorrow?" />
 
         <RadioButton
             android:id="@+id/b5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="I can handle this"/>
+            android:text="I can handle this" />
+
+        <RadioButton
+            android:id="@+id/bInitialOther"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Other" />
 
         <RadioButton
             android:id="@+id/bOther"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Other"/>
+            android:text="Other" />
 
     </RadioGroup>
 

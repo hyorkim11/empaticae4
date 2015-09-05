@@ -31,12 +31,11 @@ public class ReportActivity extends AppCompatActivity {
     public static long start;
     BootstrapButton bContinue, bCancel;
     RadioGroup form1, form2;
-    RadioButton chk1, chk2, mOther, mOther2;
+    RadioButton chk1, chk2, mInitialOther, mOther;
     TextView chkText;
     Boolean formChked;
     Boolean firstOrNot;
     int mIntensity;
-    String intensityLevel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +48,11 @@ public class ReportActivity extends AppCompatActivity {
 
     private void init() {
 
-        String tempString = sharedP.getString("custom", "Other");
+        String tempString = sharedP.getString("Custom_negative_mood", "Other");
 
         start = Calendar.getInstance().getTimeInMillis();
         SharedPreferences.Editor spEditor = sharedP.edit();
-        spEditor.putLong("start_time", start).commit();
+        spEditor.putLong("Start_time", start).commit();
 
         mIntensity = 0; // reset intensity
         bContinue = (BootstrapButton) findViewById(R.id.bContinue);
@@ -66,17 +65,17 @@ public class ReportActivity extends AppCompatActivity {
         form2.setOnCheckedChangeListener(listener2);
         chk1 = (RadioButton) form1.findViewById(form1.getCheckedRadioButtonId());
         chk2 = (RadioButton) form2.findViewById(form2.getCheckedRadioButtonId());
-        mOther = (RadioButton) findViewById(R.id.bOther);
+        mInitialOther = (RadioButton) findViewById(R.id.bInitialOther);
 
         if (Objects.equals(tempString, "Other")) {
 
-            mOther.setText("Other");
+            mInitialOther.setText("Other");
         } else {
 
-            mOther.setText(tempString);
+            mInitialOther.setText(tempString);
         }
 
-        mOther2 = (RadioButton) findViewById(R.id.bOther2);
+        mOther = (RadioButton) findViewById(R.id.bOther);
         chkText = (TextView) findViewById(R.id.chkText);
         chkText.setText("");
         firstOrNot = sharedP.getBoolean("first", false);
@@ -102,13 +101,13 @@ public class ReportActivity extends AppCompatActivity {
                 openAlert();
             }
         });
-        mOther.setOnClickListener(new View.OnClickListener() {
+        mInitialOther.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
 
                 sharedP = getSharedPreferences(DATAFILE, MODE_MULTI_PROCESS);
-                String temp = sharedP.getString("custom", "Other");
+                String temp = sharedP.getString("Custom_negative_mood", "Other");
 
                 if (temp == "Other") {
                     openCustom();
@@ -116,7 +115,7 @@ public class ReportActivity extends AppCompatActivity {
 
             }
         });
-        mOther2.setOnClickListener(new View.OnClickListener() {
+        mOther.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -229,8 +228,8 @@ public class ReportActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
 
                 String tempString = editor.getText().toString();
-                mOther.setText(tempString);
-                spEditor.putString("custom", tempString).commit();
+                mInitialOther.setText(tempString);
+                spEditor.putString("Custom_negative_mood", tempString).commit();
 
                 dialog.cancel();
             }
@@ -254,7 +253,7 @@ public class ReportActivity extends AppCompatActivity {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ReportActivity.this);
         alertDialogBuilder.setTitle("");
-        alertDialogBuilder.setMessage("Please enter your feeling");
+        alertDialogBuilder.setMessage("Please enter your custom feeling");
 
         final EditText editor = new EditText(this);
         alertDialogBuilder.setView(editor);
@@ -262,7 +261,7 @@ public class ReportActivity extends AppCompatActivity {
 
             public void onClick(DialogInterface dialog, int id) {
 
-                mOther2.setText(editor.getText());
+                mOther.setText(editor.getText());
                 dialog.cancel();
             }
         });
@@ -271,6 +270,7 @@ public class ReportActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
 
                 dialog.cancel();
+                form1.clearCheck();
             }
         });
 
@@ -351,12 +351,11 @@ public class ReportActivity extends AppCompatActivity {
 
                 // Save recorded response
                 // Records: Intensity, Negative_Mood #, Positive_Mood #
-                intensityLevel = String.valueOf(mIntensity);
-                spEditor.putString("Intensity", intensityLevel).commit();
+                spEditor.putInt("Intensity", mIntensity).commit();
                 spEditor.putString("Negative_Mood", String.valueOf(form1.getCheckedRadioButtonId()));
                 spEditor.putString("Positive_Mood", String.valueOf(form2.getCheckedRadioButtonId()));
                 spEditor.commit();
-                Toast.makeText(ReportActivity.this, "intensity set at: " + intensityLevel + "N: " + String.valueOf(form1.getCheckedRadioButtonId()) + "P: " + String.valueOf(form2.getCheckedRadioButtonId()), Toast.LENGTH_LONG).show();
+                Toast.makeText(ReportActivity.this, "intensity: " + mIntensity + " N:" + String.valueOf(form1.getCheckedRadioButtonId()) + " P:" + String.valueOf(form2.getCheckedRadioButtonId()), Toast.LENGTH_LONG).show();
 
                 if (PoN()) {
                     // if positive emotion selected

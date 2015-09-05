@@ -66,7 +66,7 @@
             android:id="@+id/b6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Switch between alcoholic and non-alcoholic"
+            android:text="Switch between alcoholic and non-alcoholic drinks"
             android:textSize="12sp" />
 
         <RadioButton
@@ -105,14 +105,14 @@
             android:textSize="12sp" />
 
         <RadioButton
-            android:id="@+id/bOther1"
+            android:id="@+id/bInitialOther"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Other"
             android:textSize="12sp" />
 
         <RadioButton
-            android:id="@+id/bOther2"
+            android:id="@+id/bOther"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Other"

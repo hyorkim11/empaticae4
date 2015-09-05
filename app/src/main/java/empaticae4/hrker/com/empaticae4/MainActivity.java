@@ -321,7 +321,7 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
         sendIntent.setType("text/html");
         sendIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { "hyorim@umich.edu" });
         sendIntent.putExtra(Intent.EXTRA_SUBJECT, "MtM - Update");
-        sendIntent.putExtra(Intent.EXTRA_TEXT, "This is an data update email");
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "This is a data update email");
         sendIntent.putExtra(Intent.EXTRA_STREAM, u1);
         startActivity(Intent.createChooser(sendIntent, "Send email..."));
     }

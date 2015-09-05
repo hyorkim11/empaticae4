@@ -36,7 +36,7 @@ public class PositiveActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_response2);
+        setContentView(R.layout.activity_positive);
         sharedP = getSharedPreferences(DATAFILE, MODE_MULTI_PROCESS);
         init();
     }
@@ -71,12 +71,12 @@ public class PositiveActivity extends AppCompatActivity {
         String temp;
         SharedPreferences.Editor spEditor = sharedP.edit();
 
-        startTime = sharedP.getLong("start_time", 0);
+        startTime = sharedP.getLong("Start_time", 0);
         endTime = Calendar.getInstance().getTimeInMillis();
 
         duration = endTime - startTime;
         temp = (new SimpleDateFormat("mm:ss:SSS")).format(new Date(duration));
-        spEditor.putString("report_duration", temp).commit();
+        spEditor.putString("Report_duration", temp).commit();
 
     }
 

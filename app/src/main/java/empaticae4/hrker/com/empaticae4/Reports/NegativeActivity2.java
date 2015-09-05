@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
@@ -27,8 +28,10 @@ public class NegativeActivity2 extends AppCompatActivity {
     public static final String DATAFILE = "userData";
     SharedPreferences sharedP = null;
 
-    RadioButton bOther;
+    RadioGroup mForm;
+    RadioButton mInitialOther, mOther;
     BootstrapButton bCancel, bContinue;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,22 +45,23 @@ public class NegativeActivity2 extends AppCompatActivity {
         sharedP = getSharedPreferences(DATAFILE, MODE_MULTI_PROCESS);
         final String tempString = sharedP.getString("custom_coolthought", "Other");
 
-        bCancel = (BootstrapButton)findViewById(R.id.bCancel);
+        mForm = (RadioGroup) findViewById(R.id.form1);
+        bCancel = (BootstrapButton) findViewById(R.id.bCancel);
         bCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openCancelAlert();
             }
         });
-        bContinue = (BootstrapButton)findViewById(R.id.bContinue);
+        bContinue = (BootstrapButton) findViewById(R.id.bContinue);
         bContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openQuestionAlert();
             }
         });
-        bOther = (RadioButton) findViewById(R.id.bOther);
-        bOther.setOnClickListener(new View.OnClickListener() {
+        mInitialOther = (RadioButton) findViewById(R.id.bInitialOther);
+        mInitialOther.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -66,13 +70,19 @@ public class NegativeActivity2 extends AppCompatActivity {
                 }
             }
         });
+        mOther = (RadioButton) findViewById(R.id.bOther);
+        mOther.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openCustom2();
+            }
+        });
 
         if (Objects.equals(tempString, "Other")) {
-            bOther.setText("Other");
+            mInitialOther.setText("Other");
         } else {
-            bOther.setText(tempString);
+            mInitialOther.setText(tempString);
         }
-
         openTip();
 
     }
@@ -115,7 +125,7 @@ public class NegativeActivity2 extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
 
                 String tempString = editor.getText().toString();
-                bOther.setText(tempString);
+                mInitialOther.setText(tempString);
                 spEditor.putString("custom_coolthought", tempString).apply();
 
                 dialog.cancel();
@@ -133,6 +143,35 @@ public class NegativeActivity2 extends AppCompatActivity {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
 
+    }
+
+    private void openCustom2() {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(NegativeActivity2.this);
+        alertDialogBuilder.setTitle("");
+        alertDialogBuilder.setMessage("What is going on right now?");
+
+        final EditText editor = new EditText(this);
+        alertDialogBuilder.setView(editor);
+        alertDialogBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int id) {
+
+                mOther.setText(editor.getText());
+                dialog.cancel();
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+                dialog.cancel();
+                mForm.clearCheck();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     private void openCancelAlert() {
@@ -175,7 +214,7 @@ public class NegativeActivity2 extends AppCompatActivity {
 
             public void onClick(DialogInterface dialog, int id) {
 
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                Intent i = new Intent(getApplicationContext(), DrinkActivity.class);
                 startActivity(i);
             }
         });
@@ -184,7 +223,7 @@ public class NegativeActivity2 extends AppCompatActivity {
         alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                Intent i = new Intent(getApplicationContext(), GoodMovesActivity.class);
                 startActivity(i);
             }
         });

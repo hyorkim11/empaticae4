@@ -70,6 +70,12 @@
                 android:text="In a New or Uncomfortable Situation" />
 
             <RadioButton
+                android:id="@+id/bInitialOther"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Other"/>
+
+            <RadioButton
                 android:id="@+id/bOther"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

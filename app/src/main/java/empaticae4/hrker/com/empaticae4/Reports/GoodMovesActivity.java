@@ -3,6 +3,7 @@ package empaticae4.hrker.com.empaticae4.Reports;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,10 +17,17 @@ import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import empaticae4.hrker.com.empaticae4.MainActivity;
 import empaticae4.hrker.com.empaticae4.R;
 
 public class GoodMovesActivity extends AppCompatActivity implements View.OnClickListener {
+
+    public static final String DATAFILE = "userData";
+    SharedPreferences sharedP = null;
 
     RadioButton rbContact, rbMp3, rbMeditation;
     BootstrapButton bCancel, bContinue;
@@ -30,6 +38,7 @@ public class GoodMovesActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_good_moves);
+        sharedP = getSharedPreferences(DATAFILE, MODE_MULTI_PROCESS);
         init();
     }
 
@@ -128,6 +137,22 @@ public class GoodMovesActivity extends AppCompatActivity implements View.OnClick
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+    private void recordTime() {
+
+        // Pass in current time in milli, record report duration in SharedPref
+        long startTime, endTime, duration;
+        String temp;
+        SharedPreferences.Editor spEditor = sharedP.edit();
+
+        startTime = sharedP.getLong("Start_time", 0);
+        endTime = Calendar.getInstance().getTimeInMillis();
+
+        duration = endTime - startTime;
+        temp = (new SimpleDateFormat("mm:ss:SSS")).format(new Date(duration));
+        spEditor.putString("Report_duration", temp).commit();
+
     }
 
     @Override

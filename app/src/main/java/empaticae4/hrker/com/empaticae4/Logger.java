@@ -1,5 +1,6 @@
 package empaticae4.hrker.com.empaticae4;
 
+import android.app.Application;
 import android.content.Context;
 import android.os.Environment;
 import android.widget.Toast;
@@ -10,7 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Calendar;
 
-public class Logger {
+public class Logger extends Application {
 
     static final String FILENAME = "log.csv";
     FileWriter writer;

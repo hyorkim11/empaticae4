@@ -26,7 +26,7 @@ import empaticae4.hrker.com.empaticae4.R;
 public class NegativeActivity extends AppCompatActivity {
 
     RadioGroup form1;
-    RadioButton bOther;
+    RadioButton mInitialOther, mOther;
     BootstrapButton bCancel, bContinue;
 
     public static final String DATAFILE = "userData";
@@ -43,22 +43,30 @@ public class NegativeActivity extends AppCompatActivity {
     private void init() {
 
         sharedP = getSharedPreferences(DATAFILE, MODE_MULTI_PROCESS);
-        String tempString = sharedP.getString("custom_event", "Other");
+        String tempString = sharedP.getString("Custom_negative_event", "Other");
 
-        form1 = (RadioGroup) findViewById(R.id.form1);
-        bOther = (RadioButton) findViewById(R.id.bOther);
-        bOther.setOnClickListener(new View.OnClickListener() {
+        mInitialOther = (RadioButton) findViewById(R.id.bInitialOther);
+        mInitialOther.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 openCustom();
             }
         });
+        form1 = (RadioGroup) findViewById(R.id.form1);
+        mOther = (RadioButton) findViewById(R.id.bOther);
+        mOther.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                openCustom2();
+            }
+        });
 
         if (Objects.equals(tempString, "Other")) {
-            bOther.setText("Other");
+            mOther.setText("Other");
         } else {
-            bOther.setText(tempString);
+            mOther.setText(tempString);
         }
 
         bCancel = (BootstrapButton) findViewById(R.id.bCancel);
@@ -68,7 +76,7 @@ public class NegativeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (form1.getCheckedRadioButtonId() != -1)  {
+                if (form1.getCheckedRadioButtonId() != -1) {
 
                     Intent i = new Intent(getApplicationContext(), NegativeActivity2.class);
                     startActivity(i);
@@ -104,7 +112,7 @@ public class NegativeActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
 
                 String tempString = editor.getText().toString();
-                bOther.setText(tempString);
+                mOther.setText(tempString);
                 spEditor.putString("custom_event", tempString).commit();
 
                 dialog.cancel();
@@ -116,6 +124,35 @@ public class NegativeActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
 
                 dialog.cancel();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    private void openCustom2() {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(NegativeActivity.this);
+        alertDialogBuilder.setTitle("");
+        alertDialogBuilder.setMessage("What is going on right now?");
+
+        final EditText editor = new EditText(this);
+        alertDialogBuilder.setView(editor);
+        alertDialogBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int id) {
+
+                mOther.setText(editor.getText());
+                dialog.cancel();
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+                dialog.cancel();
+                form1.clearCheck();
             }
         });
 

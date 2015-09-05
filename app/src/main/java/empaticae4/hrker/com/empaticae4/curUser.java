@@ -1,7 +1,9 @@
 package empaticae4.hrker.com.empaticae4;
 
 
-public class curUser {
+import android.app.Application;
+
+public class curUser extends Application{
 
     private String userName;
 
@@ -13,6 +15,7 @@ public class curUser {
             return userName;
         }
     }
+
     public void setName(String inputName) {
         userName = inputName;
     }
