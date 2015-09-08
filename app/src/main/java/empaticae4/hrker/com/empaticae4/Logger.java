@@ -2,10 +2,13 @@ package empaticae4.hrker.com.empaticae4;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Environment;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,11 +16,11 @@ import java.util.Calendar;
 
 public class Logger extends Application {
 
-    static final String FILENAME = "log.csv";
+    public static final String DATAFILE = "userData.csv";
     FileWriter writer;
 
     File root = Environment.getExternalStorageDirectory();
-    File datafile = new File(root, FILENAME);
+    File datafile = new File(root, DATAFILE);
 
     private void writeHeader(String h1, String h2, String h3) throws IOException {
 
@@ -25,7 +28,7 @@ public class Logger extends Application {
         writer.write(line);
     }
 
-    private void writeData(float d, float e, float f) throws IOException {
+    private void writeLog(float d, float e, float f) throws IOException {
 
         String line = String.format("%f,%f,%f\n", d, e, f);
         writer.write(line);
@@ -61,7 +64,7 @@ public class Logger extends Application {
 
         try {
 
-            fos = context.openFileOutput(FILENAME, Context.MODE_APPEND);
+            fos = context.openFileOutput(DATAFILE, Context.MODE_APPEND);
             fos.write(entry.getBytes());
             fos.close();
             Toast.makeText(context, "Logging Success", Toast.LENGTH_SHORT).show();
@@ -93,5 +96,47 @@ public class Logger extends Application {
 
         writer.close();
         */
+
+    private void sendLog() {
+
+        String columnString = "\"Participant Name\", \"temp1\", \"temp2\", \"temp3\"";
+        String dataString = "\"" + "temp" + "\"";
+        String combinedString = columnString + "\n" + dataString;
+
+        File file = null;
+        File root = Environment.getExternalStorageDirectory();
+        if (root.canWrite()) {
+            File dir = new File(root.getAbsolutePath() + "/userData"); // was /PersonData
+            dir.mkdirs();
+            file = new File(dir, DATAFILE); // was Data.csv
+            FileOutputStream out = null;
+            try {
+                out = new FileOutputStream(file);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            try {
+                out.write(combinedString.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Uri u1 = null;
+        u1 = Uri.fromFile(file);
+
+        Intent sendIntent = new Intent(Intent.ACTION_SEND);
+        sendIntent.setType("text/html");
+        sendIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { "hyorim@umich.edu" });
+        sendIntent.putExtra(Intent.EXTRA_SUBJECT, "MtM - Update");
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "This is a data update email");
+        sendIntent.putExtra(Intent.EXTRA_STREAM, u1);
+        startActivity(Intent.createChooser(sendIntent, "Send An Email"));
+    }
 
 }

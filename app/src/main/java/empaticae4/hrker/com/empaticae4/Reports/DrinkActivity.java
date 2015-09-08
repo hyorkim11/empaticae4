@@ -27,7 +27,7 @@ public class DrinkActivity extends AppCompatActivity {
     public static final String DATAFILE = "userData";
     SharedPreferences sharedP = null;
 
-    RadioButton bOther, bOther2;
+    RadioButton mInitialOther, mOther;
     BootstrapButton bCancel, bContinue;
 
     @Override
@@ -57,24 +57,24 @@ public class DrinkActivity extends AppCompatActivity {
                 openFinishAlert();
             }
         });
-        bOther = (RadioButton) findViewById(R.id.bInitialOther);
-        bOther.setOnClickListener(new View.OnClickListener() {
+        mInitialOther = (RadioButton) findViewById(R.id.bInitialOther);
+        mInitialOther.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 if (Objects.equals(tempString, "Other")) {
-                    openInitialCustom();
+                    openCustom();
                 }
             }
         });
 
         if (Objects.equals(tempString, "Other")) {
-            bOther.setText("Other");
+            mInitialOther.setText("Other");
         } else {
-            bOther.setText(tempString);
+            mInitialOther.setText(tempString);
         }
-        bOther2 = (RadioButton)findViewById(R.id.bOther);
-        bOther2.setOnClickListener(new View.OnClickListener() {
+        mOther = (RadioButton)findViewById(R.id.bOther);
+        mOther.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -84,7 +84,7 @@ public class DrinkActivity extends AppCompatActivity {
 
     }
 
-    private void openInitialCustom() {
+    private void openCustom() {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DrinkActivity.this);
         alertDialogBuilder.setTitle("");
@@ -99,7 +99,7 @@ public class DrinkActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
 
                 String tempString = editor.getText().toString();
-                bOther.setText(tempString);
+                mInitialOther.setText(tempString);
                 spEditor.putString("custom_drinking_strategy", tempString).apply();
 
                 dialog.cancel();
@@ -131,7 +131,7 @@ public class DrinkActivity extends AppCompatActivity {
 
             public void onClick(DialogInterface dialog, int id) {
 
-                bOther2.setText(editor.getText());
+                mOther.setText(editor.getText());
                 dialog.cancel();
             }
         });

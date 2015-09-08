@@ -49,7 +49,6 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
     public static final String DATAFILE = "userData";
     private FragmentManager fragmentManager;
     private DialogFragment mMenuDialogFragment;
-    private curUser user;
     private BootstrapButton b1, b2, b3;
 
 
@@ -293,9 +292,9 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
         File file = null;
         File root = Environment.getExternalStorageDirectory();
         if (root.canWrite()) {
-            File dir = new File(root.getAbsolutePath() + "/PersonData");
+            File dir = new File(root.getAbsolutePath() + "/userData"); // was /PersonData
             dir.mkdirs();
-            file = new File(dir, "Data.csv");
+            file = new File(dir, DATAFILE); // was Data.csv
             FileOutputStream out = null;
             try {
                 out = new FileOutputStream(file);
@@ -323,7 +322,7 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
         sendIntent.putExtra(Intent.EXTRA_SUBJECT, "MtM - Update");
         sendIntent.putExtra(Intent.EXTRA_TEXT, "This is a data update email");
         sendIntent.putExtra(Intent.EXTRA_STREAM, u1);
-        startActivity(Intent.createChooser(sendIntent, "Send email..."));
+        startActivity(Intent.createChooser(sendIntent, "Send An Email"));
     }
 
 

@@ -352,9 +352,8 @@ public class ReportActivity extends AppCompatActivity {
                 // Save recorded response
                 // Records: Intensity, Negative_Mood #, Positive_Mood #
                 spEditor.putInt("Intensity", mIntensity).commit();
-                spEditor.putString("Negative_Mood", String.valueOf(form1.getCheckedRadioButtonId()));
-                spEditor.putString("Positive_Mood", String.valueOf(form2.getCheckedRadioButtonId()));
-                spEditor.commit();
+                spEditor.putString("Negative_Mood", String.valueOf(form1.getCheckedRadioButtonId())).commit();
+                spEditor.putString("Positive_Mood", String.valueOf(form2.getCheckedRadioButtonId())).commit();
                 Toast.makeText(ReportActivity.this, "intensity: " + mIntensity + " N:" + String.valueOf(form1.getCheckedRadioButtonId()) + " P:" + String.valueOf(form2.getCheckedRadioButtonId()), Toast.LENGTH_LONG).show();
 
                 if (PoN()) {

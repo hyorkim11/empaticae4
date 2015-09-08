@@ -8,17 +8,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class SettingsActivity extends Activity {
 
-    private Button resetButton, showCustomFeeling1;
     public static final String DATAFILE = "userData";
+    SharedPreferences sharedP = null;
+
+    private Button resetButton, showCustomFeeling1;
+    private TextView sp1, sp2, sp3, sp4, sp5, sp6, sp7;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        sharedP = getSharedPreferences(DATAFILE, MODE_MULTI_PROCESS);
         init();
     }
 
@@ -26,6 +32,20 @@ public class SettingsActivity extends Activity {
 
         resetButton = (Button) findViewById(R.id.resetPrefs);
         showCustomFeeling1 = (Button) findViewById(R.id.showCustomFeeling1);
+        sp1 = (TextView)findViewById(R.id.sp1);
+        sp1.setText("custom negative mood: " + sharedP.getString("Custom_negative_mood", "Other"));
+        sp2 = (TextView)findViewById(R.id.sp2);
+        sp2.setText("negative mood: " + sharedP.getString("Negative_Mood", "Other"));
+        sp3 = (TextView)findViewById(R.id.sp3);
+        sp3.setText("positive mood: " + sharedP.getString("Positive_Mood", "Other"));
+        sp4 = (TextView)findViewById(R.id.sp4);
+        sp4.setText("custom negative event: " + sharedP.getString("Custom_negative_event", "Other"));
+        sp5 = (TextView)findViewById(R.id.sp5);
+        sp5.setText("custom event: " + sharedP.getString("custom_event", "Other"));
+        sp6 = (TextView)findViewById(R.id.sp6);
+        sp6.setText("custom cool thought: " + sharedP.getString("custom_coolthought", "Other"));
+        sp7 = (TextView)findViewById(R.id.sp7);
+        sp7.setText("custom drinking strategy: " + sharedP.getString("custom_drinking_strategy", "Other"));
 
 
         /* TESTING BUTTON TO RESET SHARED PREFS*/

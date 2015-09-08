@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import empaticae4.hrker.com.empaticae4.Logger;
 import empaticae4.hrker.com.empaticae4.MainActivity;
 import empaticae4.hrker.com.empaticae4.R;
 
@@ -31,6 +32,7 @@ public class PositiveActivity extends AppCompatActivity {
     EditText etResponse;
     String temp;
     BootstrapButton bContinue, bCancel;
+    Logger log;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,8 @@ public class PositiveActivity extends AppCompatActivity {
     }
 
     private void init() {
+
+        log = new Logger();
 
         etResponse = (EditText)findViewById(R.id.etResponse);
         bContinue = (BootstrapButton)findViewById(R.id.bContinue);
