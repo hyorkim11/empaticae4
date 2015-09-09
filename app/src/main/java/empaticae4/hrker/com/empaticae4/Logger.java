@@ -19,16 +19,35 @@ public class Logger extends Application {
     public static final String DATAFILE = "userData.csv";
     FileWriter writer;
 
-    File root = Environment.getExternalStorageDirectory();
-    File datafile = new File(root, DATAFILE);
+    File root;
+    File datafile;
 
-    private void writeHeader(String h1, String h2, String h3) throws IOException {
+    public String columnString;
+    public String dataString;
+
+    @Override
+    public void onCreate() {
+
+        super.onCreate();
+        init();
+    }
+
+    private void init() {
+
+        root = Environment.getExternalStorageDirectory();
+        datafile = new File(root, DATAFILE);
+
+        columnString = "\" Date \", \" col1 \", \" col2 \", \" col3 \"";
+        dataString = "\"" + "temp" + "\"";
+    }
+
+    public void writeHeader(String h1, String h2, String h3) throws IOException {
 
         String line = String.format("%s,%s,%s\n", h1, h2, h3);
         writer.write(line);
     }
 
-    private void writeLog(float d, float e, float f) throws IOException {
+    public void writeLog(float d, float e, float f) throws IOException {
 
         String line = String.format("%f,%f,%f\n", d, e, f);
         writer.write(line);
@@ -97,10 +116,8 @@ public class Logger extends Application {
         writer.close();
         */
 
-    private void sendLog() {
+    public void sendLog() {
 
-        String columnString = "\"Participant Name\", \"temp1\", \"temp2\", \"temp3\"";
-        String dataString = "\"" + "temp" + "\"";
         String combinedString = columnString + "\n" + dataString;
 
         File file = null;
@@ -127,7 +144,7 @@ public class Logger extends Application {
             }
         }
 
-        Uri u1 = null;
+        Uri u1;
         u1 = Uri.fromFile(file);
 
         Intent sendIntent = new Intent(Intent.ACTION_SEND);

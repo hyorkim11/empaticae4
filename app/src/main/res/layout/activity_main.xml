@@ -49,4 +49,9 @@
         bootstrap:bb_size="large"
         bootstrap:bb_type="danger" />
 
+    <RadioGroup
+        android:id="@+id/testingRG"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></RadioGroup>
+
 </LinearLayout>

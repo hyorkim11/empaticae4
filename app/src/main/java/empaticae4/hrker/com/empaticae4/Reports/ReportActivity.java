@@ -36,6 +36,7 @@ public class ReportActivity extends AppCompatActivity {
     Boolean formChked;
     Boolean firstOrNot;
     int mIntensity;
+    String RT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,7 @@ public class ReportActivity extends AppCompatActivity {
         start = Calendar.getInstance().getTimeInMillis();
         SharedPreferences.Editor spEditor = sharedP.edit();
         spEditor.putLong("Start_time", start).commit();
+        RT  = getIntent().getExtras().getString("Report_type", "N/A");
 
         mIntensity = 0; // reset intensity
         bContinue = (BootstrapButton) findViewById(R.id.bContinue);
@@ -227,11 +229,15 @@ public class ReportActivity extends AppCompatActivity {
 
             public void onClick(DialogInterface dialog, int id) {
 
-                String tempString = editor.getText().toString();
-                mInitialOther.setText(tempString);
-                spEditor.putString("Custom_negative_mood", tempString).commit();
+                if (editor.getText().toString().trim().length() == 0) {
+                    Toast.makeText(ReportActivity.this, "Please enter a mood", Toast.LENGTH_SHORT).show();
+                } else {
+                    String tempString = editor.getText().toString();
+                    mInitialOther.setText(tempString);
+                    spEditor.putString("Custom_negative_mood", tempString).commit();
 
-                dialog.cancel();
+                    dialog.cancel();
+                }
             }
         });
 
@@ -261,8 +267,12 @@ public class ReportActivity extends AppCompatActivity {
 
             public void onClick(DialogInterface dialog, int id) {
 
-                mOther.setText(editor.getText());
-                dialog.cancel();
+                if (editor.getText().toString().trim().length() == 0) {
+                    Toast.makeText(ReportActivity.this, "Please enter a mood", Toast.LENGTH_SHORT).show();
+                } else {
+                    mOther.setText(editor.getText());
+                    dialog.cancel();
+                }
             }
         });
 
@@ -349,22 +359,29 @@ public class ReportActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                // Save recorded response
-                // Records: Intensity, Negative_Mood #, Positive_Mood #
-                spEditor.putInt("Intensity", mIntensity).commit();
-                spEditor.putString("Negative_Mood", String.valueOf(form1.getCheckedRadioButtonId())).commit();
-                spEditor.putString("Positive_Mood", String.valueOf(form2.getCheckedRadioButtonId())).commit();
-                Toast.makeText(ReportActivity.this, "intensity: " + mIntensity + " N:" + String.valueOf(form1.getCheckedRadioButtonId()) + " P:" + String.valueOf(form2.getCheckedRadioButtonId()), Toast.LENGTH_LONG).show();
-
-                if (PoN()) {
-                    // if positive emotion selected
-                    Intent j = new Intent(getApplicationContext(), PositiveActivity.class);
-                    startActivity(j);
-
+                int pos = ((AlertDialog)dialogInterface).getListView().getCheckedItemPosition();
+                if (pos == -1) {
+                    Toast.makeText(ReportActivity.this, "Please make a selection", Toast.LENGTH_SHORT).show();
                 } else {
-                    // negative emotion selected or by default
-                    Intent j = new Intent(getApplicationContext(), NegativeActivity.class);
-                    startActivity(j);
+
+                    // Save recorded response
+                    // Records: Intensity, Negative_Mood #, Positive_Mood #
+                    spEditor.putInt("Intensity", mIntensity).commit();
+                    spEditor.putString("Report_type", RT).commit();
+                    spEditor.putString("Negative_Mood", String.valueOf(form1.getCheckedRadioButtonId())).commit();
+                    spEditor.putString("Positive_Mood", String.valueOf(form2.getCheckedRadioButtonId())).commit();
+                    Toast.makeText(ReportActivity.this, "intensity: " + mIntensity + " N:" + String.valueOf(form1.getCheckedRadioButtonId()) + " P:" + String.valueOf(form2.getCheckedRadioButtonId()), Toast.LENGTH_LONG).show();
+
+                    if (PoN()) {
+                        // if positive emotion selected
+                        Intent j = new Intent(getApplicationContext(), PositiveActivity.class);
+                        startActivity(j);
+
+                    } else {
+                        // negative emotion selected or by default
+                        Intent j = new Intent(getApplicationContext(), NegativeActivity.class);
+                        startActivity(j);
+                    }
                 }
             }
         });

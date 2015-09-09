@@ -23,6 +23,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
@@ -50,6 +52,7 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
     private FragmentManager fragmentManager;
     private DialogFragment mMenuDialogFragment;
     private BootstrapButton b1, b2, b3;
+    private RadioGroup testingRG;
 
 
     @Override
@@ -78,7 +81,7 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
 
                 Intent i = new Intent(getApplicationContext(), ReportActivity.class);
 
-                i.putExtra("RT","value");
+                i.putExtra("Report_type", "SI"); // self initiated
                 startActivity(i);
             }
         });
@@ -100,6 +103,16 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
 
             }
         });
+
+        // Testing dynamic radio group programmatically
+        testingRG = (RadioGroup) findViewById(R.id.testingRG);
+        final RadioButton[] rb = new RadioButton[6];
+        for (int i = 0; i < 6; i++) {
+            rb[i] = new RadioButton(this);
+            rb[i].setText("radio " + i);
+            rb[i].setId(i);
+            testingRG.addView(rb[i]);
+        }
 
 
     }
@@ -318,7 +331,7 @@ public class MainActivity extends ActionBarActivity implements OnMenuItemClickLi
 
         Intent sendIntent = new Intent(Intent.ACTION_SEND);
         sendIntent.setType("text/html");
-        sendIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { "hyorim@umich.edu" });
+        sendIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"hyorim@umich.edu"});
         sendIntent.putExtra(Intent.EXTRA_SUBJECT, "MtM - Update");
         sendIntent.putExtra(Intent.EXTRA_TEXT, "This is a data update email");
         sendIntent.putExtra(Intent.EXTRA_STREAM, u1);

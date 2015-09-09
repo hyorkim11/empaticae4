@@ -124,11 +124,14 @@ public class NegativeActivity2 extends AppCompatActivity {
 
             public void onClick(DialogInterface dialog, int id) {
 
-                String tempString = editor.getText().toString();
-                mInitialOther.setText(tempString);
-                spEditor.putString("custom_coolthought", tempString).apply();
-
-                dialog.cancel();
+                if (editor.getText().toString().trim().length() == 0) {
+                    Toast.makeText(NegativeActivity2.this, "Please enter a cool thought", Toast.LENGTH_SHORT).show();
+                } else {
+                    String tempString = editor.getText().toString();
+                    mInitialOther.setText(tempString);
+                    spEditor.putString("custom_coolthought", tempString).apply();
+                    dialog.cancel();
+                }
             }
         });
 
@@ -157,8 +160,12 @@ public class NegativeActivity2 extends AppCompatActivity {
 
             public void onClick(DialogInterface dialog, int id) {
 
-                mOther.setText(editor.getText());
-                dialog.cancel();
+                if (editor.getText().toString().trim().length() == 0) {
+                    Toast.makeText(NegativeActivity2.this, "Please enter an event", Toast.LENGTH_SHORT).show();
+                } else {
+                    mOther.setText(editor.getText());
+                    dialog.cancel();
+                }
             }
         });
 

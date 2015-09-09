@@ -111,11 +111,14 @@ public class NegativeActivity extends AppCompatActivity {
 
             public void onClick(DialogInterface dialog, int id) {
 
-                String tempString = editor.getText().toString();
-                mOther.setText(tempString);
-                spEditor.putString("custom_event", tempString).commit();
-
-                dialog.cancel();
+                if (editor.getText().toString().trim().length() == 0) {
+                    Toast.makeText(NegativeActivity.this, "Please enter an event", Toast.LENGTH_SHORT).show();
+                } else {
+                    String tempString = editor.getText().toString();
+                    mInitialOther.setText(tempString);
+                    spEditor.putString("custom_event", tempString).commit();
+                    dialog.cancel();
+                }
             }
         });
 
@@ -143,8 +146,12 @@ public class NegativeActivity extends AppCompatActivity {
 
             public void onClick(DialogInterface dialog, int id) {
 
-                mOther.setText(editor.getText());
-                dialog.cancel();
+                if (editor.getText().toString().trim().length() == 0) {
+                    Toast.makeText(NegativeActivity.this, "Please enter an event", Toast.LENGTH_SHORT).show();
+                } else {
+                    mOther.setText(editor.getText());
+                    dialog.cancel();
+                }
             }
         });
 

@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import empaticae4.hrker.com.empaticae4.Logger;
 import empaticae4.hrker.com.empaticae4.MainActivity;
 import empaticae4.hrker.com.empaticae4.R;
 
@@ -29,7 +31,7 @@ public class GoodMovesActivity extends AppCompatActivity implements View.OnClick
     public static final String DATAFILE = "userData";
     SharedPreferences sharedP = null;
 
-    RadioButton rbContact, rbMp3, rbMeditation;
+    RadioButton rbContact, rbMp3, rbMeditation, mInitialOther, mOther;
     BootstrapButton bCancel, bContinue;
     MediaPlayer mPlayer;
     String temp;
@@ -47,9 +49,15 @@ public class GoodMovesActivity extends AppCompatActivity implements View.OnClick
         rbContact = (RadioButton) findViewById(R.id.rbContact);
         rbMeditation = (RadioButton) findViewById(R.id.rbMeditation);
         rbMp3 = (RadioButton) findViewById(R.id.rbMp3);
+        mInitialOther = (RadioButton) findViewById(R.id.bInitialOther);
+        mOther = (RadioButton) findViewById(R.id.bOther);
+        mInitialOther.setOnClickListener(this);
+        mOther.setOnClickListener(this);
+
         rbContact.setOnClickListener(this);
         rbMeditation.setOnClickListener(this);
         rbMp3.setOnClickListener(this);
+
         bCancel = (BootstrapButton) findViewById(R.id.bCancel);
         bContinue = (BootstrapButton) findViewById(R.id.bContinue);
         bCancel.setOnClickListener(this);
@@ -77,10 +85,86 @@ public class GoodMovesActivity extends AppCompatActivity implements View.OnClick
             case R.id.bContinue:
                 openFinishAlert();
                 break;
+            case R.id.bInitialOther:
+                openCustom();
+                break;
+            case R.id.bOther:
+                openCustom2();
+                break;
             default:
                 break;
 
         }
+    }
+
+    private void openCustom() {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(GoodMovesActivity.this);
+        alertDialogBuilder.setTitle("");
+        alertDialogBuilder.setMessage("Please enter your custom strategy");
+
+        final EditText editor = new EditText(this);
+        final SharedPreferences.Editor spEditor = sharedP.edit();
+        alertDialogBuilder.setView(editor);
+
+        alertDialogBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int id) {
+
+                if (editor.getText().toString().trim().length() == 0) {
+                    Toast.makeText(GoodMovesActivity.this, "Please enter a strategy", Toast.LENGTH_SHORT).show();
+                } else {
+                    String tempString = editor.getText().toString();
+                    mInitialOther.setText(tempString);
+                    spEditor.putString("custom_drinking_strategy", tempString).apply();
+                    dialog.cancel();
+                }
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int id) {
+
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
+    }
+
+    private void openCustom2() {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(GoodMovesActivity.this);
+        alertDialogBuilder.setTitle("");
+        alertDialogBuilder.setMessage("Please enter your custom strategy");
+
+        final EditText editor = new EditText(this);
+        alertDialogBuilder.setView(editor);
+        alertDialogBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int id) {
+
+                if (editor.getText().toString().trim().length() == 0) {
+                    Toast.makeText(GoodMovesActivity.this, "Please enter a strategy", Toast.LENGTH_SHORT).show();
+                } else {
+                    mOther.setText(editor.getText());
+                    dialog.cancel();
+                }
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     private void openFinishAlert() {
@@ -98,7 +182,8 @@ public class GoodMovesActivity extends AppCompatActivity implements View.OnClick
             public void onClick(DialogInterface dialog, int id) {
 
                 // save DATA before exiting
-
+                // // TODO: 9/9/15 use Logger class to SAVE DATA
+                Logger logger = new Logger();
 
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(i);

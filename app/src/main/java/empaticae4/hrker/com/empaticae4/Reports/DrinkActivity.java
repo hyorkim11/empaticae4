@@ -88,7 +88,7 @@ public class DrinkActivity extends AppCompatActivity {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DrinkActivity.this);
         alertDialogBuilder.setTitle("");
-        alertDialogBuilder.setMessage("Please enter your custom cool thought");
+        alertDialogBuilder.setMessage("Please enter your custom strategy");
 
         final EditText editor = new EditText(this);
         final SharedPreferences.Editor spEditor = sharedP.edit();
@@ -98,11 +98,14 @@ public class DrinkActivity extends AppCompatActivity {
 
             public void onClick(DialogInterface dialog, int id) {
 
-                String tempString = editor.getText().toString();
-                mInitialOther.setText(tempString);
-                spEditor.putString("custom_drinking_strategy", tempString).apply();
-
-                dialog.cancel();
+                if (editor.getText().toString().trim().length() == 0) {
+                    Toast.makeText(DrinkActivity.this, "Please enter a strategy", Toast.LENGTH_SHORT).show();
+                } else {
+                    String tempString = editor.getText().toString();
+                    mInitialOther.setText(tempString);
+                    spEditor.putString("custom_drinking_strategy", tempString).apply();
+                    dialog.cancel();
+                }
             }
         });
 
@@ -123,7 +126,7 @@ public class DrinkActivity extends AppCompatActivity {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DrinkActivity.this);
         alertDialogBuilder.setTitle("");
-        alertDialogBuilder.setMessage("Please enter your own strategy");
+        alertDialogBuilder.setMessage("Please enter your custom strategy");
 
         final EditText editor = new EditText(this);
         alertDialogBuilder.setView(editor);
@@ -131,8 +134,12 @@ public class DrinkActivity extends AppCompatActivity {
 
             public void onClick(DialogInterface dialog, int id) {
 
-                mOther.setText(editor.getText());
-                dialog.cancel();
+                if (editor.getText().toString().trim().length() == 0) {
+                    Toast.makeText(DrinkActivity.this, "Please enter a strategy", Toast.LENGTH_SHORT).show();
+                } else {
+                    mOther.setText(editor.getText());
+                    dialog.cancel();
+                }
             }
         });
 
