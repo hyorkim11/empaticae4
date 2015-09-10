@@ -35,6 +35,7 @@ public class GoodMovesActivity extends AppCompatActivity implements View.OnClick
     BootstrapButton bCancel, bContinue;
     MediaPlayer mPlayer;
     String temp;
+    private Logger logger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,7 +184,19 @@ public class GoodMovesActivity extends AppCompatActivity implements View.OnClick
 
                 // save DATA before exiting
                 // // TODO: 9/9/15 use Logger class to SAVE DATA
-                Logger logger = new Logger();
+                Logger logger = new Logger(GoodMovesActivity.this);
+                // currently throws exception because this is destroyed, now pointing
+                // to a null reference.
+
+                try {
+
+                    logger.writeLog(1, 2, 3);
+                    Toast.makeText(GoodMovesActivity.this, "Logging Success", Toast.LENGTH_SHORT).show();
+
+                } catch (Exception e) {
+                    Toast.makeText(GoodMovesActivity.this, "Logging Failed", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
 
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(i);

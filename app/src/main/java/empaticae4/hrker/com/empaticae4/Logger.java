@@ -1,8 +1,8 @@
 package empaticae4.hrker.com.empaticae4;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Environment;
 import android.widget.Toast;
@@ -14,9 +14,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Calendar;
 
-public class Logger extends Application {
+public class Logger {
 
     public static final String DATAFILE = "userData.csv";
+    SharedPreferences sharedP = null;
     FileWriter writer;
 
     File root;
@@ -24,21 +25,32 @@ public class Logger extends Application {
 
     public String columnString;
     public String dataString;
+    private Calendar c;
+    private String temp;
 
-    @Override
-    public void onCreate() {
+    Context context;
 
-        super.onCreate();
+    public Logger(Context context) {
+        this.context = context;
         init();
     }
 
-    private void init() {
+    public void init() {
 
+        c = Calendar.getInstance();
         root = Environment.getExternalStorageDirectory();
         datafile = new File(root, DATAFILE);
+        sharedP = context.getSharedPreferences(DATAFILE, Context.MODE_MULTI_PROCESS);
+
+        //final String tempString = sharedP.getString("custom_drinking_strategy", "Other");
 
         columnString = "\" Date \", \" col1 \", \" col2 \", \" col3 \"";
         dataString = "\"" + "temp" + "\"";
+    }
+
+    public void setData(Float eda, String a, String b, String c, String d) {
+
+
     }
 
     public void writeHeader(String h1, String h2, String h3) throws IOException {
@@ -50,7 +62,8 @@ public class Logger extends Application {
     public void writeLog(float d, float e, float f) throws IOException {
 
         String line = String.format("%f,%f,%f\n", d, e, f);
-        writer.write(line);
+        writer.write(line); // throws error NullPtrException
+        // attempt to invoke virtual method on null obj ref
     }
 
     /* this would be the way to use
@@ -79,7 +92,7 @@ public class Logger extends Application {
                 + "-" + c.get(Calendar.DAY_OF_MONTH)
                 + " at " + c.get(Calendar.HOUR_OF_DAY)
                 + ":" + c.get(Calendar.MINUTE)
-                + "\n";
+                + "\t";
 
         try {
 
@@ -153,7 +166,7 @@ public class Logger extends Application {
         sendIntent.putExtra(Intent.EXTRA_SUBJECT, "MtM - Update");
         sendIntent.putExtra(Intent.EXTRA_TEXT, "This is a data update email");
         sendIntent.putExtra(Intent.EXTRA_STREAM, u1);
-        startActivity(Intent.createChooser(sendIntent, "Send An Email"));
+        context.startActivity(Intent.createChooser(sendIntent, "Send An Email"));
     }
 
 }

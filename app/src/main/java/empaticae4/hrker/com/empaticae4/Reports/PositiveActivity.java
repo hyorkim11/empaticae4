@@ -45,7 +45,7 @@ public class PositiveActivity extends AppCompatActivity {
 
     private void init() {
 
-        log = new Logger();
+        log = new Logger(PositiveActivity.this);
 
         etResponse = (EditText)findViewById(R.id.etResponse);
         bContinue = (BootstrapButton)findViewById(R.id.bContinue);

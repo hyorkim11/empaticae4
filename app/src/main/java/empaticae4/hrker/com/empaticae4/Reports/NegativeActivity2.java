@@ -57,7 +57,11 @@ public class NegativeActivity2 extends AppCompatActivity {
         bContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openQuestionAlert();
+                if (mForm.getCheckedRadioButtonId() == -1) {
+                    Toast.makeText(NegativeActivity2.this, "Please make a selection", Toast.LENGTH_SHORT).show();
+                } else {
+                    openQuestionAlert();
+                }
             }
         });
         mInitialOther = (RadioButton) findViewById(R.id.bInitialOther);
