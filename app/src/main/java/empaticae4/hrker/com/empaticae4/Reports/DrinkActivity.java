@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
@@ -29,6 +30,7 @@ public class DrinkActivity extends AppCompatActivity {
 
     RadioButton mInitialOther, mOther;
     BootstrapButton bCancel, bContinue;
+    RadioGroup mForm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,7 @@ public class DrinkActivity extends AppCompatActivity {
         sharedP = getSharedPreferences(DATAFILE, MODE_MULTI_PROCESS);
         final String tempString = sharedP.getString("custom_drinking_strategy", "Other");
 
+        mForm = (RadioGroup)findViewById(R.id.form1);
         bCancel = (BootstrapButton)findViewById(R.id.bCancel);
         bCancel.setOnClickListener(new View.OnClickListener() {
             @Override

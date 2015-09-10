@@ -129,6 +129,7 @@ public class NegativeActivity2 extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
 
                 if (editor.getText().toString().trim().length() == 0) {
+                    mForm.clearCheck();
                     Toast.makeText(NegativeActivity2.this, "Please enter a cool thought", Toast.LENGTH_SHORT).show();
                 } else {
                     String tempString = editor.getText().toString();
@@ -165,6 +166,7 @@ public class NegativeActivity2 extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
 
                 if (editor.getText().toString().trim().length() == 0) {
+                    mForm.clearCheck();
                     Toast.makeText(NegativeActivity2.this, "Please enter an event", Toast.LENGTH_SHORT).show();
                 } else {
                     mOther.setText(editor.getText());

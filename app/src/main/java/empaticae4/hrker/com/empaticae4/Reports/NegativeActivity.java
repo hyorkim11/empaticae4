@@ -25,7 +25,7 @@ import empaticae4.hrker.com.empaticae4.R;
 
 public class NegativeActivity extends AppCompatActivity {
 
-    RadioGroup form1;
+    RadioGroup mForm;
     RadioButton mInitialOther, mOther;
     BootstrapButton bCancel, bContinue;
 
@@ -53,7 +53,7 @@ public class NegativeActivity extends AppCompatActivity {
                 openCustom();
             }
         });
-        form1 = (RadioGroup) findViewById(R.id.form1);
+        mForm = (RadioGroup) findViewById(R.id.form1);
         mOther = (RadioButton) findViewById(R.id.bOther);
         mOther.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +76,7 @@ public class NegativeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (form1.getCheckedRadioButtonId() != -1) {
+                if (mForm.getCheckedRadioButtonId() != -1) {
 
                     Intent i = new Intent(getApplicationContext(), NegativeActivity2.class);
                     startActivity(i);
@@ -112,6 +112,7 @@ public class NegativeActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
 
                 if (editor.getText().toString().trim().length() == 0) {
+                    mForm.clearCheck();
                     Toast.makeText(NegativeActivity.this, "Please enter an event", Toast.LENGTH_SHORT).show();
                 } else {
                     String tempString = editor.getText().toString();
@@ -147,6 +148,7 @@ public class NegativeActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
 
                 if (editor.getText().toString().trim().length() == 0) {
+                    mForm.clearCheck();
                     Toast.makeText(NegativeActivity.this, "Please enter an event", Toast.LENGTH_SHORT).show();
                 } else {
                     mOther.setText(editor.getText());
@@ -159,7 +161,7 @@ public class NegativeActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
 
                 dialog.cancel();
-                form1.clearCheck();
+                mForm.clearCheck();
             }
         });
 
@@ -172,7 +174,7 @@ public class NegativeActivity extends AppCompatActivity {
 
         String response;
 
-        if (form1.getCheckedRadioButtonId() != -1) {
+        if (mForm.getCheckedRadioButtonId() != -1) {
 
             RadioGroup rg = (RadioGroup) findViewById(R.id.form1);
             response = ((RadioButton) findViewById(rg.getCheckedRadioButtonId())).getText().toString();

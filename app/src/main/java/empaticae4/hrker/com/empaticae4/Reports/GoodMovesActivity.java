@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
@@ -32,6 +33,7 @@ public class GoodMovesActivity extends AppCompatActivity implements View.OnClick
     SharedPreferences sharedP = null;
 
     RadioButton rbContact, rbMp3, rbMeditation, mInitialOther, mOther;
+    RadioGroup mForm;
     BootstrapButton bCancel, bContinue;
     MediaPlayer mPlayer;
     String temp;
@@ -47,6 +49,7 @@ public class GoodMovesActivity extends AppCompatActivity implements View.OnClick
 
     private void init() {
 
+        mForm = (RadioGroup)findViewById(R.id.form1);
         rbContact = (RadioButton) findViewById(R.id.rbContact);
         rbMeditation = (RadioButton) findViewById(R.id.rbMeditation);
         rbMp3 = (RadioButton) findViewById(R.id.rbMp3);
@@ -113,6 +116,7 @@ public class GoodMovesActivity extends AppCompatActivity implements View.OnClick
             public void onClick(DialogInterface dialog, int id) {
 
                 if (editor.getText().toString().trim().length() == 0) {
+                    mForm.clearCheck();
                     Toast.makeText(GoodMovesActivity.this, "Please enter a strategy", Toast.LENGTH_SHORT).show();
                 } else {
                     String tempString = editor.getText().toString();
@@ -149,6 +153,7 @@ public class GoodMovesActivity extends AppCompatActivity implements View.OnClick
             public void onClick(DialogInterface dialog, int id) {
 
                 if (editor.getText().toString().trim().length() == 0) {
+                    mForm.clearCheck();
                     Toast.makeText(GoodMovesActivity.this, "Please enter a strategy", Toast.LENGTH_SHORT).show();
                 } else {
                     mOther.setText(editor.getText());

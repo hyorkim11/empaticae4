@@ -30,7 +30,7 @@ public class ReportActivity extends AppCompatActivity {
 
     public static long start;
     BootstrapButton bContinue, bCancel;
-    RadioGroup form1, form2;
+    RadioGroup mForm, form2;
     RadioButton chk1, chk2, mInitialOther, mOther;
     TextView chkText;
     Boolean formChked;
@@ -59,13 +59,13 @@ public class ReportActivity extends AppCompatActivity {
         mIntensity = 0; // reset intensity
         bContinue = (BootstrapButton) findViewById(R.id.bContinue);
         bCancel = (BootstrapButton) findViewById(R.id.bCancel);
-        form1 = (RadioGroup) findViewById(R.id.form1);
+        mForm = (RadioGroup) findViewById(R.id.form1);
         form2 = (RadioGroup) findViewById(R.id.form2);
-        form1.clearCheck();
+        mForm.clearCheck();
         form2.clearCheck();
-        form1.setOnCheckedChangeListener(listener1);
+        mForm.setOnCheckedChangeListener(listener1);
         form2.setOnCheckedChangeListener(listener2);
-        chk1 = (RadioButton) form1.findViewById(form1.getCheckedRadioButtonId());
+        chk1 = (RadioButton) mForm.findViewById(mForm.getCheckedRadioButtonId());
         chk2 = (RadioButton) form2.findViewById(form2.getCheckedRadioButtonId());
         mInitialOther = (RadioButton) findViewById(R.id.bInitialOther);
 
@@ -149,10 +149,10 @@ public class ReportActivity extends AppCompatActivity {
 
             if (checkedId != -1) {
                 formChked = true;
-                form1.setOnCheckedChangeListener(null);
-                form1.clearCheck();
-                form1.setOnCheckedChangeListener(listener1);
-                chkText.setText("" + form1.getCheckedRadioButtonId());
+                mForm.setOnCheckedChangeListener(null);
+                mForm.clearCheck();
+                mForm.setOnCheckedChangeListener(listener1);
+                chkText.setText("" + mForm.getCheckedRadioButtonId());
             }
         }
     };
@@ -173,13 +173,13 @@ public class ReportActivity extends AppCompatActivity {
         // Positive = True
         // Negative = False (default)
 
-        if ((form1.getCheckedRadioButtonId() == -1) && (form2.getCheckedRadioButtonId() == -1)) {
+        if ((mForm.getCheckedRadioButtonId() == -1) && (form2.getCheckedRadioButtonId() == -1)) {
             // no selection is made
             return false;
-        } else if ((form2.getCheckedRadioButtonId() == -1) && (form1.getCheckedRadioButtonId() != -1)) {
+        } else if ((form2.getCheckedRadioButtonId() == -1) && (mForm.getCheckedRadioButtonId() != -1)) {
             // positive form is empty && negative emotion is selected
             return false;
-        } else if ((form1.getCheckedRadioButtonId() == -1) && (form2.getCheckedRadioButtonId() != -1)) {
+        } else if ((mForm.getCheckedRadioButtonId() == -1) && (form2.getCheckedRadioButtonId() != -1)) {
             // negative form is empty && positive emotion is selected
             return true;
         } else { //default false
@@ -231,6 +231,7 @@ public class ReportActivity extends AppCompatActivity {
 
                 if (editor.getText().toString().trim().length() == 0) {
                     Toast.makeText(ReportActivity.this, "Please enter a mood", Toast.LENGTH_SHORT).show();
+                    mForm.clearCheck();
                 } else {
                     String tempString = editor.getText().toString();
                     mInitialOther.setText(tempString);
@@ -246,7 +247,7 @@ public class ReportActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
 
                 dialog.cancel();
-                form1.clearCheck();
+                mForm.clearCheck();
             }
         });
 
@@ -268,6 +269,7 @@ public class ReportActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
 
                 if (editor.getText().toString().trim().length() == 0) {
+                    mForm.clearCheck();
                     Toast.makeText(ReportActivity.this, "Please enter a mood", Toast.LENGTH_SHORT).show();
                 } else {
                     mOther.setText(editor.getText());
@@ -280,7 +282,7 @@ public class ReportActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
 
                 dialog.cancel();
-                form1.clearCheck();
+                mForm.clearCheck();
             }
         });
 
@@ -368,9 +370,9 @@ public class ReportActivity extends AppCompatActivity {
                     // Records: Intensity, Negative_Mood #, Positive_Mood #
                     spEditor.putInt("Intensity", mIntensity).commit();
                     spEditor.putString("Report_type", RT).commit();
-                    spEditor.putString("Negative_Mood", String.valueOf(form1.getCheckedRadioButtonId())).commit();
+                    spEditor.putString("Negative_Mood", String.valueOf(mForm.getCheckedRadioButtonId())).commit();
                     spEditor.putString("Positive_Mood", String.valueOf(form2.getCheckedRadioButtonId())).commit();
-                    Toast.makeText(ReportActivity.this, "intensity: " + mIntensity + " N:" + String.valueOf(form1.getCheckedRadioButtonId()) + " P:" + String.valueOf(form2.getCheckedRadioButtonId()), Toast.LENGTH_LONG).show();
+                    Toast.makeText(ReportActivity.this, "intensity: " + mIntensity + " N:" + String.valueOf(mForm.getCheckedRadioButtonId()) + " P:" + String.valueOf(form2.getCheckedRadioButtonId()), Toast.LENGTH_LONG).show();
 
                     if (PoN()) {
                         // if positive emotion selected
