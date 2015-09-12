@@ -33,13 +33,13 @@ public class SettingsActivity extends Activity {
         resetButton = (Button) findViewById(R.id.resetPrefs);
         showCustomFeeling1 = (Button) findViewById(R.id.showCustomFeeling1);
         sp1 = (TextView)findViewById(R.id.sp1);
-        sp1.setText("custom negative mood: " + sharedP.getString("Custom_negative_mood", "Other"));
+        sp1.setText("positive mood: " + sharedP.getString("Positive_Mood", "Other"));
         sp2 = (TextView)findViewById(R.id.sp2);
         sp2.setText("negative mood: " + sharedP.getString("Negative_Mood", "Other"));
         sp3 = (TextView)findViewById(R.id.sp3);
-        sp3.setText("positive mood: " + sharedP.getString("Positive_Mood", "Other"));
+        sp3.setText("custom negative event: " + sharedP.getString("Custom_negative_event", "Other"));
         sp4 = (TextView)findViewById(R.id.sp4);
-        sp4.setText("custom negative event: " + sharedP.getString("Custom_negative_event", "Other"));
+        sp4.setText("custom negative mood: " + sharedP.getString("Custom_negative_mood", "Other"));
         sp5 = (TextView)findViewById(R.id.sp5);
         sp5.setText("custom event: " + sharedP.getString("custom_event", "Other"));
         sp6 = (TextView)findViewById(R.id.sp6);

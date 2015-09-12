@@ -144,6 +144,7 @@ public class NegativeActivity2 extends AppCompatActivity {
 
             public void onClick(DialogInterface dialog, int id) {
 
+                mForm.clearCheck();
                 dialog.cancel();
             }
         });

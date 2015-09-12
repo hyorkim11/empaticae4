@@ -68,6 +68,8 @@ public class ReportActivity extends AppCompatActivity {
         chk1 = (RadioButton) mForm.findViewById(mForm.getCheckedRadioButtonId());
         chk2 = (RadioButton) form2.findViewById(form2.getCheckedRadioButtonId());
         mInitialOther = (RadioButton) findViewById(R.id.bInitialOther);
+        // initialOther sets ID as : 2131558491
+        // mOther sets ID as :       2131558492
 
         if (Objects.equals(tempString, "Other")) {
 

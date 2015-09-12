@@ -102,6 +102,7 @@ public class DrinkActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
 
                 if (editor.getText().toString().trim().length() == 0) {
+                    mForm.clearCheck();
                     Toast.makeText(DrinkActivity.this, "Please enter a strategy", Toast.LENGTH_SHORT).show();
                 } else {
                     String tempString = editor.getText().toString();
@@ -115,7 +116,7 @@ public class DrinkActivity extends AppCompatActivity {
         alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int id) {
-
+                mForm.clearCheck();
                 dialog.cancel();
             }
         });
@@ -138,6 +139,8 @@ public class DrinkActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
 
                 if (editor.getText().toString().trim().length() == 0) {
+
+                    mForm.clearCheck();
                     Toast.makeText(DrinkActivity.this, "Please enter a strategy", Toast.LENGTH_SHORT).show();
                 } else {
                     mOther.setText(editor.getText());
@@ -149,6 +152,7 @@ public class DrinkActivity extends AppCompatActivity {
         alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 
+                mForm.clearCheck();
                 dialog.cancel();
             }
         });
