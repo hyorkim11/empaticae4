@@ -1,4 +1,4 @@
-package empaticae4.hrker.com.empaticae4;
+package empaticae4.hrker.com.empaticae4.activity;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -21,6 +21,8 @@ import com.empatica.empalink.config.EmpaSensorType;
 import com.empatica.empalink.config.EmpaStatus;
 import com.empatica.empalink.delegate.EmpaDataDelegate;
 import com.empatica.empalink.delegate.EmpaStatusDelegate;
+
+import empaticae4.hrker.com.empaticae4.R;
 
 public class LiveStreamActivity extends AppCompatActivity implements EmpaDataDelegate, EmpaStatusDelegate {
 

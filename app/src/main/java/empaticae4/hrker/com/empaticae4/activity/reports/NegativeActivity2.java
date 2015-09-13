@@ -1,4 +1,4 @@
-package empaticae4.hrker.com.empaticae4.Reports;
+package empaticae4.hrker.com.empaticae4.activity.reports;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -19,7 +19,7 @@ import com.beardedhen.androidbootstrap.BootstrapButton;
 
 import java.util.Objects;
 
-import empaticae4.hrker.com.empaticae4.MainActivity;
+import empaticae4.hrker.com.empaticae4.main.MainActivity;
 import empaticae4.hrker.com.empaticae4.R;
 
 // Cool thoughts selection upon what is going on choice

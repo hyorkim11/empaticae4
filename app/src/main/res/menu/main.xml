@@ -4,11 +4,12 @@
     tools:context=".MainActivity">
 
     <item
-        android:id="@+id/context_menu"
-        android:title="Context Menu"
-        android:icon="@drawable/ic_drawer"
-        android:orderInCategory="100"
+        android:id="@+id/action_settings"
+        android:title="Settings"
         app:showAsAction="always" />
-
+    <item
+        android:id="@+id/action_contact"
+        android:title="Contact"
+        app:showAsAction="never" />
 
 </menu>

@@ -6,7 +6,7 @@
     android:background="@drawable/pink_1_tsbs"
     android:padding="20dp"
 
-    tools:context="empaticae4.hrker.com.empaticae4.Reports.DrinkActivity">
+    tools:context="empaticae4.hrker.com.empaticae4.activity.reports.DrinkActivity">
 
     <TextView
         android:id="@+id/title"

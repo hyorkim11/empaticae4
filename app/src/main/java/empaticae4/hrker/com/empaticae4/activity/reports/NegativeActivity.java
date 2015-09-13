@@ -1,16 +1,14 @@
-package empaticae4.hrker.com.empaticae4.Reports;
+package empaticae4.hrker.com.empaticae4.activity.reports;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -20,63 +18,43 @@ import com.beardedhen.androidbootstrap.BootstrapButton;
 
 import java.util.Objects;
 
-import empaticae4.hrker.com.empaticae4.MainActivity;
+import empaticae4.hrker.com.empaticae4.main.MainActivity;
 import empaticae4.hrker.com.empaticae4.R;
 
-public class DrinkActivity extends AppCompatActivity {
+// This is the Negative Response Activity
+
+public class NegativeActivity extends AppCompatActivity {
+
+    RadioGroup mForm;
+    RadioButton mInitialOther, mOther;
+    BootstrapButton bCancel, bContinue;
 
     public static final String DATAFILE = "userData";
     SharedPreferences sharedP = null;
-
-    RadioButton mInitialOther, mOther;
-    BootstrapButton bCancel, bContinue;
-    RadioGroup mForm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_drink);
+        setContentView(R.layout.activity_negative);
         init();
     }
 
     private void init() {
 
         sharedP = getSharedPreferences(DATAFILE, MODE_MULTI_PROCESS);
-        final String tempString = sharedP.getString("custom_drinking_strategy", "Other");
+        String tempString = sharedP.getString("Custom_negative_event", "Other");
 
-        mForm = (RadioGroup)findViewById(R.id.form1);
-        bCancel = (BootstrapButton)findViewById(R.id.bCancel);
-        bCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openCancelAlert();
-            }
-        });
-        bContinue = (BootstrapButton)findViewById(R.id.bContinue);
-        bContinue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openFinishAlert();
-            }
-        });
         mInitialOther = (RadioButton) findViewById(R.id.bInitialOther);
         mInitialOther.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if (Objects.equals(tempString, "Other")) {
-                    openCustom();
-                }
+                openCustom();
             }
         });
-
-        if (Objects.equals(tempString, "Other")) {
-            mInitialOther.setText("Other");
-        } else {
-            mInitialOther.setText(tempString);
-        }
-        mOther = (RadioButton)findViewById(R.id.bOther);
+        mForm = (RadioGroup) findViewById(R.id.form1);
+        mOther = (RadioButton) findViewById(R.id.bOther);
         mOther.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,17 +63,49 @@ public class DrinkActivity extends AppCompatActivity {
             }
         });
 
+        if (Objects.equals(tempString, "Other")) {
+            mOther.setText("Other");
+        } else {
+            mOther.setText(tempString);
+        }
+
+        bCancel = (BootstrapButton) findViewById(R.id.bCancel);
+        bContinue = (BootstrapButton) findViewById(R.id.bContinue);
+
+        bContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (mForm.getCheckedRadioButtonId() != -1) {
+
+                    Intent i = new Intent(getApplicationContext(), NegativeActivity2.class);
+                    startActivity(i);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Please make a selection", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+        bCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                openCancelAlert();
+            }
+        });
+
     }
 
     private void openCustom() {
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DrinkActivity.this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(NegativeActivity.this);
         alertDialogBuilder.setTitle("");
-        alertDialogBuilder.setMessage("Please enter your custom strategy");
+        alertDialogBuilder.setMessage("What is going on right now?");
 
         final EditText editor = new EditText(this);
         final SharedPreferences.Editor spEditor = sharedP.edit();
         alertDialogBuilder.setView(editor);
+
 
         alertDialogBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
 
@@ -103,11 +113,11 @@ public class DrinkActivity extends AppCompatActivity {
 
                 if (editor.getText().toString().trim().length() == 0) {
                     mForm.clearCheck();
-                    Toast.makeText(DrinkActivity.this, "Please enter a strategy", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NegativeActivity.this, "Please enter an event", Toast.LENGTH_SHORT).show();
                 } else {
                     String tempString = editor.getText().toString();
                     mInitialOther.setText(tempString);
-                    spEditor.putString("custom_drinking_strategy", tempString).apply();
+                    spEditor.putString("custom_event", tempString).commit();
                     dialog.cancel();
                 }
             }
@@ -116,21 +126,20 @@ public class DrinkActivity extends AppCompatActivity {
         alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int id) {
-                mForm.clearCheck();
+
                 dialog.cancel();
             }
         });
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-
     }
 
     private void openCustom2() {
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DrinkActivity.this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(NegativeActivity.this);
         alertDialogBuilder.setTitle("");
-        alertDialogBuilder.setMessage("Please enter your custom strategy");
+        alertDialogBuilder.setMessage("What is going on right now?");
 
         final EditText editor = new EditText(this);
         alertDialogBuilder.setView(editor);
@@ -139,9 +148,8 @@ public class DrinkActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
 
                 if (editor.getText().toString().trim().length() == 0) {
-
                     mForm.clearCheck();
-                    Toast.makeText(DrinkActivity.this, "Please enter a strategy", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NegativeActivity.this, "Please enter an event", Toast.LENGTH_SHORT).show();
                 } else {
                     mOther.setText(editor.getText());
                     dialog.cancel();
@@ -152,8 +160,8 @@ public class DrinkActivity extends AppCompatActivity {
         alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 
-                mForm.clearCheck();
                 dialog.cancel();
+                mForm.clearCheck();
             }
         });
 
@@ -161,10 +169,26 @@ public class DrinkActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
+    private String getResponse() {
+        // get response choice from radio group form
+
+        String response;
+
+        if (mForm.getCheckedRadioButtonId() != -1) {
+
+            RadioGroup rg = (RadioGroup) findViewById(R.id.form1);
+            response = ((RadioButton) findViewById(rg.getCheckedRadioButtonId())).getText().toString();
+
+        } else {
+            response = "N/A";
+        }
+
+        return response;
+    }
 
     private void openCancelAlert() {
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DrinkActivity.this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(NegativeActivity.this);
         alertDialogBuilder.setTitle("");
         alertDialogBuilder.setMessage("Are you sure you want to quit?");
 
@@ -191,37 +215,10 @@ public class DrinkActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    private void openFinishAlert() {
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DrinkActivity.this);
-        final LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
-        final View Viewlayout = inflater.inflate(R.layout.exit_dialog, (ViewGroup) findViewById(R.id.exit_dialog));
-
-        alertDialogBuilder.setTitle("");
-        alertDialogBuilder.setMessage("You're doing great! \n Keep up the good work.");
-
-        // set positive button: Yes
-        alertDialogBuilder.setPositiveButton("Finish", new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int id) {
-
-                // save DATA before exiting
-
-
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(i);
-                Toast.makeText(getApplicationContext(), "Your response has been recorded", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_drink, menu);
+        getMenuInflater().inflate(R.menu.menu_response, menu);
         return true;
     }
 

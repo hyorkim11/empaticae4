@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="15dp"
-    tools:context="empaticae4.hrker.com.empaticae4.SettingsActivity">
+    tools:context="empaticae4.hrker.com.empaticae4.activity.settings.SettingsActivity">
 
     <TextView
         android:id="@+id/title"

@@ -1,4 +1,4 @@
-package empaticae4.hrker.com.empaticae4.Reports;
+package empaticae4.hrker.com.empaticae4.activity.reports;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -22,9 +22,9 @@ import com.beardedhen.androidbootstrap.BootstrapButton;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Logger;
 
-import empaticae4.hrker.com.empaticae4.Logger;
-import empaticae4.hrker.com.empaticae4.MainActivity;
+import empaticae4.hrker.com.empaticae4.main.MainActivity;
 import empaticae4.hrker.com.empaticae4.R;
 
 public class GoodMovesActivity extends AppCompatActivity implements View.OnClickListener {
@@ -189,13 +189,13 @@ public class GoodMovesActivity extends AppCompatActivity implements View.OnClick
 
                 // save DATA before exiting
                 // // TODO: 9/9/15 use Logger class to SAVE DATA
-                Logger logger = new Logger(GoodMovesActivity.this);
+                //Logger logger = new Logger(GoodMovesActivity.this);
                 // currently throws exception because this is destroyed, now pointing
                 // to a null reference.
 
                 try {
 
-                    logger.writeLog(1, 2, 3);
+//                    logger.writeLog(1, 2, 3);
                     Toast.makeText(GoodMovesActivity.this, "Logging Success", Toast.LENGTH_SHORT).show();
 
                 } catch (Exception e) {

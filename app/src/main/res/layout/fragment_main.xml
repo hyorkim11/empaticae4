@@ -29,7 +29,6 @@
             android:textSize="15sp"
             android:textStyle="italic" />
 
-
     </RelativeLayout>
 
 </ScrollView>
