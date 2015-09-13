@@ -1,20 +1,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
+    xmlns:fontawesometext="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/pink_1_tsbs"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar" />
-
-    <FrameLayout
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"></FrameLayout>
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
 
         <TextView
             android:id="@+id/title"
@@ -44,10 +39,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="100dp"
-        android:text="MAKE A REPORT"
-        android:textSize="20sp"
+        android:text="Make a report"
+        android:textSize="15sp"
         bootstrap:bb_roundedCorners="true"
-        bootstrap:bb_size="large"
+        bootstrap:bb_size="medium"
         bootstrap:bb_type="danger" />
 
     <com.beardedhen.androidbootstrap.BootstrapButton
@@ -56,10 +51,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
-        android:text="CURRENT STATUS"
-        android:textSize="20sp"
+        android:text="Current status"
+        android:textSize="15sp"
         bootstrap:bb_roundedCorners="true"
-        bootstrap:bb_size="large"
+        bootstrap:bb_size="medium"
         bootstrap:bb_type="danger" />
 
     <com.beardedhen.androidbootstrap.BootstrapButton
@@ -68,10 +63,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
-        android:text="GOOD MOVES"
-        android:textSize="20sp"
+        android:text="Good moves"
+        android:textSize="15sp"
         bootstrap:bb_roundedCorners="true"
-        bootstrap:bb_size="large"
+        bootstrap:bb_size="medium"
         bootstrap:bb_type="danger" />
 
     <RadioGroup

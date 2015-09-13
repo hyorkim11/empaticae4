@@ -6,14 +6,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 
@@ -31,9 +28,7 @@ import empaticae4.hrker.com.empaticae4.activity.settings.SettingsActivity;
 public class MainActivity extends AppCompatActivity {
 
     public static final String DATAFILE = "userData";
-    private DialogFragment mMenuDialogFragment;
     private BootstrapButton b1, b2, b3;
-    private RadioGroup testingRG;
 
 
     @Override
@@ -49,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         b1 = (BootstrapButton) findViewById(R.id.b1);
         b2 = (BootstrapButton) findViewById(R.id.b2);
         b3 = (BootstrapButton) findViewById(R.id.b3);
-
 
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,18 +72,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-        // Testing dynamic radio group programmatically
-        testingRG = (RadioGroup) findViewById(R.id.testingRG);
-        String[] mChoices = new String[]{"a","b","c","d","e","f"};
-        final RadioButton[] rb = new RadioButton[6];
-        for (int i = 0; i < 6; i++) {
-            rb[i] = new RadioButton(this);
-            rb[i].setText(mChoices[i].toString());
-            rb[i].setId(i);
-            testingRG.addView(rb[i]);
-        }
-
 
     }
 
@@ -198,7 +180,4 @@ public class MainActivity extends AppCompatActivity {
         sendIntent.putExtra(Intent.EXTRA_STREAM, u1);
         startActivity(Intent.createChooser(sendIntent, "Send An Email"));
     }
-
-
-
 }

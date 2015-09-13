@@ -78,7 +78,7 @@ public class ReportActivity extends Activity {
         mLoggerUtility.appendReportData(r2);
 
         ArrayList<ReportDataWrapper> array;
-        array = mPrefs.getAllReportData();
+        array = mPrefs.getReportData();
 
         // Sort the array based on DateTime (most recent to least recent)
         Collections.sort(array, new Comparator<ReportDataWrapper>() {

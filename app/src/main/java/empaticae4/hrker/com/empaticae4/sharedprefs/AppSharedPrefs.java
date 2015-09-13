@@ -18,9 +18,22 @@ public class AppSharedPrefs {
     private SharedPreferences mPrefs;
     private Context mContext;
 
-    private static final String REPORT_DATA_SET = "report_data_set";
+    private static final String REPORT_TYPE = "report_type";
     private static final String INIT_CUSTOM_NEGATIVE_MOOD = "init_custom_negative_mood";
     private static final String CUSTOM_NEGATIVE_MOOD = "custom_negative_mood";
+    private static final String INTENSITY = "intensity";
+
+    private static final String INIT_CUSTOM_EVENT = "init_custom_event";
+    private static final String CUSTOM_EVENT = "custom_event";
+
+    private static final String INIT_CUSTOM_GOODMOVE = "init_custom_goodmove";
+    private static final String CUSTOM_GOODMOVE = "custom_goodmove";
+
+    private static final String INIT_CUSTOM_COOLTHOUGHT = "init_custom_coolthought";
+    private static final String CUSTOM_COOLTHOUGHT = "custom_coolthought";
+
+    private static final String INIT_CUSTOM_DRINKING = "init_custom_drinking";
+    private static final String CUSTOM_DRINKING = "custom_drinking";
 
 
     public AppSharedPrefs(Context context)  {
@@ -57,23 +70,23 @@ public class AppSharedPrefs {
 
     public void appendReportData(ReportDataWrapper r)  {
 
-        Set<String> tmpSet = mPrefs.getStringSet(REPORT_DATA_SET, new HashSet<String>());
+        Set<String> tmpSet = mPrefs.getStringSet(REPORT_TYPE, new HashSet<String>());
 
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
 
         tmpSet.add(gson.toJson(r));
 
-        setProperty(REPORT_DATA_SET, tmpSet);
+        setProperty(REPORT_TYPE, tmpSet);
     }
 
-    public ArrayList<ReportDataWrapper> getAllReportData()  {
+    public ArrayList<ReportDataWrapper> getReportData()  {
 
         // Create a new empty array for storing the ReportDataWrapper objects
         ArrayList<ReportDataWrapper> array = new ArrayList<>();
 
         // Get the Report Data Set
-        Set<String> tmpSet = mPrefs.getStringSet(REPORT_DATA_SET, new HashSet<String>());
+        Set<String> tmpSet = mPrefs.getStringSet(REPORT_TYPE, new HashSet<String>());
 
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
