@@ -19,9 +19,10 @@ public class AppSharedPrefs {
     private Context mContext;
 
     private static final String REPORT_TYPE = "report_type";
+    private static final String INTENSITY = "intensity";
+
     private static final String INIT_CUSTOM_NEGATIVE_MOOD = "init_custom_negative_mood";
     private static final String CUSTOM_NEGATIVE_MOOD = "custom_negative_mood";
-    private static final String INTENSITY = "intensity";
 
     private static final String INIT_CUSTOM_EVENT = "init_custom_event";
     private static final String CUSTOM_EVENT = "custom_event";
@@ -100,14 +101,84 @@ public class AppSharedPrefs {
         return array;
     }
 
+    // INIT CUSTOM NEGATIVE MOOD
     public void setInitCustomNegativeMood(String s)  {
-
         setProperty(INIT_CUSTOM_NEGATIVE_MOOD, s);
     }
-
     public String getInitCustomNegativeMood()  {
-
         return mPrefs.getString(INIT_CUSTOM_NEGATIVE_MOOD, "");
+    }
+
+    // CUSTOM NEGATIVE MOOD
+    public void setCustomNegativeMood(String s) {
+        setProperty(CUSTOM_NEGATIVE_MOOD, s);
+    }
+    public String getCustomNegativeMood() {
+        return mPrefs.getString(CUSTOM_NEGATIVE_MOOD, "");
+    }
+
+    // INIT CUSTOM EVENT
+    public void setInitCustomEvent(String s) {
+        setProperty(INIT_CUSTOM_EVENT, s);
+    }
+    public String getInitCustomEvent() {
+        return mPrefs.getString(INIT_CUSTOM_EVENT, "");
+    }
+
+    // CUSTOM EVENT
+    public void setCustomEvent(String s) {
+        setProperty(CUSTOM_EVENT, s);
+    }
+    public String getCustomEvent() {
+        return mPrefs.getString(CUSTOM_EVENT, "");
+    }
+
+    // INIT CUSTOM GOODMOVES
+    public void setInitCustomGoodmove(String s) {
+        setProperty(INIT_CUSTOM_GOODMOVE, s);
+    }
+    public String getInitCustomGoodmove() {
+        return mPrefs.getString(INIT_CUSTOM_GOODMOVE, "");
+    }
+
+    // CUSTOM GOODMOVES
+    public void setCustomGoodmove(String s) {
+        setProperty(CUSTOM_GOODMOVE, s);
+    }
+    public String getCustomGoodmove() {
+        return mPrefs.getString(CUSTOM_GOODMOVE, "");
+    }
+
+    // INIT CUSTOM COOLTHOUGHT
+    public void setInitCustomCoolthought(String s) {
+        setProperty(INIT_CUSTOM_COOLTHOUGHT, s);
+    }
+    public String getInitCustomCoolthought() {
+        return mPrefs.getString(INIT_CUSTOM_COOLTHOUGHT, "");
+    }
+
+    // CUSTOM COOLTHOUGHT
+    public void setCustomCoolthought(String s) {
+        setProperty(CUSTOM_COOLTHOUGHT, s);
+    }
+    public String getCustomCoolthought() {
+        return mPrefs.getString(CUSTOM_COOLTHOUGHT, "");
+    }
+
+    // INIT CUSTOM DRINKING
+    public void setInitCustomDrinking(String s) {
+        setProperty(INIT_CUSTOM_DRINKING, s);
+    }
+    public String getInitCustomDrinking() {
+        return mPrefs.getString(INIT_CUSTOM_DRINKING, "");
+    }
+
+    // CUSTOM DRINKING
+    public void setCustomDrinking(String s) {
+        setProperty(CUSTOM_DRINKING, s);
+    }
+    public String getCustomDrinking() {
+        return mPrefs.getString(CUSTOM_DRINKING, "");
     }
 
 }
