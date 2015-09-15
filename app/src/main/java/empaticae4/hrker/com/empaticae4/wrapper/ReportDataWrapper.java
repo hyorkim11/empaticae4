@@ -4,34 +4,54 @@ import java.util.Calendar;
 
 public class ReportDataWrapper  {
 
-    private Calendar dateTime;
-
     private String reportType;
+
+    private Calendar startTime;
+    private Calendar endTime;
+
     private int answer1;
     private int intensity;
     private int answer2;
     private int answer3;
     private int answer4;
-    private String response_5;
-    private String response_6;
+    private int answer5;
+    private Boolean drinking;
+    
+    
+    private String icnm;
+    private String cnm;
+
+    private String ice;
+    private String ce;
+
+    private String icgm;
+    private String cgm;
+
+    private String icct;
+    private String cct;
+
+    private String icd;
+    private String cd;
 
 
-    public ReportDataWrapper()  {}
+    public ReportDataWrapper()  {
 
-    public Calendar getDateTime() {
-        return dateTime;
-    }
+        // Initialize default values
+        reportType = "N/A";
+        answer1 = -1;
+        intensity = -1;
+        answer2 = -1;
+        answer3 = -1;
+        answer4 = -1;
+        answer5 = -1;
+        drinking = false;
 
-    public void setDateTime(Calendar dateTime) {
-        this.dateTime = dateTime;
-    }
+        cnm = "Other";
+        ce = "Other";
+        cgm = "Other";
+        cct = "Other";
+        cd = "Other";
 
-    public String getReportType() {
-        return reportType;
-    }
-
-    public void setReportType(String reportType) {
-        this.reportType = reportType;
     }
 
     public int getAnswer1() {
@@ -66,6 +86,110 @@ public class ReportDataWrapper  {
         this.answer4 = answer4;
     }
 
+    public int getAnswer5() {
+        return answer5;
+    }
+
+    public void setAnswer5(int answer5) {
+        this.answer5 = answer5;
+    }
+
+    public String getCct() {
+        return cct;
+    }
+
+    public void setCct(String cct) {
+        this.cct = cct;
+    }
+
+    public String getCd() {
+        return cd;
+    }
+
+    public void setCd(String cd) {
+        this.cd = cd;
+    }
+
+    public String getCe() {
+        return ce;
+    }
+
+    public void setCe(String ce) {
+        this.ce = ce;
+    }
+
+    public String getCgm() {
+        return cgm;
+    }
+
+    public void setCgm(String cgm) {
+        this.cgm = cgm;
+    }
+
+    public String getCnm() {
+        return cnm;
+    }
+
+    public void setCnm(String cnm) {
+        this.cnm = cnm;
+    }
+
+    public Boolean getDrinking() {
+        return drinking;
+    }
+
+    public void setDrinking(Boolean drinking) {
+        this.drinking = drinking;
+    }
+
+    public Calendar getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Calendar endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getIcct() {
+        return icct;
+    }
+
+    public void setIcct(String icct) {
+        this.icct = icct;
+    }
+
+    public String getIcd() {
+        return icd;
+    }
+
+    public void setIcd(String icd) {
+        this.icd = icd;
+    }
+
+    public String getIce() {
+        return ice;
+    }
+
+    public void setIce(String ice) {
+        this.ice = ice;
+    }
+
+    public String getIcgm() {
+        return icgm;
+    }
+
+    public void setIcgm(String icgm) {
+        this.icgm = icgm;
+    }
+
+    public String getIcnm() {
+        return icnm;
+    }
+
+    public void setIcnm(String icnm) {
+        this.icnm = icnm;
+    }
+
     public int getIntensity() {
         return intensity;
     }
@@ -74,37 +198,20 @@ public class ReportDataWrapper  {
         this.intensity = intensity;
     }
 
-    public String getResponse_5() {
-        return response_5;
+    public String getReportType() {
+        return reportType;
     }
 
-    public void setResponse_5(String response_5) {
-        this.response_5 = response_5;
+    public void setReportType(String reportType) {
+        this.reportType = reportType;
     }
 
-    public String getResponse_6() {
-        return response_6;
+    public Calendar getStartTime() {
+        return startTime;
     }
 
-    public void setResponse_6(String response_6) {
-        this.response_6 = response_6;
+    public void setStartTime(Calendar startTime) {
+        this.startTime = startTime;
     }
 }
 
-/*
-* // Sort the array based on DateTime (most recent to least recent)
-        Collections.sort(array, new Comparator<ReportDataWrapper>() {
-            @Override
-            public int compare(ReportDataWrapper a, ReportDataWrapper b) {
-                return (a.getDateTime().getTimeInMillis() > b.getDateTime().getTimeInMillis()) ? -1 :
-                        (a.getDateTime().getTimeInMillis() > b.getDateTime().getTimeInMillis()) ? 1 : 0;
-            }
-        });
-
-        for (ReportDataWrapper r : array)  {
-
-            Log.i(TAG, String.valueOf(r.getResponse_1()));
-            Log.i(TAG, r.getReportType());
-        }
-
-* */

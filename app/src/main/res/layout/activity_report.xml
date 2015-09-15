@@ -20,7 +20,6 @@
         android:textStyle="bold" />
 
     <LinearLayout
-        android:id="@+id/form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/title"
@@ -36,49 +35,17 @@
             <RadioGroup
                 android:id="@+id/form1"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Anxious | Nervous" />
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Stressed" />
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sad" />
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Frustrated" />
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Embarrassed" />
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Tired" />
-
-                <RadioButton
-                    android:id="@+id/bInitialOther"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Other" />
-                <RadioButton
-                    android:id="@+id/bOther"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Other" />
-            </RadioGroup>
+                android:layout_height="wrap_content"></RadioGroup>
+            <RadioButton
+                android:id="@+id/bInitialOther"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="InitOther"/>
+            <RadioButton
+                android:id="@+id/bOther"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Other"/>
         </LinearLayout>
 
         <LinearLayout
@@ -91,29 +58,7 @@
             <RadioGroup
                 android:id="@+id/form2"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Happy" />
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Excited | Energized" />
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Relieved" />
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Satisfied" />
-
-            </RadioGroup>
+                android:layout_height="wrap_content"></RadioGroup>
 
         </LinearLayout>
 

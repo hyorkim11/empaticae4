@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
             public void onClick(DialogInterface dialog, int id) {
 
-                String number = "000000000";
+                String number = "9177968713";
                 Intent intent = new Intent(Intent.ACTION_DIAL);
                 intent.setData(Uri.parse("tel:" + number));
                 startActivity(intent);
