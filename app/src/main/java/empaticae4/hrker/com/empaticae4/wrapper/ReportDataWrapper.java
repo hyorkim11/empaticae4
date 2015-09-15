@@ -7,10 +7,11 @@ public class ReportDataWrapper  {
     private Calendar dateTime;
 
     private String reportType;
-    private String response_1; // How are you feeling
-    private String response_2; // Intensity
-    private String response_3; // What is going on right now
-    private String response_4; //
+    private int answer1;
+    private int intensity;
+    private int answer2;
+    private int answer3;
+    private int answer4;
     private String response_5;
     private String response_6;
 
@@ -33,36 +34,44 @@ public class ReportDataWrapper  {
         this.reportType = reportType;
     }
 
-    public String getResponse_1() {
-        return response_1;
+    public int getAnswer1() {
+        return answer1;
     }
 
-    public void setResponse_1(String response_1) {
-        this.response_1 = response_1;
+    public void setAnswer1(int answer1) {
+        this.answer1 = answer1;
     }
 
-    public String getResponse_2() {
-        return response_2;
+    public int getAnswer2() {
+        return answer2;
     }
 
-    public void setResponse_2(String response_2) {
-        this.response_2 = response_2;
+    public void setAnswer2(int answer2) {
+        this.answer2 = answer2;
     }
 
-    public String getResponse_3() {
-        return response_3;
+    public int getAnswer3() {
+        return answer3;
     }
 
-    public void setResponse_3(String response_3) {
-        this.response_3 = response_3;
+    public void setAnswer3(int answer3) {
+        this.answer3 = answer3;
     }
 
-    public String getResponse_4() {
-        return response_4;
+    public int getAnswer4() {
+        return answer4;
     }
 
-    public void setResponse_4(String response_4) {
-        this.response_4 = response_4;
+    public void setAnswer4(int answer4) {
+        this.answer4 = answer4;
+    }
+
+    public int getIntensity() {
+        return intensity;
+    }
+
+    public void setIntensity(int intensity) {
+        this.intensity = intensity;
     }
 
     public String getResponse_5() {
@@ -81,3 +90,21 @@ public class ReportDataWrapper  {
         this.response_6 = response_6;
     }
 }
+
+/*
+* // Sort the array based on DateTime (most recent to least recent)
+        Collections.sort(array, new Comparator<ReportDataWrapper>() {
+            @Override
+            public int compare(ReportDataWrapper a, ReportDataWrapper b) {
+                return (a.getDateTime().getTimeInMillis() > b.getDateTime().getTimeInMillis()) ? -1 :
+                        (a.getDateTime().getTimeInMillis() > b.getDateTime().getTimeInMillis()) ? 1 : 0;
+            }
+        });
+
+        for (ReportDataWrapper r : array)  {
+
+            Log.i(TAG, String.valueOf(r.getResponse_1()));
+            Log.i(TAG, r.getReportType());
+        }
+
+* */

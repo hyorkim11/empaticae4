@@ -85,29 +85,34 @@ public class PositiveActivity extends AppCompatActivity {
 
     private void openContinueAlert() {
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(PositiveActivity.this);
-        alertDialogBuilder.setTitle("");
-        alertDialogBuilder.setMessage("Glad to hear it! \nKeep up the good work!");
+        if (etResponse.getText().toString() == "") {
+            Toast.makeText(getApplicationContext(), "Please Enter a Response", Toast.LENGTH_SHORT).show();
 
-        // set positive button: Yes
-        alertDialogBuilder.setPositiveButton("Finish", new DialogInterface.OnClickListener() {
+        } else {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(PositiveActivity.this);
+            alertDialogBuilder.setTitle("");
+            alertDialogBuilder.setMessage("Glad to hear it! \nKeep up the good work!");
 
-            public void onClick(DialogInterface dialog, int id) {
+            // set positive button: Finish
+            alertDialogBuilder.setPositiveButton("Finish", new DialogInterface.OnClickListener() {
 
-                // Record Positive_Event data & Duration of Report
-                temp = etResponse.getText().toString();
-                SharedPreferences.Editor spEditor = sharedP.edit();
-                spEditor.putString("Positive_Event", temp).commit();
-                recordTime();
+                public void onClick(DialogInterface dialog, int id) {
 
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(i);
-                Toast.makeText(getApplicationContext(), "Your response has been recorded", Toast.LENGTH_SHORT).show();
-            }
-        });
+                    // Record Positive_Event data & Duration of Report
+                    temp = etResponse.getText().toString();
+                    SharedPreferences.Editor spEditor = sharedP.edit();
+                    spEditor.putString("Positive_Event", temp).commit();
+                    recordTime();
 
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(i);
+                    Toast.makeText(getApplicationContext(), "Your response has been recorded", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        }
     }
 
     private void openCancelAlert() {

@@ -50,8 +50,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent i = new Intent(getApplicationContext(), ReportActivity.class);
-
-                i.putExtra("Report_type", "SI"); // self initiated
+                i.putExtra("report_type", "SI"); // self initiated
                 startActivity(i);
             }
         });

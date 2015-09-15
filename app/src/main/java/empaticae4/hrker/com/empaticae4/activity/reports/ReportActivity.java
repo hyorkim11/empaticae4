@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,10 +17,7 @@ import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Objects;
 
 import empaticae4.hrker.com.empaticae4.R;
@@ -36,14 +32,14 @@ public class ReportActivity extends Activity {
     public static final String DATAFILE = "userData";
 
     public static long start;
-    BootstrapButton bContinue, bCancel;
-    RadioGroup mForm, form2;
-    RadioButton chk1, chk2, mInitialOther, mOther;
-    TextView chkText;
-    Boolean formChked;
-    Boolean firstOrNot;
-    int mIntensity;
-    String RT;
+    private BootstrapButton bContinue, bCancel;
+    private RadioGroup mForm, form2;
+    private RadioButton chk1, chk2, mInitialOther, mOther;
+    private TextView chkText;
+    private Boolean formChked;
+    private Boolean firstOrNot;
+    private int mIntensity;
+    private String RT, tempString;
 
     private LoggerUtility mLoggerUtility;
     private AppSharedPrefs mPrefs;
@@ -54,6 +50,8 @@ public class ReportActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
 
+        RT  = getIntent().getExtras().getString("report_type", "N/A");
+
         init();
 
     }
@@ -61,47 +59,15 @@ public class ReportActivity extends Activity {
     private void init() {
 
         mLoggerUtility = new LoggerUtility(this);
-        mPrefs = new AppSharedPrefs(this);
+        mPrefs = new AppSharedPrefs(ReportActivity.this);
 
-        ReportDataWrapper r1 = new ReportDataWrapper();
-        ReportDataWrapper r2 = new ReportDataWrapper();
+        ReportDataWrapper report = new ReportDataWrapper();
+        report.setDateTime(Calendar.getInstance());
+        report.setReportType(RT);
 
-        r1.setDateTime(Calendar.getInstance());
-        r1.setReportType("whatever");
-        r1.setResponse_1("123");
-
-        r2.setDateTime(Calendar.getInstance());
-        r2.setReportType("whatever1");
-        r2.setResponse_1("456");
-
-        mLoggerUtility.appendReportData(r1);
-        mLoggerUtility.appendReportData(r2);
-
-        ArrayList<ReportDataWrapper> array;
-        array = mPrefs.getReportData();
-
-        // Sort the array based on DateTime (most recent to least recent)
-        Collections.sort(array, new Comparator<ReportDataWrapper>() {
-            @Override
-            public int compare(ReportDataWrapper a, ReportDataWrapper b) {
-                return (a.getDateTime().getTimeInMillis() > b.getDateTime().getTimeInMillis()) ? -1 :
-                        (a.getDateTime().getTimeInMillis() > b.getDateTime().getTimeInMillis()) ? 1 : 0;
-            }
-        });
-
-        for (ReportDataWrapper r : array)  {
-
-            Log.i(TAG, String.valueOf(r.getResponse_1()));
-            Log.i(TAG, r.getReportType());
-        }
-
-
-        String tempString = mPrefs.getInitCustomNegativeMood();
+        tempString = mPrefs.getInitCustomNegativeMood();
 
         start = Calendar.getInstance().getTimeInMillis();
-//        SharedPreferences.Editor spEditor = sharedP.edit();
-        //spEditor.putLong("Start_time", start).commit();
-        RT  = getIntent().getExtras().getString("Report_type", "N/A");
 
         mIntensity = 0; // reset intensity
         bContinue = (BootstrapButton) findViewById(R.id.bContinue);
@@ -157,12 +123,10 @@ public class ReportActivity extends Activity {
             @Override
             public void onClick(View view) {
 
-                //sharedP = getSharedPreferences(DATAFILE, MODE_MULTI_PROCESS);
-                //String temp = sharedP.getString("Custom_negative_mood", "Other");
-
-//                if (temp == "Other") {
-//                    openCustom();
-//                }
+                String t = mPrefs.getCustomNegativeMood();
+                if (t == "Other") {
+                    openCustom();
+                }
 
             }
         });
@@ -271,7 +235,6 @@ public class ReportActivity extends Activity {
         alertDialogBuilder.setMessage("Please enter your custom feeling");
 
         final EditText editor = new EditText(this);
-        //final SharedPreferences.Editor spEditor = sharedP.edit();
         alertDialogBuilder.setView(editor);
 
         alertDialogBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
@@ -279,12 +242,14 @@ public class ReportActivity extends Activity {
             public void onClick(DialogInterface dialog, int id) {
 
                 if (editor.getText().toString().trim().length() == 0) {
+
                     Toast.makeText(ReportActivity.this, "Please enter a mood", Toast.LENGTH_SHORT).show();
                     mForm.clearCheck();
                 } else {
-                    String tempString = editor.getText().toString();
-                    mInitialOther.setText(tempString);
-                    //spEditor.putString("Custom_negative_mood", tempString).commit();
+
+                    String tempString2 = editor.getText().toString();
+                    mInitialOther.setText(tempString2);
+                    tempString = tempString2;
 
                     dialog.cancel();
                 }
@@ -344,9 +309,6 @@ public class ReportActivity extends Activity {
         // Intensity Levels
         final CharSequence[] items = {" 0 - Not at all ", " 1 ", " 2 ", " 3 ",
                 " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 ", " 10 - Very strong "};
-
-        // SharedP for intensity record
-        //final SharedPreferences.Editor spEditor = sharedP.edit();
 
         // Create and Build Dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -415,21 +377,19 @@ public class ReportActivity extends Activity {
                     Toast.makeText(ReportActivity.this, "Please make a selection", Toast.LENGTH_SHORT).show();
                 } else {
 
-                    // Save recorded response
-                    // Records: Intensity, Negative_Mood #, Positive_Mood #
-                    //spEditor.putInt("Intensity", mIntensity).commit();
-                    // spEditor.putString("Report_type", RT).commit();
-                    //spEditor.putString("Negative_Mood", String.valueOf(mForm.getCheckedRadioButtonId())).commit();
-                    //spEditor.putString("Positive_Mood", String.valueOf(form2.getCheckedRadioButtonId())).commit();
                     Toast.makeText(ReportActivity.this, "intensity: " + mIntensity + " N:" + String.valueOf(mForm.getCheckedRadioButtonId()) + " P:" + String.valueOf(form2.getCheckedRadioButtonId()), Toast.LENGTH_LONG).show();
 
+                    mPrefs.setIntensity(mIntensity);
                     if (PoN()) {
                         // if positive emotion selected
+                        mPrefs.setAnswer1(form2.getCheckedRadioButtonId());
                         Intent j = new Intent(getApplicationContext(), PositiveActivity.class);
                         startActivity(j);
 
                     } else {
                         // negative emotion selected or by default
+                        mPrefs.setInitCustomNegativeMood(tempString);
+                        mPrefs.setAnswer1(mForm.getCheckedRadioButtonId());
                         Intent j = new Intent(getApplicationContext(), NegativeActivity.class);
                         startActivity(j);
                     }
