@@ -28,7 +28,7 @@ public class ReportActivity extends Activity {
 
     private BootstrapButton bContinue, bCancel;
     private RadioGroup mForm1, mForm2;
-    private RadioButton chk1, chk2, mInitialOther, mOther;
+    private RadioButton mInitialOther, mOther;
     private int mIntensity;
     private String mReport_Type, tempString;
 
@@ -68,8 +68,10 @@ public class ReportActivity extends Activity {
         mForm1 = (RadioGroup) findViewById(R.id.form1);
         mForm2 = (RadioGroup) findViewById(R.id.form2);
 
-        String[] negativeChoices = new String[]{"Anxious|Nervous","Stressed","Sad","Frustrated","Embarrassed","Tired"};
-        String[] positiveChoices = new String[]{"Happy","Excited|Energized","Relieved","Satisfied"};
+        String[] negativeChoices = new String[]{"Anxious|Nervous",
+                "Stressed","Sad","Frustrated","Embarrassed","Tired"};
+        String[] positiveChoices = new String[]{"Happy",
+                "Excited|Energized","Relieved","Satisfied"};
         final RadioButton[] NC = new RadioButton[6];
         final RadioButton[] PC = new RadioButton[4];
 
@@ -90,9 +92,8 @@ public class ReportActivity extends Activity {
         mForm2.clearCheck();
         mForm1.setOnCheckedChangeListener(listener1);
         mForm2.setOnCheckedChangeListener(listener2);
-        chk1 = (RadioButton) mForm1.findViewById(mForm1.getCheckedRadioButtonId());
-        chk2 = (RadioButton) mForm2.findViewById(mForm2.getCheckedRadioButtonId());
         mInitialOther = (RadioButton) findViewById(R.id.bInitialOther);
+        mOther = (RadioButton) findViewById(R.id.bOther);
 
         if (Objects.equals(tempString, "Other")) {
 
@@ -101,8 +102,6 @@ public class ReportActivity extends Activity {
 
             mInitialOther.setText(tempString);
         }
-
-        mOther = (RadioButton) findViewById(R.id.bOther);
 
         bContinue.setOnClickListener(new View.OnClickListener() {
 
@@ -220,17 +219,14 @@ public class ReportActivity extends Activity {
         // Positive = True
         // Negative = False (default)
 
-        if ((mForm1.getCheckedRadioButtonId() == -1) && (mForm2.getCheckedRadioButtonId() == -1)) {
-            // no selection is made
+        int temp = getAnswerChoice();
+
+        if (temp == -1) {
             return false;
-        } else if ((mForm2.getCheckedRadioButtonId() == -1) && (mForm1.getCheckedRadioButtonId() != -1)) {
-            // positive form is empty && negative emotion is selected
+        } else if (temp < 9) {
             return false;
-        } else if ((mForm1.getCheckedRadioButtonId() == -1) && (mForm2.getCheckedRadioButtonId() != -1)) {
-            // negative form is empty && positive emotion is selected
+        } else {
             return true;
-        } else { //default false
-            return false;
         }
     }
 

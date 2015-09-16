@@ -22,66 +22,25 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/title">
+        android:layout_below="@+id/title"
+        android:orientation="vertical">
 
         <RadioGroup
             android:id="@+id/form1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"></RadioGroup>
 
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="School or Work Issue" />
+        <RadioButton
+            android:id="@+id/bInitialOther"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Other" />
 
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Relationship or Dating Issue" />
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Friend Issue" />
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Family Issue" />
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Getting Ready to Go Out" />
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Talking to Someone Attractive" />
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pressured to Drink" />
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="In a New or Uncomfortable Situation" />
-
-            <RadioButton
-                android:id="@+id/bInitialOther"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Other"/>
-
-            <RadioButton
-                android:id="@+id/bOther"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Other" />
-
-        </RadioGroup>
+        <RadioButton
+            android:id="@+id/bOther"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Other" />
     </LinearLayout>
 
     <RelativeLayout

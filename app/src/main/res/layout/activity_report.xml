@@ -36,16 +36,18 @@
                 android:id="@+id/form1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"></RadioGroup>
+
             <RadioButton
                 android:id="@+id/bInitialOther"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="InitOther"/>
+                android:text="InitOther" />
+
             <RadioButton
                 android:id="@+id/bOther"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Other"/>
+                android:text="Other" />
         </LinearLayout>
 
         <LinearLayout

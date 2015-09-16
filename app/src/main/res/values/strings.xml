@@ -29,5 +29,6 @@
     <string name="title_activity_negative2">NegativeActivity2</string>
     <string name="title_activity_good_moves">GoodMovesActivity</string>
     <string name="title_activity_drink">DrinkActivity</string>
+    <string name="title_activity_splash">Splash</string>
 
 </resources>

@@ -44,6 +44,7 @@ public class SettingsActivity extends Activity {
         sp1 = (TextView)findViewById(R.id.sp1);
         sp1.setText("init_custom_negative_mood: " + mPrefs.getInitCustomNegativeMood());
         sp2 = (TextView)findViewById(R.id.sp2);
+        sp2.setText("init_custom_event: " + mPrefs.getInitCustomEvent());
         sp3 = (TextView)findViewById(R.id.sp3);
         sp4 = (TextView)findViewById(R.id.sp4);
         sp5 = (TextView)findViewById(R.id.sp5);
