@@ -12,7 +12,7 @@ import empaticae4.hrker.com.empaticae4.R;
 
 public class Splash extends Activity implements Animation.AnimationListener {
 
-    private final int SPLASH_DISPLAY_LENGTH = 3000;
+    private final int SPLASH_DISPLAY_LENGTH = 2500;
     private ImageView logo;
     private Animation animFadein;
 
