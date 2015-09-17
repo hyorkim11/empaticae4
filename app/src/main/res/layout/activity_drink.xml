@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/pink_1_tsbs"
     android:padding="20dp"
-
     tools:context="empaticae4.hrker.com.empaticae4.activity.reports.DrinkActivity">
 
     <TextView
@@ -13,112 +12,50 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:gravity="center_horizontal"
-        android:text="Drinking?"
+        android:text="Drinking or Will Drink?"
         android:textColor="@color/white"
-        android:textSize="30sp"
+        android:textSize="25sp"
         android:textStyle="bold" />
 
-    <RadioGroup
-        android:id="@+id/form1"
+    <TextView
+        android:id="@+id/caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/title">
+        android:layout_below="@+id/title"
+        android:layout_centerHorizontal="true"
+        android:text="Please select one protective strategy"
+        android:textColor="@color/grey"
+        android:layout_marginTop="10dp"
+        android:textSize="10sp"
+        android:textStyle="italic" />
 
-        <RadioButton
-            android:id="@+id/b1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Drink slowly"
-            android:textSize="12sp" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/caption"
+        android:orientation="vertical">
 
-        <RadioButton
-            android:id="@+id/b2"
+        <RadioGroup
+            android:id="@+id/form1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Put extra ice in your drink"
-            android:textSize="12sp" />
-
-        <RadioButton
-            android:id="@+id/b3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Decide when to leave ahead of time"
-            android:textSize="12sp" />
-
-        <RadioButton
-            android:id="@+id/b4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Eat something"
-            android:textSize="12sp" />
-
-        <RadioButton
-            android:id="@+id/b5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Decide how much to drink ahead of time"
-            android:textSize="12sp" />
-
-        <RadioButton
-            android:id="@+id/b6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Switch between alcoholic and non-alcoholic drinks"
-            android:textSize="12sp" />
-
-        <RadioButton
-            android:id="@+id/b7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ask a friend to keep tabs on you"
-            android:textSize="12sp" />
-
-        <RadioButton
-            android:id="@+id/b8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Go home with a friend"
-            android:textSize="12sp" />
-
-        <RadioButton
-            android:id="@+id/b9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Call a cab or Uber"
-            android:textSize="12sp" />
-
-        <RadioButton
-            android:id="@+id/b10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Limit the amount of money you spend on alcohol"
-            android:textSize="12sp" />
-
-        <RadioButton
-            android:id="@+id/b11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Think of the consequences of drinking too much"
-            android:textSize="12sp" />
+            android:layout_height="wrap_content"></RadioGroup>
 
         <RadioButton
             android:id="@+id/bInitialOther"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Other"
-            android:textSize="12sp" />
+            android:text="Other" />
 
         <RadioButton
             android:id="@+id/bOther"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Other"
-            android:textSize="12sp" />
-
-    </RadioGroup>
+            android:text="Other" />
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/form2"

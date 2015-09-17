@@ -1,12 +1,11 @@
 package empaticae4.hrker.com.empaticae4.activity.reports;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,96 +18,193 @@ import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.logging.Logger;
+import java.util.Objects;
 
-import empaticae4.hrker.com.empaticae4.main.MainActivity;
 import empaticae4.hrker.com.empaticae4.R;
+import empaticae4.hrker.com.empaticae4.main.MainActivity;
+import empaticae4.hrker.com.empaticae4.sharedprefs.AppSharedPrefs;
+import empaticae4.hrker.com.empaticae4.wrapper.ReportDataWrapper;
 
-public class GoodMovesActivity extends AppCompatActivity implements View.OnClickListener {
+public class GoodMovesActivity extends Activity implements View.OnClickListener {
 
-    public static final String DATAFILE = "userData";
-    SharedPreferences sharedP = null;
 
-    RadioButton rbContact, rbMp3, rbMeditation, mInitialOther, mOther;
-    RadioGroup mForm;
-    BootstrapButton bCancel, bContinue;
-    MediaPlayer mPlayer;
-    String temp;
-    private Logger logger;
+    private RadioButton mInitialOther, mOther;
+    private RadioGroup mForm;
+    private BootstrapButton bCancel, bContinue;
+    private MediaPlayer mPlayer;
+    private String tempString;
+
+    private AppSharedPrefs mPrefs;
+    private ReportDataWrapper mCachedReportData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_good_moves);
-        sharedP = getSharedPreferences(DATAFILE, MODE_MULTI_PROCESS);
         init();
     }
 
     private void init() {
 
-        mForm = (RadioGroup)findViewById(R.id.form1);
-        rbContact = (RadioButton) findViewById(R.id.rbContact);
-        rbMeditation = (RadioButton) findViewById(R.id.rbMeditation);
-        rbMp3 = (RadioButton) findViewById(R.id.rbMp3);
-        mInitialOther = (RadioButton) findViewById(R.id.bInitialOther);
-        mOther = (RadioButton) findViewById(R.id.bOther);
-        mInitialOther.setOnClickListener(this);
-        mOther.setOnClickListener(this);
+        mPrefs = new AppSharedPrefs(GoodMovesActivity.this);
+        mCachedReportData = mPrefs.getReportResponseCache();
+        tempString = mPrefs.getInitCustomGoodmove();
 
-        rbContact.setOnClickListener(this);
-        rbMeditation.setOnClickListener(this);
-        rbMp3.setOnClickListener(this);
+        mForm = (RadioGroup)findViewById(R.id.form1);
+        mForm.setOnCheckedChangeListener(listener1);
+
+        String[] goodMoves = new String[]{"Walk away from the situation",
+                "Call / Text", "Listen to a relaxing song",
+                "Take 4 slow & deep breaths", "Listen to a guided meditation",
+                "Exercise for 15-20 minutes"};
+        final RadioButton[] array = new RadioButton[6];
+        for (int i = 0; i < 6; i++) {
+            array[i] = new RadioButton(this);
+            array[i].setText(goodMoves[i].toString());
+            array[i].setId(i + 1);
+            mForm.addView(array[i]);
+
+            // set dynamic onclicklisteners for contact/mp3/meditation
+            if (i == 1) {
+                array[i].setOnClickListener(contactListener);
+            } else if (i == 2) {
+                array[i].setOnClickListener(mp3Listener);
+            } else if (i == 4) {
+                array[i].setOnClickListener(meditationListener);
+            }
+        }
 
         bCancel = (BootstrapButton) findViewById(R.id.bCancel);
+        bCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openCancelAlert();
+            }
+        });
         bContinue = (BootstrapButton) findViewById(R.id.bContinue);
-        bCancel.setOnClickListener(this);
-        bContinue.setOnClickListener(this);
+        bContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (getAnswerChoice() != -1) {
+
+                    mCachedReportData.setAnswer5(getAnswerChoice());
+                    mPrefs.setReportResponseCache(mCachedReportData);
+                    openFinishAlert();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Please make a selection", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        mInitialOther = (RadioButton) findViewById(R.id.bInitialOther);
+        mOther = (RadioButton) findViewById(R.id.bOther);
+        mInitialOther.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String t = mPrefs.getInitCustomGoodmove();
+
+                if (t == "Other") {
+
+                    openCustom();
+                } else {
+
+                    mForm.clearCheck();
+                    mOther.setChecked(false);
+                    mInitialOther.setChecked(true);
+                }
+            }
+        });
+
+        mOther.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openCustom2();
+            }
+        });
+
+        if (Objects.equals(tempString, "Other")) {
+            mInitialOther.setText("Other");
+        } else {
+            mInitialOther.setText(tempString);
+        }
+
 
         mPlayer = MediaPlayer.create(GoodMovesActivity.this, R.raw.meditation_audio);
+
     }
 
-    @Override
-    public void onClick(View v) {
+    private RadioGroup.OnCheckedChangeListener listener1 = new RadioGroup.OnCheckedChangeListener() {
 
-        switch (v.getId()) {
-            case R.id.rbContact:
+        @Override
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
 
-                break;
-            case R.id.rbMeditation:
+            if (checkedId != -1) {
 
-                break;
-            case R.id.rbMp3:
+                mInitialOther.setChecked(false);
+                mOther.setChecked(false);
+            }
+        }
+    };
 
-                break;
-            case R.id.bCancel:
-                openCancelAlert();
-                break;
-            case R.id.bContinue:
-                openFinishAlert();
-                break;
-            case R.id.bInitialOther:
-                openCustom();
-                break;
-            case R.id.bOther:
-                openCustom2();
-                break;
-            default:
-                break;
+    private int getAnswerChoice() {
 
+        // Main form was not selected
+        if (Integer.valueOf(mForm.getCheckedRadioButtonId()) == -1) {
+            if ((mInitialOther.isChecked()) && (!mOther.isChecked())) {
+                // mInitialOther is checked
+                return 7;
+            } else if ((!mInitialOther.isChecked()) && (mOther.isChecked())) {
+                // mOther is checked
+                return 8;
+            } else {
+                return -1;
+            }
+        } else {
+            return mForm.getCheckedRadioButtonId();
         }
     }
 
+    public View.OnClickListener contactListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            // OPEN CONTACT
+            Toast.makeText(GoodMovesActivity.this, "Contact selected", Toast.LENGTH_SHORT).show();
+
+        }
+    };
+    public View.OnClickListener mp3Listener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            // OPEN MP3
+            Toast.makeText(GoodMovesActivity.this, "Mp3 selected", Toast.LENGTH_SHORT).show();
+
+        }
+    };
+    public View.OnClickListener meditationListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            // OPEN MEDITATION
+            Toast.makeText(GoodMovesActivity.this, "Meditation selected", Toast.LENGTH_SHORT).show();
+
+        }
+    };
+
     private void openCustom() {
+
+        mForm.clearCheck();
+        mOther.setChecked(false);
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(GoodMovesActivity.this);
         alertDialogBuilder.setTitle("");
         alertDialogBuilder.setMessage("Please enter your custom strategy");
 
         final EditText editor = new EditText(this);
-        final SharedPreferences.Editor spEditor = sharedP.edit();
         alertDialogBuilder.setView(editor);
 
         alertDialogBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
@@ -116,12 +212,18 @@ public class GoodMovesActivity extends AppCompatActivity implements View.OnClick
             public void onClick(DialogInterface dialog, int id) {
 
                 if (editor.getText().toString().trim().length() == 0) {
-                    mForm.clearCheck();
+
                     Toast.makeText(GoodMovesActivity.this, "Please enter a strategy", Toast.LENGTH_SHORT).show();
+                    mForm.clearCheck();
+                    mInitialOther.setChecked(false);
                 } else {
-                    String tempString = editor.getText().toString();
-                    mInitialOther.setText(tempString);
-                    spEditor.putString("custom_drinking_strategy", tempString).apply();
+
+                    String ts = editor.getText().toString();
+                    mInitialOther.setText(ts);
+                    mInitialOther.setChecked(true);
+                    tempString = ts;
+                    mPrefs.setInitCustomGoodmove(ts);
+                    mCachedReportData.setIcgm(ts);
                     dialog.cancel();
                 }
             }
@@ -132,6 +234,7 @@ public class GoodMovesActivity extends AppCompatActivity implements View.OnClick
             public void onClick(DialogInterface dialog, int id) {
 
                 dialog.cancel();
+                mInitialOther.setChecked(false);
             }
         });
 
@@ -142,6 +245,9 @@ public class GoodMovesActivity extends AppCompatActivity implements View.OnClick
 
     private void openCustom2() {
 
+        mForm.clearCheck();
+        mInitialOther.setChecked(false);
+
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(GoodMovesActivity.this);
         alertDialogBuilder.setTitle("");
         alertDialogBuilder.setMessage("Please enter your custom strategy");
@@ -153,10 +259,17 @@ public class GoodMovesActivity extends AppCompatActivity implements View.OnClick
             public void onClick(DialogInterface dialog, int id) {
 
                 if (editor.getText().toString().trim().length() == 0) {
-                    mForm.clearCheck();
+
                     Toast.makeText(GoodMovesActivity.this, "Please enter a strategy", Toast.LENGTH_SHORT).show();
+                    mForm.clearCheck();
+                    mOther.setChecked(false);
                 } else {
-                    mOther.setText(editor.getText());
+
+                    String ts = editor.getText().toString();
+                    mOther.setText(ts);
+                    mOther.setChecked(true);
+                    mPrefs.setCustomGoodmove(ts);
+                    mCachedReportData.setCgm(ts);
                     dialog.cancel();
                 }
             }
@@ -166,46 +279,7 @@ public class GoodMovesActivity extends AppCompatActivity implements View.OnClick
             public void onClick(DialogInterface dialog, int id) {
 
                 dialog.cancel();
-            }
-        });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-    }
-
-    private void openFinishAlert() {
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(GoodMovesActivity.this);
-        final LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
-        final View Viewlayout = inflater.inflate(R.layout.exit_dialog, (ViewGroup) findViewById(R.id.exit_dialog));
-
-        alertDialogBuilder.setTitle("");
-        alertDialogBuilder.setMessage("You're doing great! \n Keep up the good work.");
-
-        // set positive button: Yes
-        alertDialogBuilder.setPositiveButton("Finish", new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int id) {
-
-                // save DATA before exiting
-                // // TODO: 9/9/15 use Logger class to SAVE DATA
-                //Logger logger = new Logger(GoodMovesActivity.this);
-                // currently throws exception because this is destroyed, now pointing
-                // to a null reference.
-
-                try {
-
-//                    logger.writeLog(1, 2, 3);
-                    Toast.makeText(GoodMovesActivity.this, "Logging Success", Toast.LENGTH_SHORT).show();
-
-                } catch (Exception e) {
-                    Toast.makeText(GoodMovesActivity.this, "Logging Failed", Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                }
-
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(i);
-                Toast.makeText(getApplicationContext(), "Your response has been recorded", Toast.LENGTH_SHORT).show();
+                mOther.setChecked(false);
             }
         });
 
@@ -242,19 +316,55 @@ public class GoodMovesActivity extends AppCompatActivity implements View.OnClick
         alertDialog.show();
     }
 
-    private void recordTime() {
+    private void openFinishAlert() {
 
-        // Pass in current time in milli, record report duration in SharedPref
-        long startTime, endTime, duration;
-        String temp;
-        SharedPreferences.Editor spEditor = sharedP.edit();
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(GoodMovesActivity.this);
+        final LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        final View Viewlayout = inflater.inflate(R.layout.exit_dialog, (ViewGroup) findViewById(R.id.exit_dialog));
 
-        startTime = sharedP.getLong("Start_time", 0);
-        endTime = Calendar.getInstance().getTimeInMillis();
+        alertDialogBuilder.setTitle("");
+        alertDialogBuilder.setMessage("You're doing great! \n Keep up the good work.");
 
+        // set positive button: Yes
+        alertDialogBuilder.setPositiveButton("Finish", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int id) {
+
+                // save DATA before exiting
+
+                try {
+
+                    //logger.writeLog(1, 2, 3);
+                    Toast.makeText(GoodMovesActivity.this, "Logging Success", Toast.LENGTH_SHORT).show();
+
+                } catch (Exception e) {
+                    Toast.makeText(GoodMovesActivity.this, "Logging Failed", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(i);
+                Toast.makeText(getApplicationContext(), "Your response has been recorded", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    private long recordTime() {
+
+        /* DATE FORMATTER
         duration = endTime - startTime;
         temp = (new SimpleDateFormat("mm:ss:SSS")).format(new Date(duration));
         spEditor.putString("Report_duration", temp).commit();
+        */
+
+        long tempTime = Calendar.getInstance().getTimeInMillis();
+        long tempTime2 = mCachedReportData.getStartTime().getTimeInMillis();
+        long duration = (tempTime - tempTime2);
+        mPrefs.setDuration(duration);
+        return duration;
 
     }
 
@@ -278,5 +388,10 @@ public class GoodMovesActivity extends AppCompatActivity implements View.OnClick
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View view) {
+
     }
 }

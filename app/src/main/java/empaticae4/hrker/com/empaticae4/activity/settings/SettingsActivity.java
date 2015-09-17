@@ -26,7 +26,7 @@ public class SettingsActivity extends Activity {
     private AppSharedPrefs mPrefs;
 
     private Button resetButton;
-    private TextView sp1, sp2, sp3, sp4, sp5, sp6, sp7;
+    private TextView sp0, sp1, sp2, sp3, sp4, sp5, sp6, sp7;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,14 +41,22 @@ public class SettingsActivity extends Activity {
         mPrefs = new AppSharedPrefs(SettingsActivity.this);
 
         resetButton = (Button) findViewById(R.id.resetPrefs);
+        sp0 = (TextView)findViewById(R.id.sp0);
+        sp0.setText("init_custom_coolthought: " + mPrefs.getInitCustomCoolthought());
+
         sp1 = (TextView)findViewById(R.id.sp1);
         sp1.setText("init_custom_negative_mood: " + mPrefs.getInitCustomNegativeMood());
         sp2 = (TextView)findViewById(R.id.sp2);
         sp2.setText("init_custom_event: " + mPrefs.getInitCustomEvent());
         sp3 = (TextView)findViewById(R.id.sp3);
+        sp3.setText("last report duration in minutes: " + ((mPrefs.getDuration() / 1000) / 60));
+        // currently fetches long in milliseconds
         sp4 = (TextView)findViewById(R.id.sp4);
+        sp4.setText("init_custom_coolthought: " + mPrefs.getInitCustomCoolthought());
         sp5 = (TextView)findViewById(R.id.sp5);
+        sp5.setText("init_custom_drinking: " + mPrefs.getInitCustomDrinking());
         sp6 = (TextView)findViewById(R.id.sp6);
+        sp6.setText("init_custom_goodmove: " + mPrefs.getInitCustomGoodmove());
         sp7 = (TextView)findViewById(R.id.sp7);
 
 

@@ -3,29 +3,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp"
-    android:background="@drawable/pink_3_tsbs"
+    android:background="@drawable/pink_5_tsbs"
     tools:context="empaticae4.hrker.com.empaticae4.main.Splash">
-
-    <ImageView
-        android:id="@+id/pic"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="50dp"
-        android:layout_centerHorizontal="true"
-        android:src="@mipmap/app_logo"/>
 
     <TextView
         android:id="@+id/title"
-        android:layout_below="@+id/pic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_margin="20dp"
+        android:layout_margin="25dp"
         android:gravity="center_horizontal"
         android:text="Mind the Moment"
-        android:textColor="@color/primary_dark_material_light"
+        android:textColor="#a8e4e2"
         android:textSize="30sp"
         android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/pic"
+        android:layout_below="@+id/title"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:src="@mipmap/app_logo"/>
 
     <TextView
         android:layout_width="wrap_content"

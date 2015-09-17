@@ -1,11 +1,10 @@
 package empaticae4.hrker.com.empaticae4.activity.reports;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,19 +17,24 @@ import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 
+import java.util.Calendar;
 import java.util.Objects;
 
-import empaticae4.hrker.com.empaticae4.main.MainActivity;
 import empaticae4.hrker.com.empaticae4.R;
+import empaticae4.hrker.com.empaticae4.main.MainActivity;
+import empaticae4.hrker.com.empaticae4.sharedprefs.AppSharedPrefs;
+import empaticae4.hrker.com.empaticae4.wrapper.ReportDataWrapper;
 
-public class DrinkActivity extends AppCompatActivity implements View.OnClickListener  {
+public class DrinkActivity extends Activity {
 
-    public static final String DATAFILE = "userData";
-    private SharedPreferences sharedP;
 
+    private RadioGroup mForm;
     private RadioButton mInitialOther, mOther;
     private BootstrapButton bCancel, bContinue;
-    private RadioGroup mForm;
+    private String tempString;
+
+    private AppSharedPrefs mPrefs;
+    private ReportDataWrapper mCachedReportData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,32 +46,75 @@ public class DrinkActivity extends AppCompatActivity implements View.OnClickList
 
     private void init() {
 
-        sharedP = getSharedPreferences(DATAFILE, MODE_MULTI_PROCESS);
-        final String tempString = sharedP.getString("custom_drinking_strategy", "Other");
+        mPrefs = new AppSharedPrefs(DrinkActivity.this);
+        mCachedReportData = mPrefs.getReportResponseCache();
+        tempString = mPrefs.getInitCustomDrinking();
 
-        mForm = (RadioGroup)findViewById(R.id.form1);
-        bCancel = (BootstrapButton)findViewById(R.id.bCancel);
+        mForm = (RadioGroup) findViewById(R.id.form1);
+        mForm.setOnCheckedChangeListener(listener1);
+
+        String[] drinking = new String[]{"Drink slowly",
+                "Put extra ice in your drink", "Decide when to leave ahead of time",
+                "Eat something", "Decide how much to drink ahead of time",
+                "Switch between alcoholic & nonalcoholic drinks",
+                "Ask a friend to keep tabs on you",
+                "Go home with a friend", "Call a cab or Uber",
+                "Limit the amount of money you spend on alcohol",
+                "Think of the consequences of drinking too much"};
+        final RadioButton[] array = new RadioButton[11];
+        for (int i = 0; i < 11; i++) {
+            array[i] = new RadioButton(this);
+            array[i].setText(drinking[i].toString());
+            array[i].setId(i + 1);
+            mForm.addView(array[i]);
+        }
+
+        bCancel = (BootstrapButton) findViewById(R.id.bCancel);
         bCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openCancelAlert();
             }
         });
-        bContinue = (BootstrapButton)findViewById(R.id.bContinue);
+        bContinue = (BootstrapButton) findViewById(R.id.bContinue);
         bContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openFinishAlert();
+
+                if (getAnswerChoice() != -1) {
+
+                    mCachedReportData.setAnswer4(getAnswerChoice());
+                    mPrefs.setReportResponseCache(mCachedReportData);
+                    openFinishAlert();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Please make a selection", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         mInitialOther = (RadioButton) findViewById(R.id.bInitialOther);
+        mOther = (RadioButton) findViewById(R.id.bOther);
         mInitialOther.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if (Objects.equals(tempString, "Other")) {
+                String t = mPrefs.getInitCustomDrinking();
+
+                if (t == "Other") {
+
                     openCustom();
+                } else {
+
+                    mForm.clearCheck();
+                    mOther.setChecked(false);
+                    mInitialOther.setChecked(true);
                 }
+            }
+        });
+
+        mOther.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openCustom2();
             }
         });
 
@@ -76,25 +123,50 @@ public class DrinkActivity extends AppCompatActivity implements View.OnClickList
         } else {
             mInitialOther.setText(tempString);
         }
-        mOther = (RadioButton)findViewById(R.id.bOther);
-        mOther.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                openCustom2();
-            }
-        });
 
     }
 
+    private RadioGroup.OnCheckedChangeListener listener1 = new RadioGroup.OnCheckedChangeListener() {
+
+        @Override
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+            if (checkedId != -1) {
+
+                mInitialOther.setChecked(false);
+                mOther.setChecked(false);
+            }
+        }
+    };
+
+    private int getAnswerChoice() {
+
+        // Main form was not selected
+        if (Integer.valueOf(mForm.getCheckedRadioButtonId()) == -1) {
+            if ((mInitialOther.isChecked()) && (!mOther.isChecked())) {
+                // mInitialOther is checked
+                return 12;
+            } else if ((!mInitialOther.isChecked()) && (mOther.isChecked())) {
+                // mOther is checked
+                return 13;
+            } else {
+                return -1;
+            }
+        } else {
+            return mForm.getCheckedRadioButtonId();
+        }
+    }
+
     private void openCustom() {
+
+        mForm.clearCheck();
+        mOther.setChecked(false);
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DrinkActivity.this);
         alertDialogBuilder.setTitle("");
         alertDialogBuilder.setMessage("Please enter your custom strategy");
 
         final EditText editor = new EditText(this);
-        final SharedPreferences.Editor spEditor = sharedP.edit();
         alertDialogBuilder.setView(editor);
 
         alertDialogBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
@@ -102,12 +174,18 @@ public class DrinkActivity extends AppCompatActivity implements View.OnClickList
             public void onClick(DialogInterface dialog, int id) {
 
                 if (editor.getText().toString().trim().length() == 0) {
-                    mForm.clearCheck();
+
                     Toast.makeText(DrinkActivity.this, "Please enter a strategy", Toast.LENGTH_SHORT).show();
+                    mForm.clearCheck();
+                    mInitialOther.setChecked(false);
                 } else {
-                    String tempString = editor.getText().toString();
-                    mInitialOther.setText(tempString);
-                    spEditor.putString("custom_drinking_strategy", tempString).apply();
+
+                    String ts = editor.getText().toString();
+                    mInitialOther.setText(ts);
+                    mInitialOther.setChecked(true);
+                    tempString = ts;
+                    mPrefs.setInitCustomDrinking(ts);
+                    mCachedReportData.setIcd(ts);
                     dialog.cancel();
                 }
             }
@@ -116,8 +194,9 @@ public class DrinkActivity extends AppCompatActivity implements View.OnClickList
         alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int id) {
-                mForm.clearCheck();
+
                 dialog.cancel();
+                mInitialOther.setChecked(false);
             }
         });
 
@@ -127,6 +206,9 @@ public class DrinkActivity extends AppCompatActivity implements View.OnClickList
 
     private void openCustom2() {
 
+        mForm.clearCheck();
+        mInitialOther.setChecked(false);
+
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DrinkActivity.this);
         alertDialogBuilder.setTitle("");
         alertDialogBuilder.setMessage("Please enter your custom strategy");
@@ -139,10 +221,16 @@ public class DrinkActivity extends AppCompatActivity implements View.OnClickList
 
                 if (editor.getText().toString().trim().length() == 0) {
 
-                    mForm.clearCheck();
                     Toast.makeText(DrinkActivity.this, "Please enter a strategy", Toast.LENGTH_SHORT).show();
+                    mForm.clearCheck();
+                    mOther.setChecked(false);
                 } else {
-                    mOther.setText(editor.getText());
+
+                    String ts = editor.getText().toString();
+                    mOther.setText(ts);
+                    mOther.setChecked(true);
+                    mPrefs.setCustomDrinking(ts);
+                    mCachedReportData.setCd(ts);
                     dialog.cancel();
                 }
             }
@@ -151,8 +239,8 @@ public class DrinkActivity extends AppCompatActivity implements View.OnClickList
         alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 
-                mForm.clearCheck();
                 dialog.cancel();
+                mOther.setChecked(false);
             }
         });
 
@@ -192,6 +280,7 @@ public class DrinkActivity extends AppCompatActivity implements View.OnClickList
 
     private void openFinishAlert() {
 
+        // TODO: 9/16/15 WRAP UP AND LOG
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DrinkActivity.this);
         final LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
         final View Viewlayout = inflater.inflate(R.layout.exit_dialog, (ViewGroup) findViewById(R.id.exit_dialog));
@@ -206,7 +295,6 @@ public class DrinkActivity extends AppCompatActivity implements View.OnClickList
 
                 // save DATA before exiting
 
-
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(i);
                 Toast.makeText(getApplicationContext(), "Your response has been recorded", Toast.LENGTH_SHORT).show();
@@ -215,6 +303,22 @@ public class DrinkActivity extends AppCompatActivity implements View.OnClickList
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+    private long recordTime() {
+
+        /* DATE FORMATTER
+        duration = endTime - startTime;
+        temp = (new SimpleDateFormat("mm:ss:SSS")).format(new Date(duration));
+        spEditor.putString("Report_duration", temp).commit();
+        */
+
+        long tempTime = Calendar.getInstance().getTimeInMillis();
+        long tempTime2 = mCachedReportData.getStartTime().getTimeInMillis();
+        long duration = (tempTime - tempTime2);
+        mPrefs.setDuration(duration);
+        return duration;
+
     }
 
     @Override
@@ -239,9 +343,4 @@ public class DrinkActivity extends AppCompatActivity implements View.OnClickList
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onClick(View view) {
-
-
-    }
 }

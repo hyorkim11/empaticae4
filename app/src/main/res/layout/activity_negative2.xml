@@ -27,45 +27,20 @@
         android:layout_centerHorizontal="true"
         android:text="Please select one"
         android:textColor="@color/grey"
+        android:layout_marginTop="-10dp"
         android:textSize="15sp"
         android:textStyle="italic" />
 
-    <RadioGroup
-        android:id="@+id/form1"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/caption"
-        android:layout_marginTop="20dp">
+        android:orientation="vertical">
 
-        <RadioButton
-            android:id="@+id/b1"
+        <RadioGroup
+            android:id="@+id/form1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="This feeling is temporary" />
-
-        <RadioButton
-            android:id="@+id/b2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="I can choose how to respond" />
-
-        <RadioButton
-            android:id="@+id/b3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="My thoughts are not me" />
-
-        <RadioButton
-            android:id="@+id/b4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="If I drink too much, how will I feel tomorrow?" />
-
-        <RadioButton
-            android:id="@+id/b5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="I can handle this" />
+            android:layout_height="wrap_content"></RadioGroup>
 
         <RadioButton
             android:id="@+id/bInitialOther"
@@ -78,8 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Other" />
-
-    </RadioGroup>
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/form2"

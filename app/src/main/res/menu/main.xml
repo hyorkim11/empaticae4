@@ -6,10 +6,12 @@
     <item
         android:id="@+id/action_settings"
         android:title="Settings"
+        android:icon="@mipmap/ic_launcher"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_contact"
         android:title="Contact"
+        android:icon="@mipmap/ic_launcher"
         app:showAsAction="never" />
 
 </menu>

@@ -30,46 +30,16 @@
         android:textSize="15sp"
         android:textStyle="italic" />
 
-
-    <RadioGroup
-        android:id="@+id/form1"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/caption"
-        android:layout_marginTop="20dp">
+        android:orientation="vertical">
 
-        <RadioButton
+        <RadioGroup
+            android:id="@+id/form1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Walk away from the situation" />
-
-        <RadioButton
-            android:id="@+id/rbContact"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Call/Text (insert contact)" />
-
-        <RadioButton
-            android:id="@+id/rbMp3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Listen to a relaxing song" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Take four slow, deep breaths" />
-
-        <RadioButton
-            android:id="@+id/rbMeditation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Listen to guided meditation" />
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Exercise for 15-20 minutes" />
+            android:layout_height="wrap_content"></RadioGroup>
 
         <RadioButton
             android:id="@+id/bInitialOther"
@@ -82,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Other" />
-    </RadioGroup>
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/form3"

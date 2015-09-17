@@ -71,9 +71,9 @@ public class NegativeActivity extends Activity {
         mOther = (RadioButton) findViewById(R.id.bOther);
 
         if (Objects.equals(tempString, "Other")) {
-            mOther.setText("Other");
+            mInitialOther.setText("Other");
         } else {
-            mOther.setText(tempString);
+            mInitialOther.setText(tempString);
         }
 
         bContinue.setOnClickListener(new View.OnClickListener() {

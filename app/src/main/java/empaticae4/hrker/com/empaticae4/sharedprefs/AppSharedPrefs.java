@@ -16,6 +16,7 @@ import empaticae4.hrker.com.empaticae4.wrapper.ReportDataWrapper;
 public class AppSharedPrefs {
 
     private static final String REPORT_TYPE = "report_type";
+    private static final String DURATION = "duration";
 
     private static final String REPORT_RESPONSE_DATA_SET = "report_response_data_set";
     private static final String REPORT_RESPONSE_CACHE = "report_response_cache";
@@ -136,6 +137,12 @@ public class AppSharedPrefs {
         return obj;
     }
 
+    public void setDuration(long i) {
+        setProperty(DURATION, i);
+    }
+    public long getDuration() {
+        return mPrefs.getLong(DURATION, 0);
+    }
 
     public void setAnswer1(int i) {
         setProperty(ANSWER1, i);

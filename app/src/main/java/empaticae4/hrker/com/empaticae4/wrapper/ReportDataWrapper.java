@@ -8,6 +8,7 @@ public class ReportDataWrapper  {
 
     private Calendar startTime;
     private Calendar endTime;
+    private long duration;
 
     private int answer1;
     private int intensity;
@@ -52,6 +53,14 @@ public class ReportDataWrapper  {
         cct = "Other";
         cd = "Other";
 
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
     }
 
     public int getAnswer1() {

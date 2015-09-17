@@ -1,11 +1,10 @@
 package empaticae4.hrker.com.empaticae4.activity.reports;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,37 +13,36 @@ import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
-import empaticae4.hrker.com.empaticae4.main.MainActivity;
 import empaticae4.hrker.com.empaticae4.R;
+import empaticae4.hrker.com.empaticae4.main.MainActivity;
+import empaticae4.hrker.com.empaticae4.sharedprefs.AppSharedPrefs;
+import empaticae4.hrker.com.empaticae4.wrapper.ReportDataWrapper;
 
 // This is the Positive Response Activity
 
-public class PositiveActivity extends AppCompatActivity {
+public class PositiveActivity extends Activity {
 
-    public static final String DATAFILE = "userData";
-    SharedPreferences sharedP = null;
 
-    EditText etResponse;
-    String temp;
-    BootstrapButton bContinue, bCancel;
-    //Logger log;
+    private EditText etResponse;
+    private BootstrapButton bContinue, bCancel;
+
+    private AppSharedPrefs mPrefs;
+    private ReportDataWrapper mCachedReportData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_positive);
-        sharedP = getSharedPreferences(DATAFILE, MODE_MULTI_PROCESS);
         init();
     }
 
     private void init() {
 
-        //log = new Logger(PositiveActivity.this);
+        mPrefs = new AppSharedPrefs(PositiveActivity.this);
+        mCachedReportData = mPrefs.getReportResponseCache();
 
         etResponse = (EditText)findViewById(R.id.etResponse);
         bContinue = (BootstrapButton)findViewById(R.id.bContinue);
@@ -67,19 +65,19 @@ public class PositiveActivity extends AppCompatActivity {
 
     }
 
-    private void recordTime() {
+    private long recordTime() {
 
-        // Pass in current time in milli, record report duration in SharedPref
-        long startTime, endTime, duration;
-        String temp;
-        SharedPreferences.Editor spEditor = sharedP.edit();
-
-        startTime = sharedP.getLong("Start_time", 0);
-        endTime = Calendar.getInstance().getTimeInMillis();
-
+        /* DATE FORMATTER
         duration = endTime - startTime;
         temp = (new SimpleDateFormat("mm:ss:SSS")).format(new Date(duration));
         spEditor.putString("Report_duration", temp).commit();
+        */
+
+        long tempTime = Calendar.getInstance().getTimeInMillis();
+        long tempTime2 = mCachedReportData.getStartTime().getTimeInMillis();
+        long duration = (tempTime - tempTime2);
+        mPrefs.setDuration(duration);
+        return duration;
 
     }
 
@@ -98,15 +96,16 @@ public class PositiveActivity extends AppCompatActivity {
 
                 public void onClick(DialogInterface dialog, int id) {
 
-                    // Record Positive_Event data & Duration of Report
-                    temp = etResponse.getText().toString();
-                    SharedPreferences.Editor spEditor = sharedP.edit();
-                    spEditor.putString("Positive_Event", temp).commit();
+                    // Record Report Data
                     recordTime();
+                    mPrefs.setReportResponseCache(mCachedReportData);
 
+                    // TODO: 9/16/15 WRAP UP Report Data and Log in CSV file
+                    
                     Intent i = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(i);
                     Toast.makeText(getApplicationContext(), "Your response has been recorded", Toast.LENGTH_SHORT).show();
+                    PositiveActivity.this.finish();
                 }
             });
 
