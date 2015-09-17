@@ -202,8 +202,8 @@ public class NegativeActivity2 extends Activity {
                     mInitialOther.setText(ts);
                     mInitialOther.setChecked(true);
                     tempString = ts;
-                    mPrefs.setInitCustomGoodmove(ts);
-                    mCachedReportData.setIcgm(ts);
+                    mPrefs.setInitCustomCoolthought(ts);
+                    mCachedReportData.setIcct(ts);
                     dialog.cancel();
                 }
             }

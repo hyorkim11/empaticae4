@@ -12,7 +12,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_margin="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="20dp"
         android:gravity="center_horizontal"
         android:text="How are you feeling?"
         android:textColor="@color/white"
@@ -41,7 +44,7 @@
                 android:id="@+id/bInitialOther"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="InitOther" />
+                android:text="Other" />
 
             <RadioButton
                 android:id="@+id/bOther"

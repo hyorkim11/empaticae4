@@ -12,28 +12,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_margin="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="20dp"
         android:gravity="center_horizontal"
         android:text="Good Moves"
         android:textColor="@color/white"
         android:textSize="30sp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/caption"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/title"
-        android:layout_centerHorizontal="true"
-        android:text="Please select one"
-        android:textColor="@color/grey"
-        android:textSize="15sp"
-        android:textStyle="italic" />
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/caption"
+        android:layout_below="@+id/title"
         android:orientation="vertical">
 
         <RadioGroup
