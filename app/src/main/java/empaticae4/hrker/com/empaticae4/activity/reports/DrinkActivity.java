@@ -285,8 +285,9 @@ public class DrinkActivity extends Activity {
         final LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
         final View Viewlayout = inflater.inflate(R.layout.exit_dialog, (ViewGroup) findViewById(R.id.exit_dialog));
 
+        alertDialogBuilder.setView(Viewlayout);
         alertDialogBuilder.setTitle("");
-        alertDialogBuilder.setMessage("You're doing great! \n Keep up the good work.");
+        alertDialogBuilder.setMessage("You're doing great!\nKeep up the good work.");
 
         // set positive button: Yes
         alertDialogBuilder.setPositiveButton("Finish", new DialogInterface.OnClickListener() {
@@ -294,6 +295,8 @@ public class DrinkActivity extends Activity {
             public void onClick(DialogInterface dialog, int id) {
 
                 // save DATA before exiting
+                mCachedReportData.setDuration(getReportDuration());
+                mPrefs.setReportResponseCache(mCachedReportData);
 
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(i);
@@ -305,19 +308,16 @@ public class DrinkActivity extends Activity {
         alertDialog.show();
     }
 
-    private long recordTime() {
+    private long getReportDuration() {
 
         /* DATE FORMATTER
         duration = endTime - startTime;
         temp = (new SimpleDateFormat("mm:ss:SSS")).format(new Date(duration));
         spEditor.putString("Report_duration", temp).commit();
         */
-
         long tempTime = Calendar.getInstance().getTimeInMillis();
         long tempTime2 = mCachedReportData.getStartTime().getTimeInMillis();
-        long duration = (tempTime - tempTime2);
-        mPrefs.setDuration(duration);
-        return duration;
+        return (tempTime - tempTime2);
 
     }
 

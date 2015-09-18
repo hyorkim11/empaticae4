@@ -57,6 +57,7 @@ public class ReportActivity extends Activity {
 
         // Instantiate temp ReportDataWrapper class to hold values
         mCachedReportData = new ReportDataWrapper();
+
         mCachedReportData.setStartTime(Calendar.getInstance());
         mCachedReportData.setReportType(mReport_Type);
 
@@ -142,7 +143,6 @@ public class ReportActivity extends Activity {
                     mOther.setChecked(false);
                     mInitialOther.setChecked(true);
                 }
-
             }
         });
         mOther.setOnClickListener(new View.OnClickListener() {
@@ -422,11 +422,11 @@ public class ReportActivity extends Activity {
                     Toast.makeText(ReportActivity.this, "Please select intensity", Toast.LENGTH_SHORT).show();
                 } else {
 
-                    Toast.makeText(ReportActivity.this, "AnswerChoice: " + getAnswerChoice() + " Intensity: " + mIntensity, Toast.LENGTH_LONG).show();
-
                     mCachedReportData.setIntensity(mIntensity);
                     mCachedReportData.setAnswer1(getAnswerChoice());
                     mPrefs.setReportResponseCache(mCachedReportData);
+                    Toast.makeText(ReportActivity.this, "AnswerChoice: " + mCachedReportData.getAnswer1() + " Intensity: " + mCachedReportData.getIntensity(), Toast.LENGTH_LONG).show();
+
                     if (PoN()) {
                         // if positive emotion selected
                         Intent j = new Intent(getApplicationContext(), PositiveActivity.class);
