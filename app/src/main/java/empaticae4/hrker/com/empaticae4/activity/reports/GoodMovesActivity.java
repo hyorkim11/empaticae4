@@ -62,11 +62,11 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
         final RadioButton[] array = new RadioButton[6];
         for (int i = 0; i < 6; i++) {
             array[i] = new RadioButton(this);
-            array[i].setText(goodMoves[i].toString());
+            array[i].setText(goodMoves[i]);
             array[i].setId(i + 1);
             mForm.addView(array[i]);
 
-            // set dynamic onclicklisteners for contact/mp3/meditation
+            // set dynamic OnClickListeners for contact/mp3/meditation
             if (i == 1) {
                 array[i].setOnClickListener(contactListener);
             } else if (i == 2) {
@@ -106,7 +106,7 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
 
                 String t = mPrefs.getInitCustomGoodmove();
 
-                if (t == "Other") {
+                if (t.equals("Other")) {
 
                     openCustom();
                 } else {
@@ -152,7 +152,7 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
     private int getAnswerChoice() {
 
         // Main form was not selected
-        if (Integer.valueOf(mForm.getCheckedRadioButtonId()) == -1) {
+        if (mForm.getCheckedRadioButtonId() == -1) {
             if ((mInitialOther.isChecked()) && (!mOther.isChecked())) {
                 // mInitialOther is checked
                 return 7;
@@ -331,10 +331,11 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
             public void onClick(DialogInterface dialog, int id) {
 
                 // save DATA before exiting
+                mCachedReportData.setDuration(getReportDuration());
+                mPrefs.setReportResponseCache(mCachedReportData);
 
                 try {
 
-                    //logger.writeLog(1, 2, 3);
                     Toast.makeText(GoodMovesActivity.this, "Logging Success", Toast.LENGTH_SHORT).show();
 
                 } catch (Exception e) {
@@ -352,19 +353,16 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
         alertDialog.show();
     }
 
-    private long recordTime() {
+    private long getReportDuration() {
 
         /* DATE FORMATTER
         duration = endTime - startTime;
         temp = (new SimpleDateFormat("mm:ss:SSS")).format(new Date(duration));
         spEditor.putString("Report_duration", temp).commit();
         */
-
         long tempTime = Calendar.getInstance().getTimeInMillis();
         long tempTime2 = mCachedReportData.getStartTime().getTimeInMillis();
-        long duration = (tempTime - tempTime2);
-        mPrefs.setDuration(duration);
-        return duration;
+        return (tempTime - tempTime2);
 
     }
 

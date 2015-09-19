@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
+import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +19,10 @@ import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Objects;
 
@@ -32,6 +38,7 @@ public class DrinkActivity extends Activity {
     private RadioButton mInitialOther, mOther;
     private BootstrapButton bCancel, bContinue;
     private String tempString;
+    private Time cal;
 
     private AppSharedPrefs mPrefs;
     private ReportDataWrapper mCachedReportData;
@@ -278,6 +285,83 @@ public class DrinkActivity extends Activity {
         alertDialog.show();
     }
 
+    private long getReportDuration() {
+
+        /* DATE FORMATTER
+        duration = endTime - startTime;
+        temp = (new SimpleDateFormat("mm:ss:SSS")).format(new Date(duration));
+        spEditor.putString("Report_duration", temp).commit();
+        */
+        long tempTime = Calendar.getInstance().getTimeInMillis();
+        long tempTime2 = mCachedReportData.getStartTime().getTimeInMillis();
+        return (tempTime - tempTime2);
+
+    }
+
+    private void finalizeReport() {
+
+        // Set Duration of Current Report
+        mCachedReportData.setDuration(getReportDuration());
+        int duration = (int) ((mCachedReportData.getDuration() / 1000) % 60);
+
+        // Set Current Time String: timeStamp
+        cal = new Time(Time.getCurrentTimezone());
+        cal.setToNow();
+        String currentTime = cal.month + "/" + cal.monthDay + "/" + cal.year + "/" + cal.format("%k:%M:%S");
+        String timeStamp = "log," + currentTime + "," + "report_type," +
+                mCachedReportData.getReportType()+ "," + "temp: 00," + duration + "\n";
+        // Current timeStamp format:
+
+        // Set Data String: rowData
+        String rowData = ",answer1," + Integer.toString(mCachedReportData.getAnswer1()) + ",I: " +
+                mCachedReportData.getIntensity() + "\n" +
+                ",answer2," + Integer.toString(mCachedReportData.getAnswer2()) + "\n" +
+                ",answer3," + Integer.toString(mCachedReportData.getAnswer3()) + "\n" +
+                ",answer4," + Integer.toString(mCachedReportData.getAnswer4()) + "\n" +
+                ",answer5," + Integer.toString(mCachedReportData.getAnswer5()) + "\n";
+        /* Current data format:
+        log | 8/18/2015/23:56:19 | report_type | RT | temp:00 | 245424
+            | answer1            | #           | I:#|
+        *   | answer2            | #
+        *   | answer3            | #
+        *   | answer4            | #
+        *   | answer5            | #
+        * */
+
+        String finalLog = timeStamp + rowData;
+
+        File file = null;
+        File root = Environment.getExternalStorageDirectory();
+
+        if (root.canWrite()) {
+
+            File dir = new File(root.getAbsolutePath() + "/mtmData");
+            dir.mkdirs();
+            file = new File(dir, "userData.csv");
+            FileOutputStream out = null;
+
+            try {
+                out = new FileOutputStream(file, true);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            try {
+                out.write(finalLog.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Toast.makeText(DrinkActivity.this, "External Storage Can't Be Accessed", Toast.LENGTH_SHORT).show();
+        }
+
+        mPrefs.setReportResponseCache(mCachedReportData);
+    }
+
     private void openFinishAlert() {
 
         // TODO: 9/16/15 WRAP UP AND LOG
@@ -295,8 +379,7 @@ public class DrinkActivity extends Activity {
             public void onClick(DialogInterface dialog, int id) {
 
                 // save DATA before exiting
-                mCachedReportData.setDuration(getReportDuration());
-                mPrefs.setReportResponseCache(mCachedReportData);
+                finalizeReport();
 
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(i);
@@ -306,19 +389,6 @@ public class DrinkActivity extends Activity {
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-    }
-
-    private long getReportDuration() {
-
-        /* DATE FORMATTER
-        duration = endTime - startTime;
-        temp = (new SimpleDateFormat("mm:ss:SSS")).format(new Date(duration));
-        spEditor.putString("Report_duration", temp).commit();
-        */
-        long tempTime = Calendar.getInstance().getTimeInMillis();
-        long tempTime2 = mCachedReportData.getStartTime().getTimeInMillis();
-        return (tempTime - tempTime2);
-
     }
 
     @Override

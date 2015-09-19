@@ -10,69 +10,88 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
         android:text="Settings Page"
-        android:textSize="30sp"/>
+        android:textSize="30sp" />
 
     <Button
         android:id="@+id/resetPrefs"
-        android:layout_below="@+id/title"
-        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Reset SharedPrefs"/>
-
-    <Button
-        android:id="@+id/showCustomFeeling1"
-        android:layout_below="@+id/resetPrefs"
+        android:layout_below="@+id/title"
         android:layout_centerHorizontal="true"
-        android:text="Custom Feeling 1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:text="Reset SharedPrefs" />
 
     <LinearLayout
-        android:layout_below="@+id/showCustomFeeling1"
-        android:orientation="vertical"
+        android:id="@+id/texts"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/resetPrefs"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/sptitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="SharedPrefs"/>
+            android:text="SharedPrefs" />
+
         <TextView
             android:id="@+id/sp0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
         <TextView
             android:id="@+id/sp1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
         <TextView
             android:id="@+id/sp2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
         <TextView
             android:id="@+id/sp3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
         <TextView
             android:id="@+id/sp4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
         <TextView
             android:id="@+id/sp5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
         <TextView
             android:id="@+id/sp6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
         <TextView
             android:id="@+id/sp7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
-
     </LinearLayout>
+
+    <Button
+        android:id="@+id/bSend"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="SendCSV"
+        android:layout_below="@+id/texts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/bResetCSV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/bSend"
+        android:layout_centerHorizontal="true"
+        android:text="ResetCSV" />
 </RelativeLayout>
