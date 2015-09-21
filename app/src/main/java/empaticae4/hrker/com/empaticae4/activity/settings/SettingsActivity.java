@@ -58,6 +58,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
         mResetCSV = (Button) findViewById(R.id.bResetCSV);
         mResetCSV.setOnClickListener(this);
 
+
         sp0 = (TextView)findViewById(R.id.sp0);
         sp0.setText("init_custom_coolthought: " + mPrefs.getInitCustomCoolthought());
         sp1 = (TextView)findViewById(R.id.sp1);
@@ -65,7 +66,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
         sp2 = (TextView)findViewById(R.id.sp2);
         sp2.setText("init_custom_event: " + mPrefs.getInitCustomEvent());
         sp3 = (TextView)findViewById(R.id.sp3);
-        sp3.setText("last report duration in seconds: " + mPrefs.getDuration());
+        sp3.setText("last report duration: " + mPrefs.getDuration());
         // currently fetches long in milliseconds
         sp4 = (TextView)findViewById(R.id.sp4);
         sp4.setText("init_custom_coolthought: " + mPrefs.getInitCustomCoolthought());

@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
+import android.text.format.Time;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +15,10 @@ import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Calendar;
 
 import empaticae4.hrker.com.empaticae4.R;
@@ -27,6 +33,7 @@ public class PositiveActivity extends Activity {
 
     private EditText etResponse;
     private BootstrapButton bContinue, bCancel;
+    private Time cal;
 
     private AppSharedPrefs mPrefs;
     private ReportDataWrapper mCachedReportData;
@@ -65,20 +72,75 @@ public class PositiveActivity extends Activity {
 
     }
 
-    private long recordTime() {
+    private long getReportDuration() {
 
         /* DATE FORMATTER
         duration = endTime - startTime;
         temp = (new SimpleDateFormat("mm:ss:SSS")).format(new Date(duration));
         spEditor.putString("Report_duration", temp).commit();
         */
-
         long tempTime = Calendar.getInstance().getTimeInMillis();
         long tempTime2 = mCachedReportData.getStartTime().getTimeInMillis();
-        long duration = (tempTime - tempTime2);
-        mPrefs.setDuration(duration);
-        return duration;
+        return (tempTime - tempTime2);
 
+    }
+
+    private void finalizeReport() {
+
+        // Set Duration of Current Report
+        mCachedReportData.setDuration(getReportDuration());
+        int duration = (int) ((mCachedReportData.getDuration() / 1000) % 60);
+
+        // Set Current Time String: timeStamp
+        cal = new Time(Time.getCurrentTimezone());
+        cal.setToNow();
+        String currentTime = cal.month + "/" + cal.monthDay + "/" + cal.year + "/" + cal.format("%k:%M:%S");
+        String timeStamp = "log," + currentTime + "," + "report_type," +
+                mCachedReportData.getReportType()+ "," + "temp: 00," + duration + "\n";
+        // Current timeStamp format:
+
+        // Set Data String: rowData
+        String rowData = ",answer1," + Integer.toString(mCachedReportData.getAnswer1()) + ",I: " +
+                mCachedReportData.getIntensity() + "\n," +
+                "Positive Event"+ ",,,," + etResponse.getText().toString() + ",\n";
+        /* Current data format:
+        log | 8/18/2015/23:56:19 | report_type | RT | temp:00 | 245424
+            | answer1            | #           | I:#|
+        *   | Positive Event     |             |    |         | TEXT
+        * */
+
+        String finalLog = timeStamp + rowData;
+
+        File file = null;
+        File root = Environment.getExternalStorageDirectory();
+
+        if (root.canWrite()) {
+
+            File dir = new File(root.getAbsolutePath() + "/mtmData");
+            dir.mkdirs();
+            file = new File(dir, "userData.csv");
+            FileOutputStream out = null;
+
+            try {
+                out = new FileOutputStream(file, true);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            try {
+                out.write(finalLog.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Toast.makeText(PositiveActivity.this, "External Storage Can't Be Accessed", Toast.LENGTH_SHORT).show();
+        }
+
+        mPrefs.setReportResponseCache(mCachedReportData);
     }
 
     private void openContinueAlert() {
@@ -96,16 +158,12 @@ public class PositiveActivity extends Activity {
 
                 public void onClick(DialogInterface dialog, int id) {
 
-                    // Record Report Data
-                    recordTime();
-                    mPrefs.setReportResponseCache(mCachedReportData);
+                    // save DATA before exiting
+                    finalizeReport();
 
-                    // TODO: 9/16/15 WRAP UP Report Data and Log in CSV file
-                    
                     Intent i = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(i);
                     Toast.makeText(getApplicationContext(), "Your response has been recorded", Toast.LENGTH_SHORT).show();
-                    PositiveActivity.this.finish();
                 }
             });
 

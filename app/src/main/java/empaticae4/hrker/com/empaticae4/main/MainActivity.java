@@ -14,16 +14,14 @@ import android.view.View;
 import com.beardedhen.androidbootstrap.BootstrapButton;
 
 import empaticae4.hrker.com.empaticae4.R;
-import empaticae4.hrker.com.empaticae4.activity.LiveStreamActivity;
 import empaticae4.hrker.com.empaticae4.activity.reports.ReportActivity;
 import empaticae4.hrker.com.empaticae4.activity.settings.SettingsActivity;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String DATAFILE = "userData";
-    private BootstrapButton b1, b2, b3;
 
+    private BootstrapButton b1, b2, b3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent i = new Intent(getApplicationContext(), LiveStreamActivity.class);
-                startActivity(i);
+                //Intent i = new Intent(getApplicationContext(), LiveStreamActivity.class);
+                //startActivity(i);
             }
         });
         b3.setOnClickListener(new View.OnClickListener() {
@@ -115,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
             public void onClick(DialogInterface dialog, int id) {
 
-                String number = "9177968713";
+                String number = "0000000000";
                 Intent intent = new Intent(Intent.ACTION_DIAL);
                 intent.setData(Uri.parse("tel:" + number));
                 startActivity(intent);

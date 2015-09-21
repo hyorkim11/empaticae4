@@ -1,5 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
+    xmlns:bootstrapbutton="http://schemas.android.com/apk/res-auto"
     xmlns:fontawesometext="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -41,9 +41,9 @@
         android:layout_marginTop="100dp"
         android:text="Make a report"
         android:textSize="15sp"
-        bootstrap:bb_roundedCorners="true"
-        bootstrap:bb_size="medium"
-        bootstrap:bb_type="danger" />
+        bootstrapbutton:bb_roundedCorners="true"
+        bootstrapbutton:bb_size="large"
+        bootstrapbutton:bb_type="danger" />
 
     <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/b2"
@@ -53,9 +53,10 @@
         android:layout_marginTop="10dp"
         android:text="Current status"
         android:textSize="15sp"
-        bootstrap:bb_roundedCorners="true"
-        bootstrap:bb_size="medium"
-        bootstrap:bb_type="danger" />
+        android:clickable="false"
+        bootstrapbutton:bb_roundedCorners="true"
+        bootstrapbutton:bb_size="large"
+        bootstrapbutton:bb_type="warning" />
 
     <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/b3"
@@ -65,13 +66,11 @@
         android:layout_marginTop="10dp"
         android:text="Good moves"
         android:textSize="15sp"
-        bootstrap:bb_roundedCorners="true"
-        bootstrap:bb_size="medium"
-        bootstrap:bb_type="danger" />
+        android:clickable="false"
+        bootstrapbutton:bb_roundedCorners="true"
+        bootstrapbutton:bb_size="large"
+        bootstrapbutton:bb_type="warning" />
 
-    <RadioGroup
-        android:id="@+id/testingRG"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></RadioGroup>
+
 
 </LinearLayout>

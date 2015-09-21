@@ -10,31 +10,34 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_margin="10dp"
-        android:text="Settings Page"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:text="Settings"
         android:textSize="30sp" />
-
-    <Button
-        android:id="@+id/resetPrefs"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/title"
-        android:layout_centerHorizontal="true"
-        android:text="Reset SharedPrefs" />
 
     <LinearLayout
         android:id="@+id/texts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/resetPrefs"
+        android:layout_below="@+id/title"
         android:layout_margin="10dp"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/sptitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="SharedPrefs" />
+            android:layout_gravity="center_horizontal"
+            android:text="DEBUG LOG" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="All content for debugging purposes, please do not touch." />
 
         <TextView
             android:id="@+id/sp0"
@@ -79,19 +82,32 @@
 
     <Button
         android:id="@+id/bSend"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="SendCSV"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/texts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_centerHorizontal="true"
+        android:drawableLeft="@mipmap/ic_report"
+        android:drawablePadding="5dp"
+        android:text="Send CSV" />
 
     <Button
         android:id="@+id/bResetCSV"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:layout_below="@+id/bSend"
         android:layout_centerHorizontal="true"
-        android:text="ResetCSV" />
+        android:layout_marginTop="20dp"
+        android:drawableLeft="@mipmap/ic_close"
+        android:drawablePadding="5dp"
+        android:text="Reset CSV" />
+
+    <Button
+        android:id="@+id/resetPrefs"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bResetCSV"
+        android:layout_centerHorizontal="true"
+        android:text="Reset SharedPrefs" />
+
+
 </RelativeLayout>
