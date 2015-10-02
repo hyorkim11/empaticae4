@@ -6,4 +6,9 @@
     <color name="simple_yellow">#ECD078</color>
     <color name="primary_blue">#53777A</color>
 
+    <color name="bootstrap_blue">#0088CC</color>
+    <color name="bootstrap_red">#BD362F</color>
+    <color name="bootstrap_green">#51A351</color>
+    <color name="bootstrap_orange">#F89406</color>
+
 </resources>

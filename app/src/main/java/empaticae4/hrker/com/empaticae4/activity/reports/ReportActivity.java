@@ -2,12 +2,15 @@ package empaticae4.hrker.com.empaticae4.activity.reports;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -112,7 +115,7 @@ public class ReportActivity extends Activity {
 
                 if (getAnswerChoice() != -1) {
 
-                    openIntensity();
+                    openIntensity2();
                 } else {
 
                     Toast.makeText(getApplicationContext(), "Please make a selection", Toast.LENGTH_SHORT).show();
@@ -360,7 +363,6 @@ public class ReportActivity extends Activity {
 
         // Create and Build Dialog
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        //builder.setTitle("How Strong Is This Feeling?");
 
         LayoutInflater inflater = getLayoutInflater();
         View view = inflater.inflate(R.layout.custom_intensity_titleview, null);
@@ -392,7 +394,7 @@ public class ReportActivity extends Activity {
 //        levelDialog.show();
 
         /*
-        * int pos = ((AlertDialog) dialogInterface).getListView().getCheckedItemPosition();
+        int pos = ((AlertDialog) dialogInterface).getListView().getCheckedItemPosition();
                 if (pos == -1) {
                     Toast.makeText(ReportActivity.this, "Please select intensity", Toast.LENGTH_SHORT).show();
                 } else {
@@ -413,12 +415,56 @@ public class ReportActivity extends Activity {
                         startActivity(j);
                     }
                 }
-        *
-        *
-        * */
+
+
+        */
 
     }
 
+    private void openIntensity2() {
+
+        // Create and Build Dialog
+        final Dialog builder = new Dialog (this);
+        builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        LayoutInflater inflater = getLayoutInflater();
+        View view = inflater.inflate(R.layout.dialog_intensity_layout, null);
+        builder.setContentView(view);
+
+        final RadioGroup rgIntensity = (RadioGroup) builder.findViewById(R.id.rgIntensity);
+        BootstrapButton bContinue = (BootstrapButton) builder.findViewById(R.id.bContinue);
+        bContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int pos = rgIntensity.getCheckedRadioButtonId() - 1;
+
+                if (rgIntensity.getCheckedRadioButtonId() == -1) {
+                    Toast.makeText(ReportActivity.this, "Please select intensity", Toast.LENGTH_SHORT).show();
+                    builder.dismiss();
+                } else {
+                    mIntensity = pos;
+                    mCachedReportData.setIntensity(mIntensity);
+                    mCachedReportData.setAnswer1(getAnswerChoice());
+                    mPrefs.setReportResponseCache(mCachedReportData);
+                    Toast.makeText(ReportActivity.this, "AnswerChoice: " + mCachedReportData.getAnswer1() + " Intensity: " + mCachedReportData.getIntensity(), Toast.LENGTH_LONG).show();
+
+                    if (PoN()) {
+                        // if positive emotion selected
+                        Intent j = new Intent(getApplicationContext(), PositiveActivity.class);
+                        startActivity(j);
+
+                    } else {
+                        // negative emotion selected or by default
+                        Intent j = new Intent(getApplicationContext(), NegativeActivity.class);
+                        startActivity(j);
+                    }
+                }
+            }
+        });
+
+        builder.setCanceledOnTouchOutside(true);
+        builder.show();
+    }
 
 
     @Override
