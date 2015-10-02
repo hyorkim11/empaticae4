@@ -371,7 +371,7 @@ public class DrinkActivity extends Activity {
 
         alertDialogBuilder.setView(Viewlayout);
         alertDialogBuilder.setTitle("");
-        alertDialogBuilder.setMessage("You're doing great!\nKeep up the good work.");
+        alertDialogBuilder.setMessage("Great Job,\nKeep up the good work!");
 
         // set positive button: Finish
         alertDialogBuilder.setPositiveButton("Finish", new DialogInterface.OnClickListener() {

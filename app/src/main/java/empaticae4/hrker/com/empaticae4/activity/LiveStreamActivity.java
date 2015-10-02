@@ -32,6 +32,7 @@ public class LiveStreamActivity extends AppCompatActivity implements EmpaDataDel
 
     private EmpaDeviceManager deviceManager;
 
+    private String EMPATICA_API_KEY = "6c8d1b1459ff473fbc6e71d6ae76aa19";
     private TextView accel_xLabel;
     private TextView accel_yLabel;
     private TextView accel_zLabel;
@@ -70,7 +71,7 @@ public class LiveStreamActivity extends AppCompatActivity implements EmpaDataDel
         // Create a new Empatica DeviceManager. MainActivity is both its data and status delegate.
         deviceManager = new EmpaDeviceManager(getApplicationContext(), this, this);
         // Initialize the Device Manager using your API key. You need to have Internet access at this point.
-        deviceManager.authenticateWithAPIKey("6c8d1b1459ff473fbc6e71d6ae76aa19");
+        deviceManager.authenticateWithAPIKey(EMPATICA_API_KEY);
 
     }
 

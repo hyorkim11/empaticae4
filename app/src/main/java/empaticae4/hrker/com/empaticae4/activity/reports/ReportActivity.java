@@ -3,11 +3,12 @@ package empaticae4.hrker.com.empaticae4.activity.reports;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -351,77 +352,51 @@ public class ReportActivity extends Activity {
 
     private void openIntensity() {
 
-        // Intensity Levels
-        final CharSequence[] items = {" 0 - Not at all ", " 1 ", " 2 ", " 3 ",
+        final String[] items = new String[] {" 0 - Not at all ", " 1 ", " 2 ", " 3 ",
                 " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 ", " 10 - Very strong "};
 
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.listview_intensity, items);
+
+
         // Create and Build Dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("How Strong Is This Feeling?");
-        builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //builder.setTitle("How Strong Is This Feeling?");
 
+        LayoutInflater inflater = getLayoutInflater();
+        View view = inflater.inflate(R.layout.custom_intensity_titleview, null);
+        builder.setCustomTitle(view);
+
+        builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialog, int item) {
-
-                switch (item) {
-                    case 0:
-                        mIntensity = 0;
-                        break;
-
-                    case 1:
-                        mIntensity = 1;
-                        break;
-
-                    case 2:
-                        mIntensity = 2;
-                        break;
-
-                    case 3:
-                        mIntensity = 3;
-                        break;
-
-                    case 4:
-                        mIntensity = 4;
-                        break;
-
-                    case 5:
-                        mIntensity = 5;
-                        break;
-
-                    case 6:
-                        mIntensity = 6;
-                        break;
-
-                    case 7:
-                        mIntensity = 7;
-                        break;
-
-                    case 8:
-                        mIntensity = 8;
-                        break;
-
-                    case 9:
-                        mIntensity = 9;
-                        break;
-
-                    case 10:
-                        mIntensity = 10;
-                        break;
-
-                    default:
-                        break;
-                }
+                Toast.makeText(ReportActivity.this, "onclick?", Toast.LENGTH_SHORT).show();
             }
         });
-        builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
 
+        builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                Toast.makeText(ReportActivity.this, "continue?", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Toast.makeText(ReportActivity.this, "cancel?", Toast.LENGTH_SHORT).show();
+            }
+        });
 
-                int pos = ((AlertDialog) dialogInterface).getListView().getCheckedItemPosition();
+        builder.show();
+//        final AlertDialog levelDialog;
+//        levelDialog = builder.create();
+//        levelDialog.show();
+
+        /*
+        * int pos = ((AlertDialog) dialogInterface).getListView().getCheckedItemPosition();
                 if (pos == -1) {
                     Toast.makeText(ReportActivity.this, "Please select intensity", Toast.LENGTH_SHORT).show();
                 } else {
-
+                    mIntensity = pos;
                     mCachedReportData.setIntensity(mIntensity);
                     mCachedReportData.setAnswer1(getAnswerChoice());
                     mPrefs.setReportResponseCache(mCachedReportData);
@@ -438,19 +413,13 @@ public class ReportActivity extends Activity {
                         startActivity(j);
                     }
                 }
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+        *
+        *
+        * */
 
-            }
-        });
-
-        final AlertDialog levelDialog;
-        levelDialog = builder.create();
-        levelDialog.show();
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

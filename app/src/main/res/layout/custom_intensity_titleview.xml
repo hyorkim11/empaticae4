@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:padding="5dp"
+    android:id="@+id/custom_intensity_titleview"
+    android:background="#3a87ad">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:text="How Strong Is This Feeling?"
+        android:textStyle="bold"
+        android:textColor="#d9edf7"
+        android:textSize="20sp"/>
+
+</LinearLayout>

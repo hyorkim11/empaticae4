@@ -5,7 +5,7 @@
 
     <string name="action_settings">Settings</string>
 
-    <string name="CAKE">"6c8d1b1459ff473fbc6e71d6ae76aa19"</string>
+    <string name="EMPATICA_API_KEY">"6c8d1b1459ff473fbc6e71d6ae76aa19"</string>
 
     <string name="accel">Accelerometers</string>
     <string name="accel_x">x:</string>
