@@ -7,25 +7,71 @@
     android:padding="20dp"
     tools:context="empaticae4.hrker.com.empaticae4.activity.reports.NegativeActivity2">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/title1"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
+        android:clickable="false"
+        android:text="FREEZE"
+        bootstrap:bb_roundedCorners="true"
+        bootstrap:bb_size="small"
+        bootstrap:bb_type="primary" />
+
+    <TextView
+        android:id="@+id/tvFreeze"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title1"
+        android:layout_marginBottom="15dp"
         android:gravity="center_horizontal"
-        android:text="Cool Thoughts"
-        android:textColor="@color/white"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+        android:text="Stop what you're doing. Stay as still as possible."
+        android:textColor="@color/black_overlay"
+        android:textSize="15sp" />
+
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/title2"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvFreeze"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:clickable="false"
+        android:text="BREATHE"
+        bootstrap:bb_roundedCorners="true"
+        bootstrap:bb_size="small"
+        bootstrap:bb_type="primary" />
+
+    <TextView
+        android:id="@+id/tvBreathe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title2"
+        android:layout_marginBottom="15dp"
+        android:gravity="center_horizontal"
+        android:text="Take 3 deep breaths. Count them. Only your lungs are moving. Settle yourself."
+        android:textColor="@color/black_overlay"
+        android:textSize="15sp" />
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/title3"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvBreathe"
+        android:layout_centerHorizontal="true"
+        android:text="CHOOSE COOLTHOUGHT"
+        android:clickable="false"
+        bootstrap:bb_roundedCorners="true"
+        bootstrap:bb_size="small"
+        bootstrap:bb_type="primary" />
+
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/title"
+        android:layout_below="@+id/title3"
         android:orientation="vertical">
 
         <RadioGroup
@@ -46,12 +92,12 @@
             android:text="Other" />
     </LinearLayout>
 
+
     <RelativeLayout
         android:id="@+id/form2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="50dp">
+        android:layout_alignParentBottom="true">
 
         <com.beardedhen.androidbootstrap.BootstrapButton
             android:id="@+id/bCancel"

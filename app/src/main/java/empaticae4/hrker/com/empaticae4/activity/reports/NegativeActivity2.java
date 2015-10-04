@@ -2,6 +2,7 @@ package empaticae4.hrker.com.empaticae4.activity.reports;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -59,7 +61,7 @@ public class NegativeActivity2 extends Activity {
         for (int i = 0; i < 5; i++) {
             CT[i] = new RadioButton(this);
             CT[i].setText(coolThoughts[i].toString());
-            CT[i].setId(i+1);
+            CT[i].setId(i + 1);
             mForm.addView(CT[i]);
         }
 
@@ -118,7 +120,6 @@ public class NegativeActivity2 extends Activity {
         } else {
             mInitialOther.setText(tempString);
         }
-        openTip();
 
     }
 
@@ -155,26 +156,27 @@ public class NegativeActivity2 extends Activity {
 
     private void openTip() {
 
-        LayoutInflater layout = getLayoutInflater();
-        View dialog = layout.inflate(R.layout.tip_dialog, null);
+        // Create and Build Dialog
+        final Dialog builder = new Dialog (this);
+        builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(NegativeActivity2.this);
-        alertDialogBuilder.setTitle("");
-        alertDialogBuilder.setMessage("");
-        alertDialogBuilder.setView(dialog);
+        LayoutInflater inflater = getLayoutInflater();
+        final View view = inflater.inflate(R.layout.tip_dialog, null);
+        builder.setContentView(view);
 
-        alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int id) {
-
-                dialog.cancel();
+        BootstrapButton bContinue = (BootstrapButton) builder.findViewById(R.id.bContinue);
+        bContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                builder.dismiss();
             }
         });
 
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-
+        builder.setCanceledOnTouchOutside(true);
+        builder.show();
     }
+
+
 
     private void openCustom() {
 
