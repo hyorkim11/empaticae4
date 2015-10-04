@@ -5,9 +5,23 @@
     tools:context="empaticae4.hrker.com.empaticae4.activity.LiveStreamActivity">
 
     <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        android:text="Live Stream"
+        android:textSize="30sp" />
+
+    <TextView
         android:id="@+id/statusLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
         android:text="Device Status"
         android:textStyle="bold" />
 

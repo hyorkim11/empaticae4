@@ -33,7 +33,7 @@
         android:layout_above="@+id/appver"
         android:layout_centerHorizontal="true"
         android:text="Mind the Moment | Hive Devs Inc | 2015"
-        android:textColor="#c0cbff"
+        android:textColor="#FFFFFF"
         android:textSize="10sp" />
 
     <TextView
@@ -42,8 +42,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="av0.1"
-        android:textColor="#c0cbff"
+        android:text="av0.2"
+        android:textColor="#FFFFFF"
         android:textSize="10sp" />
 
 </RelativeLayout>

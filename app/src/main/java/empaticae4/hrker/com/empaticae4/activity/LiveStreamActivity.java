@@ -4,11 +4,8 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -25,6 +22,19 @@ import com.empatica.empalink.delegate.EmpaStatusDelegate;
 import empaticae4.hrker.com.empaticae4.R;
 
 public class LiveStreamActivity extends AppCompatActivity implements EmpaDataDelegate, EmpaStatusDelegate {
+
+    /*
+    It initializes the EmpaLink library with your API key.
+
+    If the previous step is successful, it starts scanning for
+    Empatica devices, till it finds one that can be used with
+    the API key you inserted in the code.
+
+    When such a device has been found, the app connects to
+    the devices and streams data for 10 seconds, then it disconnects.
+    */
+
+
 
     private static final int REQUEST_ENABLE_BT = 1;
     private static final long STREAMING_TIME = 10000;
@@ -44,6 +54,7 @@ public class LiveStreamActivity extends AppCompatActivity implements EmpaDataDel
     private TextView statusLabel;
     private TextView deviceNameLabel;
     private RelativeLayout dataCnt;
+    private boolean run;
 
 
     @Override
@@ -150,22 +161,9 @@ public class LiveStreamActivity extends AppCompatActivity implements EmpaDataDel
             // The device manager has established a connection
         } else if (status == EmpaStatus.CONNECTED) {
 
-            // Stop streaming after STREAMING_TIME
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
+            dataCnt.setVisibility(View.VISIBLE);
 
-                    dataCnt.setVisibility(View.VISIBLE);
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            // Disconnect device
-                            deviceManager.disconnect();
-                        }
-                    }, STREAMING_TIME);
 
-                }
-            });
             // The device manager disconnected from a device
         } else if (status == EmpaStatus.DISCONNECTED) {
 
@@ -223,27 +221,9 @@ public class LiveStreamActivity extends AppCompatActivity implements EmpaDataDel
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
 
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_live_stream, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
 
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
-        return super.onOptionsItemSelected(item);
-    }
 }

@@ -157,6 +157,7 @@ public class NegativeActivity2 extends Activity {
 
         LayoutInflater layout = getLayoutInflater();
         View dialog = layout.inflate(R.layout.tip_dialog, null);
+
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(NegativeActivity2.this);
         alertDialogBuilder.setTitle("");
         alertDialogBuilder.setMessage("");

@@ -11,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -33,7 +32,7 @@ public class ReportActivity extends Activity {
     private BootstrapButton bContinue, bCancel;
     private RadioGroup mForm1, mForm2;
     private RadioButton mInitialOther, mOther;
-    private int mIntensity;
+    private int mIntensity, tempIntensity;
     private String mReport_Type, tempString;
 
     private AppSharedPrefs mPrefs;
@@ -115,7 +114,7 @@ public class ReportActivity extends Activity {
 
                 if (getAnswerChoice() != -1) {
 
-                    openIntensity2();
+                    openIntensity();
                 } else {
 
                     Toast.makeText(getApplicationContext(), "Please make a selection", Toast.LENGTH_SHORT).show();
@@ -355,94 +354,38 @@ public class ReportActivity extends Activity {
 
     private void openIntensity() {
 
-        final String[] items = new String[] {" 0 - Not at all ", " 1 ", " 2 ", " 3 ",
-                " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 ", " 10 - Very strong "};
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.listview_intensity, items);
-
-
-        // Create and Build Dialog
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        LayoutInflater inflater = getLayoutInflater();
-        View view = inflater.inflate(R.layout.custom_intensity_titleview, null);
-        builder.setCustomTitle(view);
-
-        builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                Toast.makeText(ReportActivity.this, "onclick?", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(ReportActivity.this, "continue?", Toast.LENGTH_SHORT).show();
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(ReportActivity.this, "cancel?", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        builder.show();
-//        final AlertDialog levelDialog;
-//        levelDialog = builder.create();
-//        levelDialog.show();
-
-        /*
-        int pos = ((AlertDialog) dialogInterface).getListView().getCheckedItemPosition();
-                if (pos == -1) {
-                    Toast.makeText(ReportActivity.this, "Please select intensity", Toast.LENGTH_SHORT).show();
-                } else {
-                    mIntensity = pos;
-                    mCachedReportData.setIntensity(mIntensity);
-                    mCachedReportData.setAnswer1(getAnswerChoice());
-                    mPrefs.setReportResponseCache(mCachedReportData);
-                    Toast.makeText(ReportActivity.this, "AnswerChoice: " + mCachedReportData.getAnswer1() + " Intensity: " + mCachedReportData.getIntensity(), Toast.LENGTH_LONG).show();
-
-                    if (PoN()) {
-                        // if positive emotion selected
-                        Intent j = new Intent(getApplicationContext(), PositiveActivity.class);
-                        startActivity(j);
-
-                    } else {
-                        // negative emotion selected or by default
-                        Intent j = new Intent(getApplicationContext(), NegativeActivity.class);
-                        startActivity(j);
-                    }
-                }
-
-
-        */
-
-    }
-
-    private void openIntensity2() {
-
         // Create and Build Dialog
         final Dialog builder = new Dialog (this);
         builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         LayoutInflater inflater = getLayoutInflater();
-        View view = inflater.inflate(R.layout.dialog_intensity_layout, null);
+        final View view = inflater.inflate(R.layout.dialog_intensity_layout, null);
         builder.setContentView(view);
 
         final RadioGroup rgIntensity = (RadioGroup) builder.findViewById(R.id.rgIntensity);
+
+        String[] levels = new String[]{"0 - Not al all",
+                "1","2","3","4","5","6","7","8","9","10 - Very strong"};
+        final RadioButton[] intensityLevels = new RadioButton[11];
+
+        for (int i = 0; i < 11; i++) {
+            intensityLevels[i] = new RadioButton(this);
+            intensityLevels[i].setText(levels[i].toString());
+            intensityLevels[i].setId(i);
+            rgIntensity.addView(intensityLevels[i]);
+        }
+
         BootstrapButton bContinue = (BootstrapButton) builder.findViewById(R.id.bContinue);
         bContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int pos = rgIntensity.getCheckedRadioButtonId() - 1;
+                tempIntensity = rgIntensity.getCheckedRadioButtonId();
+                mIntensity = tempIntensity;
 
-                if (rgIntensity.getCheckedRadioButtonId() == -1) {
+                if (mIntensity == -1) {
                     Toast.makeText(ReportActivity.this, "Please select intensity", Toast.LENGTH_SHORT).show();
                     builder.dismiss();
                 } else {
-                    mIntensity = pos;
                     mCachedReportData.setIntensity(mIntensity);
                     mCachedReportData.setAnswer1(getAnswerChoice());
                     mPrefs.setReportResponseCache(mCachedReportData);
@@ -495,5 +438,11 @@ public class ReportActivity extends Activity {
     public void onBackPressed() {
 
         openAlert();
+    }
+
+    @Override
+    protected void onResume() {
+        tempIntensity = 0;
+        super.onResume();
     }
 }

@@ -2,6 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
+    xmlns:bootstrapbutton="http://schemas.android.com/apk/res-auto"
     android:padding="15dp"
     tools:context="empaticae4.hrker.com.empaticae4.activity.settings.SettingsActivity">
 
@@ -14,6 +16,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
+        android:textStyle="bold"
         android:text="Settings"
         android:textSize="30sp" />
 
@@ -80,7 +83,7 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <Button
+    <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/bSend"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
@@ -88,6 +91,7 @@
         android:layout_centerHorizontal="true"
         android:drawableLeft="@mipmap/ic_report"
         android:drawablePadding="5dp"
+        bootstrapbutton:bb_type="warning"
         android:text="Send CSV" />
 
     <Button
@@ -109,5 +113,14 @@
         android:layout_centerHorizontal="true"
         android:text="Reset SharedPrefs" />
 
+    <!-- basic button -->
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Success"
+        bootstrap:bb_icon_right="fa-android"
+        bootstrap:bb_type="success"
+        />
 
 </RelativeLayout>
