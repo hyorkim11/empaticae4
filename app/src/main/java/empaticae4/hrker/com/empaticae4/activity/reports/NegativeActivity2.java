@@ -2,15 +2,12 @@ package empaticae4.hrker.com.empaticae4.activity.reports;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -57,6 +54,7 @@ public class NegativeActivity2 extends Activity {
                 "I can choose how to respond","My thoughts are not me",
                 "If I drink too much, how will I feel tomorrow?",
                 "I can handle this"};
+
         final RadioButton[] CT = new RadioButton[5];
         for (int i = 0; i < 5; i++) {
             CT[i] = new RadioButton(this);
@@ -153,30 +151,6 @@ public class NegativeActivity2 extends Activity {
             return mForm.getCheckedRadioButtonId();
         }
     }
-
-    private void openTip() {
-
-        // Create and Build Dialog
-        final Dialog builder = new Dialog (this);
-        builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-        LayoutInflater inflater = getLayoutInflater();
-        final View view = inflater.inflate(R.layout.tip_dialog, null);
-        builder.setContentView(view);
-
-        BootstrapButton bContinue = (BootstrapButton) builder.findViewById(R.id.bContinue);
-        bContinue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                builder.dismiss();
-            }
-        });
-
-        builder.setCanceledOnTouchOutside(true);
-        builder.show();
-    }
-
-
 
     private void openCustom() {
 

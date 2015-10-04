@@ -25,11 +25,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/title1"
         android:layout_marginBottom="15dp"
-        android:gravity="center_horizontal"
         android:text="Stop what you're doing. Stay as still as possible."
         android:textColor="@color/black_overlay"
         android:textSize="15sp" />
-
 
     <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/title2"
@@ -50,7 +48,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/title2"
         android:layout_marginBottom="15dp"
-        android:gravity="center_horizontal"
         android:text="Take 3 deep breaths. Count them. Only your lungs are moving. Settle yourself."
         android:textColor="@color/black_overlay"
         android:textSize="15sp" />
