@@ -33,7 +33,7 @@ public class ReportActivity extends Activity {
     private RadioGroup mForm1, mForm2;
     private RadioButton mInitialOther, mOther;
     private int mIntensity, tempIntensity;
-    private String mReport_Type, tempString;
+    private String mReport_Type, tempString, tempString2;
 
     private AppSharedPrefs mPrefs;
     private ReportDataWrapper mCachedReportData;
@@ -45,14 +45,12 @@ public class ReportActivity extends Activity {
         setContentView(R.layout.activity_report);
 
         init();
-
     }
 
     private void init() {
 
         // Get report type based on "report_type" extra passed into this activity
         mReport_Type = getIntent().getExtras().getString("report_type", "N/A");
-
         mPrefs = new AppSharedPrefs(ReportActivity.this);
 
         // Reset SharedPrefs
@@ -65,6 +63,8 @@ public class ReportActivity extends Activity {
         mCachedReportData.setReportType(mReport_Type);
 
         tempString = mPrefs.getInitCustomNegativeMood();
+        tempString2 = mPrefs.getCustomNegativeMood();
+
         mIntensity = 0; // reset intensity
 
         bContinue = (BootstrapButton) findViewById(R.id.bContinue);
@@ -100,11 +100,15 @@ public class ReportActivity extends Activity {
         mOther = (RadioButton) findViewById(R.id.bOther);
 
         if (Objects.equals(tempString, "Other")) {
-
             mInitialOther.setText("Other");
         } else {
-
             mInitialOther.setText(tempString);
+        }
+
+        if (Objects.equals(tempString2, "Other")) {
+            mOther.setText("Other");
+        } else {
+            mOther.setText(tempString2);
         }
 
         bContinue.setOnClickListener(new View.OnClickListener() {
@@ -152,7 +156,17 @@ public class ReportActivity extends Activity {
 
             @Override
             public void onClick(View view) {
-                openCustom2();
+                String t = mPrefs.getCustomNegativeMood();
+
+                if (t == "Other") {
+                    openCustom2();
+                } else {
+
+                    mForm1.clearCheck();
+                    mForm2.clearCheck();
+                    mOther.setChecked(true);
+                    mInitialOther.setChecked(false);
+                }
             }
         });
 
@@ -315,7 +329,6 @@ public class ReportActivity extends Activity {
         mForm1.clearCheck();
         mForm2.clearCheck();
         mInitialOther.setChecked(false);
-
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ReportActivity.this);
         alertDialogBuilder.setTitle("");
         alertDialogBuilder.setMessage("Please enter your custom feeling");
@@ -333,6 +346,7 @@ public class ReportActivity extends Activity {
                     String ts = editor.getText().toString();
                     mOther.setText(ts);
                     mOther.setChecked(true);
+                    tempString2 = ts;
                     mPrefs.setCustomNegativeMood(ts);
                     mCachedReportData.setCnm(ts);
                     dialog.cancel();
@@ -442,6 +456,7 @@ public class ReportActivity extends Activity {
 
     @Override
     protected void onResume() {
+
         tempIntensity = 0;
         super.onResume();
     }

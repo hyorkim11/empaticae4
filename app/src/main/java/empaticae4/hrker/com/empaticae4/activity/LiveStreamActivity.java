@@ -163,7 +163,6 @@ public class LiveStreamActivity extends AppCompatActivity implements EmpaDataDel
 
             dataCnt.setVisibility(View.VISIBLE);
 
-
             // The device manager disconnected from a device
         } else if (status == EmpaStatus.DISCONNECTED) {
 

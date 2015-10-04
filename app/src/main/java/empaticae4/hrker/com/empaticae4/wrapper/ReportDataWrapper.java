@@ -47,12 +47,6 @@ public class ReportDataWrapper  {
         answer5 = -1;
         drinking = false;
 
-        cnm = "Other";
-        ce = "Other";
-        cgm = "Other";
-        cct = "Other";
-        cd = "Other";
-
     }
 
     public long getDuration() {
