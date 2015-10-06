@@ -5,8 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -15,6 +13,7 @@ import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 
+import java.util.Calendar;
 import java.util.Objects;
 
 import empaticae4.hrker.com.empaticae4.R;
@@ -27,10 +26,11 @@ import empaticae4.hrker.com.empaticae4.wrapper.ReportDataWrapper;
 public class NegativeActivity extends Activity {
 
 
+    private long tempTime;
     private RadioGroup mForm1;
     private RadioButton mInitialOther, mOther;
     private BootstrapButton bCancel, bContinue;
-    private String tempString;
+    private String tempString, tempString2;
 
     private AppSharedPrefs mPrefs;
     private ReportDataWrapper mCachedReportData;
@@ -46,9 +46,15 @@ public class NegativeActivity extends Activity {
 
     private void init() {
 
+        // Capture time in millis as soon as activity begins
+        tempTime = Calendar.getInstance().getTimeInMillis();
+
         mPrefs = new AppSharedPrefs(NegativeActivity.this);
         mCachedReportData = mPrefs.getReportResponseCache();
+
         tempString = mPrefs.getInitCustomEvent();
+        tempString2 = mPrefs.getCustomEvent();
+
         mForm1 = (RadioGroup) findViewById(R.id.form1);
         mForm1.setOnCheckedChangeListener(listener1);
 
@@ -70,21 +76,16 @@ public class NegativeActivity extends Activity {
         mInitialOther = (RadioButton) findViewById(R.id.bInitialOther);
         mOther = (RadioButton) findViewById(R.id.bOther);
 
-        if (Objects.equals(tempString, "Other")) {
-            mInitialOther.setText("Other");
-        } else {
-            mInitialOther.setText(tempString);
-        }
-
         bContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 if (getAnswerChoice() != -1) {
 
+                    mCachedReportData.setDuration_2(getPageDuration());
                     mCachedReportData.setAnswer2(getAnswerChoice());
                     mPrefs.setReportResponseCache(mCachedReportData);
-                    Intent i = new Intent(getApplicationContext(), NegativeActivity2.class);
+                    Intent i = new Intent(getApplicationContext(), CoolThoughtActivity.class);
                     startActivity(i);
                 } else {
                     Toast.makeText(getApplicationContext(), "Please make a selection", Toast.LENGTH_SHORT).show();
@@ -122,10 +123,30 @@ public class NegativeActivity extends Activity {
             @Override
             public void onClick(View view) {
 
-                openCustom2();
+                String t = mPrefs.getCustomEvent();
+
+                if (t == "Other") {
+                    openCustom2();
+                } else {
+
+                    mForm1.clearCheck();
+                    mOther.setChecked(true);
+                    mInitialOther.setChecked(false);
+                }
             }
         });
 
+        if (Objects.equals(tempString, "Other")) {
+            mInitialOther.setText("Other");
+        } else {
+            mInitialOther.setText(tempString);
+        }
+
+        if (Objects.equals(tempString2, "Other")) {
+            mOther.setText("Other");
+        } else {
+            mOther.setText(tempString2);
+        }
     }
 
     private int getAnswerChoice() {
@@ -230,6 +251,7 @@ public class NegativeActivity extends Activity {
                     String ts = editor.getText().toString();
                     mOther.setText(ts);
                     mOther.setChecked(true);
+                    tempString2 = ts;
                     mPrefs.setCustomEvent(ts);
                     mCachedReportData.setCe(ts);
                     dialog.cancel();
@@ -278,26 +300,11 @@ public class NegativeActivity extends Activity {
         alertDialog.show();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_response, menu);
-        return true;
-    }
+    private long getPageDuration() {
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        long tempTime2 = Calendar.getInstance().getTimeInMillis();
+        return (tempTime2 - tempTime);
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
 }

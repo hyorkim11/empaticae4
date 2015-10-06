@@ -20,7 +20,7 @@
         android:text="Good Moves"
         android:textColor="@color/white"
         android:textSize="30sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
     <LinearLayout
         android:layout_width="wrap_content"

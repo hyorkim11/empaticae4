@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:padding="10dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set User ID"
+        android:textSize="20sp"
+        android:gravity="center_horizontal"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10sp"
+        android:alpha="0.5"
+        android:text="Please keep it short and concise for study's clarity purposes."/>
+
+    <EditText
+        android:id="@+id/etUserID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:hint="Enter ID"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:maxLength="15"
+        android:alpha="0.75"
+        android:gravity="center_horizontal"/>
+
+    <Button
+        android:id="@+id/bContinue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set"/>
+</LinearLayout>

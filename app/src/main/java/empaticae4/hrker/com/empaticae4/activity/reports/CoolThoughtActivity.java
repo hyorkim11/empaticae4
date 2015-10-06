@@ -5,8 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -15,6 +13,7 @@ import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 
+import java.util.Calendar;
 import java.util.Objects;
 
 import empaticae4.hrker.com.empaticae4.R;
@@ -22,13 +21,14 @@ import empaticae4.hrker.com.empaticae4.main.MainActivity;
 import empaticae4.hrker.com.empaticae4.sharedprefs.AppSharedPrefs;
 import empaticae4.hrker.com.empaticae4.wrapper.ReportDataWrapper;
 
-public class NegativeActivity2 extends Activity {
+public class CoolThoughtActivity extends Activity {
 
 
-    private RadioGroup mForm;
+    private long tempTime;
+    private RadioGroup mForm1;
     private RadioButton mInitialOther, mOther;
     private BootstrapButton bCancel, bContinue;
-    private String tempString;
+    private String tempString, tempString2;
 
     private AppSharedPrefs mPrefs;
     private ReportDataWrapper mCachedReportData;
@@ -37,18 +37,23 @@ public class NegativeActivity2 extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_negative2);
+        setContentView(R.layout.activity_coolthought);
         init();
     }
 
     private void init() {
 
-        mPrefs = new AppSharedPrefs(NegativeActivity2.this);
-        mCachedReportData = mPrefs.getReportResponseCache();
-        tempString = mPrefs.getInitCustomCoolthought();
+        // Capture time in millis as soon as activity begins
+        tempTime = Calendar.getInstance().getTimeInMillis();
 
-        mForm = (RadioGroup) findViewById(R.id.form1);
-        mForm.setOnCheckedChangeListener(listener1);
+        mPrefs = new AppSharedPrefs(CoolThoughtActivity.this);
+        mCachedReportData = mPrefs.getReportResponseCache();
+
+        tempString = mPrefs.getInitCustomCoolthought();
+        tempString2 = mPrefs.getCustomCoolthought();
+
+        mForm1 = (RadioGroup) findViewById(R.id.form1);
+        mForm1.setOnCheckedChangeListener(listener1);
 
         String[] coolThoughts = new String[]{"This feeling is temporary",
                 "I can choose how to respond","My thoughts are not me",
@@ -60,7 +65,7 @@ public class NegativeActivity2 extends Activity {
             CT[i] = new RadioButton(this);
             CT[i].setText(coolThoughts[i].toString());
             CT[i].setId(i + 1);
-            mForm.addView(CT[i]);
+            mForm1.addView(CT[i]);
         }
 
         bCancel = (BootstrapButton) findViewById(R.id.bCancel);
@@ -86,6 +91,7 @@ public class NegativeActivity2 extends Activity {
                 }
             }
         });
+
         mInitialOther = (RadioButton) findViewById(R.id.bInitialOther);
         mOther = (RadioButton) findViewById(R.id.bOther);
         mInitialOther.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +105,7 @@ public class NegativeActivity2 extends Activity {
                     openCustom();
                 } else {
 
-                    mForm.clearCheck();
+                    mForm1.clearCheck();
                     mOther.setChecked(false);
                     mInitialOther.setChecked(true);
                 }
@@ -109,7 +115,16 @@ public class NegativeActivity2 extends Activity {
         mOther.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openCustom2();
+                String t = mPrefs.getCustomCoolthought();
+
+                if (t == "Other") {
+                    openCustom2();
+                } else {
+
+                    mForm1.clearCheck();
+                    mOther.setChecked(true);
+                    mInitialOther.setChecked(false);
+                }
             }
         });
 
@@ -118,6 +133,13 @@ public class NegativeActivity2 extends Activity {
         } else {
             mInitialOther.setText(tempString);
         }
+
+        if (Objects.equals(tempString2, "Other")) {
+            mOther.setText("Other");
+        } else {
+            mOther.setText(tempString2);
+        }
+
 
     }
 
@@ -137,7 +159,7 @@ public class NegativeActivity2 extends Activity {
     private int getAnswerChoice() {
 
         // Main form was not selected
-        if (Integer.valueOf(mForm.getCheckedRadioButtonId()) == -1) {
+        if (Integer.valueOf(mForm1.getCheckedRadioButtonId()) == -1) {
             if ((mInitialOther.isChecked()) && (!mOther.isChecked())) {
                 // mInitialOther is checked
                 return 6;
@@ -148,16 +170,16 @@ public class NegativeActivity2 extends Activity {
                 return -1;
             }
         } else {
-            return mForm.getCheckedRadioButtonId();
+            return mForm1.getCheckedRadioButtonId();
         }
     }
 
     private void openCustom() {
 
-        mForm.clearCheck();
+        mForm1.clearCheck();
         mOther.setChecked(false);
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(NegativeActivity2.this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CoolThoughtActivity.this);
         alertDialogBuilder.setTitle("");
         alertDialogBuilder.setMessage("Please enter your custom cool thought");
 
@@ -170,8 +192,8 @@ public class NegativeActivity2 extends Activity {
 
                 if (editor.getText().toString().trim().length() == 0) {
 
-                    Toast.makeText(NegativeActivity2.this, "Please enter a cool thought", Toast.LENGTH_SHORT).show();
-                    mForm.clearCheck();
+                    Toast.makeText(CoolThoughtActivity.this, "Please enter a cool thought", Toast.LENGTH_SHORT).show();
+                    mForm1.clearCheck();
                     mInitialOther.setChecked(false);
                 } else {
 
@@ -202,10 +224,10 @@ public class NegativeActivity2 extends Activity {
 
     private void openCustom2() {
 
-        mForm.clearCheck();
+        mForm1.clearCheck();
         mInitialOther.setChecked(false);
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(NegativeActivity2.this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CoolThoughtActivity.this);
         alertDialogBuilder.setTitle("");
         alertDialogBuilder.setMessage("Please enter your custom cool thought");
 
@@ -217,14 +239,15 @@ public class NegativeActivity2 extends Activity {
 
                 if (editor.getText().toString().trim().length() == 0) {
 
-                    Toast.makeText(NegativeActivity2.this, "Please enter an event", Toast.LENGTH_SHORT).show();
-                    mForm.clearCheck();
+                    Toast.makeText(CoolThoughtActivity.this, "Please enter an event", Toast.LENGTH_SHORT).show();
+                    mForm1.clearCheck();
                     mOther.setChecked(false);
                 } else {
 
                     String ts = editor.getText().toString();
                     mOther.setText(ts);
                     mOther.setChecked(true);
+                    tempString2 = ts;
                     mPrefs.setCustomCoolthought(ts);
                     mCachedReportData.setCct(ts);
                     dialog.cancel();
@@ -246,7 +269,7 @@ public class NegativeActivity2 extends Activity {
 
     private void openCancelAlert() {
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(NegativeActivity2.this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CoolThoughtActivity.this);
         alertDialogBuilder.setTitle("");
         alertDialogBuilder.setMessage("Are you sure you want to quit?");
 
@@ -275,7 +298,7 @@ public class NegativeActivity2 extends Activity {
 
     private void openQuestionAlert() {
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(NegativeActivity2.this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CoolThoughtActivity.this);
         alertDialogBuilder.setTitle("");
         alertDialogBuilder.setMessage("Planning on drinking?");
 
@@ -284,6 +307,7 @@ public class NegativeActivity2 extends Activity {
 
             public void onClick(DialogInterface dialog, int id) {
 
+                mCachedReportData.setDuration_3(getPageDuration());
                 mCachedReportData.setAnswer3(getAnswerChoice());
                 mPrefs.setReportResponseCache(mCachedReportData);
                 Intent i = new Intent(getApplicationContext(), DrinkActivity.class);
@@ -295,6 +319,7 @@ public class NegativeActivity2 extends Activity {
         alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 
+                mCachedReportData.setDuration_3(getPageDuration());
                 mCachedReportData.setAnswer3(getAnswerChoice());
                 mPrefs.setReportResponseCache(mCachedReportData);
                 Intent i = new Intent(getApplicationContext(), GoodMovesActivity.class);
@@ -306,25 +331,10 @@ public class NegativeActivity2 extends Activity {
         alertDialog.show();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_negative_activity2, menu);
-        return true;
-    }
+    private long getPageDuration() {
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        long tempTime2 = Calendar.getInstance().getTimeInMillis();
+        return (tempTime2 - tempTime);
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

@@ -7,8 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
@@ -29,6 +27,7 @@ import empaticae4.hrker.com.empaticae4.wrapper.ReportDataWrapper;
 public class ReportActivity extends Activity {
 
 
+    private long tempTime;
     private BootstrapButton bContinue, bCancel;
     private RadioGroup mForm1, mForm2;
     private RadioButton mInitialOther, mOther;
@@ -48,6 +47,9 @@ public class ReportActivity extends Activity {
     }
 
     private void init() {
+
+        // Capture time in millis as soon as activity begins
+        tempTime = Calendar.getInstance().getTimeInMillis();
 
         // Get report type based on "report_type" extra passed into this activity
         mReport_Type = getIntent().getExtras().getString("report_type", "N/A");
@@ -340,9 +342,11 @@ public class ReportActivity extends Activity {
             public void onClick(DialogInterface dialog, int id) {
 
                 if (editor.getText().toString().trim().length() == 0) {
+
                     Toast.makeText(ReportActivity.this, "Please enter a mood", Toast.LENGTH_SHORT).show();
                     mOther.setChecked(false);
                 } else {
+
                     String ts = editor.getText().toString();
                     mOther.setText(ts);
                     mOther.setChecked(true);
@@ -400,6 +404,7 @@ public class ReportActivity extends Activity {
                     Toast.makeText(ReportActivity.this, "Please select intensity", Toast.LENGTH_SHORT).show();
                     builder.dismiss();
                 } else {
+                    mCachedReportData.setDuration_1(getPageDuration());
                     mCachedReportData.setIntensity(mIntensity);
                     mCachedReportData.setAnswer1(getAnswerChoice());
                     mPrefs.setReportResponseCache(mCachedReportData);
@@ -423,30 +428,13 @@ public class ReportActivity extends Activity {
         builder.show();
     }
 
+    private long getPageDuration() {
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+        long tempTime2 = Calendar.getInstance().getTimeInMillis();
+        return (tempTime2 - tempTime);
 
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_report, menu);
-        return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public void onBackPressed() {

@@ -1,6 +1,7 @@
 package empaticae4.hrker.com.empaticae4.activity.settings;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -11,10 +12,11 @@ import android.os.Environment;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.text.format.Time;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +37,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
     private ReportDataWrapper mCachedReportData;
     private Time cal;
 
-    private Button resetButton, sendButton, mResetCSV;
+    private Button bUserID, resetButton, sendButton, mResetCSV;
     private TextView sp0, sp1, sp2, sp3, sp4, sp5, sp6, sp7;
 
     @Override
@@ -51,6 +53,20 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
         mPrefs = new AppSharedPrefs(SettingsActivity.this);
         mCachedReportData = mPrefs.getReportResponseCache();
 
+        bUserID = (Button) findViewById(R.id.bUserID);
+
+        if (mCachedReportData.getUserID() != "Uninitialized") {
+            bUserID.setText("ID: " + mCachedReportData.getUserID());
+        } else {
+            bUserID.setText("Set ID");
+        }
+
+        bUserID.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openUserID();
+            }
+        });
         sendButton = (Button) findViewById(R.id.bSend);
         sendButton.setOnClickListener(this);
         resetButton = (Button) findViewById(R.id.resetPrefs);
@@ -58,23 +74,23 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
         mResetCSV = (Button) findViewById(R.id.bResetCSV);
         mResetCSV.setOnClickListener(this);
 
+        sp0 = (TextView) findViewById(R.id.sp0);
+        sp1 = (TextView) findViewById(R.id.sp1);
+        sp2 = (TextView) findViewById(R.id.sp2);
+        sp3 = (TextView) findViewById(R.id.sp3);
+        sp4 = (TextView) findViewById(R.id.sp4);
+        sp5 = (TextView) findViewById(R.id.sp5);
+        sp6 = (TextView) findViewById(R.id.sp6);
+        sp7 = (TextView) findViewById(R.id.sp7);
 
-        sp0 = (TextView)findViewById(R.id.sp0);
-        sp0.setText("init_custom_coolthought: " + mPrefs.getInitCustomCoolthought());
-        sp1 = (TextView)findViewById(R.id.sp1);
-        sp1.setText("init_custom_negative_mood: " + mPrefs.getInitCustomNegativeMood());
-        sp2 = (TextView)findViewById(R.id.sp2);
-        sp2.setText("init_custom_event: " + mPrefs.getInitCustomEvent());
-        sp3 = (TextView)findViewById(R.id.sp3);
-        sp3.setText("last report duration: " + mPrefs.getDuration());
+        sp0.setText("init_custom_negative_mood: " + mPrefs.getInitCustomNegativeMood());
+        sp1.setText("init_custom_event: " + mPrefs.getInitCustomEvent());
+        sp2.setText("init_custom_coolthought: " + mPrefs.getInitCustomCoolthought());
+        sp3.setText("init_custom_drinking: " + mPrefs.getInitCustomDrinking());
+        sp4.setText("init_custom_goodmove: " + mPrefs.getInitCustomGoodmove());
+
+        sp6.setText("last report duration: " + mCachedReportData.getDuration() + " milliseconds");
         // currently fetches long in milliseconds
-        sp4 = (TextView)findViewById(R.id.sp4);
-        sp4.setText("init_custom_coolthought: " + mPrefs.getInitCustomCoolthought());
-        sp5 = (TextView)findViewById(R.id.sp5);
-        sp5.setText("init_custom_drinking: " + mPrefs.getInitCustomDrinking());
-        sp6 = (TextView)findViewById(R.id.sp6);
-        sp6.setText("init_custom_goodmove: " + mPrefs.getInitCustomGoodmove());
-        sp7 = (TextView)findViewById(R.id.sp7);
         sp7.setText("a1: " + Integer.toString(mCachedReportData.getAnswer1()) + "\n"
                 + "a2: " + Integer.toString(mCachedReportData.getAnswer2()) + "\n"
                 + "a3: " + Integer.toString(mCachedReportData.getAnswer3()) + "\n"
@@ -103,9 +119,9 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
 
         cal = new Time(Time.getCurrentTimezone());
         cal.setToNow();
-        String currentTime = cal.month + "/" + cal.monthDay + "/" + cal.year + "/" + cal.format("%k:%M:%S");
+        String currentTime = (cal.month + 1) + "/" + cal.monthDay + "/" + cal.year + "/" + cal.format("%k:%M:%S");
 
-        String timeStamp = "\n" + ",,,,,exported:" + currentTime + "," + "\n";
+        String timeStamp = "\n" + ",,,,exported:," + currentTime + "," + "\n\n";
 
         File file = null;
         File root = Environment.getExternalStorageDirectory();
@@ -208,25 +224,37 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_settings, menu);
-        return true;
+    private void openUserID() {
+
+        // Create and Build Dialog
+        final Dialog builder = new Dialog(this);
+        builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        LayoutInflater inflater = getLayoutInflater();
+        final View view = inflater.inflate(R.layout.dialog_set_user_id, null);
+        builder.setContentView(view);
+
+        final EditText et = (EditText) builder.findViewById(R.id.etUserID);
+
+        Button bContinue = (Button) builder.findViewById(R.id.bContinue);
+        bContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (et.getText().toString().length() == 0) {
+                    Toast.makeText(SettingsActivity.this, "Please enter valid ID", Toast.LENGTH_SHORT).show();
+                } else {
+                    mCachedReportData.setUserID(et.getText().toString());
+                    mPrefs.setReportResponseCache(mCachedReportData);
+                    Toast.makeText(SettingsActivity.this, "ID set as: " + et.getText().toString(), Toast.LENGTH_SHORT).show();
+                    bUserID.setText("ID: " + mCachedReportData.getUserID());
+                    builder.dismiss();
+                }
+            }
+        });
+
+        builder.setCanceledOnTouchOutside(true);
+        builder.show();
+
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

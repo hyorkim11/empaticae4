@@ -15,8 +15,16 @@ import empaticae4.hrker.com.empaticae4.wrapper.ReportDataWrapper;
 
 public class AppSharedPrefs {
 
+    private static final String USERID = "user_id";
     private static final String REPORT_TYPE = "report_type";
+
     private static final String DURATION = "duration";
+    private static final String DURATION_1 = "duration1";
+    private static final String DURATION_2 = "duration2";
+    private static final String DURATION_3 = "duration3";
+    private static final String DURATION_4 = "duration4";
+    private static final String DURATION_5 = "duration5";
+    private static final String DURATION_6 = "duration6";
 
     private static final String REPORT_RESPONSE_DATA_SET = "report_response_data_set";
     private static final String REPORT_RESPONSE_CACHE = "report_response_cache";
@@ -137,11 +145,70 @@ public class AppSharedPrefs {
         return obj;
     }
 
+
+    // USERID & REPORT TYPE
+    public void setUserid(String i) {
+        setProperty(USERID, i);
+    }
+    public String getUserid() {
+        return mPrefs.getString(USERID, "Uninitialized");
+    }
+
+    public void setReportType(String i) {
+        setProperty(REPORT_TYPE, i);
+    }
+    public String getReportType() {
+        return mPrefs.getString(REPORT_TYPE, "Uninitialized");
+    }
+
+    // GETTER & SETTER for Durations
     public void setDuration(long i) {
         setProperty(DURATION, i);
     }
     public long getDuration() {
         return mPrefs.getLong(DURATION, 0);
+    }
+
+    public void setDuration1(long i) {
+        setProperty(DURATION_1, i);
+    }
+    public long getDuration1() {
+        return mPrefs.getLong(DURATION_1, 0);
+    }
+
+    public void setDuration2(long i) {
+        setProperty(DURATION_2, i);
+    }
+    public long getDuration2() {
+        return mPrefs.getLong(DURATION_2, 0);
+    }
+
+    public void setDuration3(long i) {
+        setProperty(DURATION_3, i);
+    }
+    public long getDuration3() {
+        return mPrefs.getLong(DURATION_3, 0);
+    }
+
+    public void setDuration4(long i) {
+        setProperty(DURATION_4, i);
+    }
+    public long getDuration4() {
+        return mPrefs.getLong(DURATION_4, 0);
+    }
+
+    public void setDuration5(long i) {
+        setProperty(DURATION_5, i);
+    }
+    public long getDuration5() {
+        return mPrefs.getLong(DURATION_5, 0);
+    }
+
+    public void setDuration6(long i) {
+        setProperty(DURATION_6, i);
+    }
+    public long getDuration6() {
+        return mPrefs.getLong(DURATION_6, 0);
     }
 
     public void setAnswer1(int i) {
@@ -159,6 +226,8 @@ public class AppSharedPrefs {
     public int getIntensity() {
         return mPrefs.getInt(INTENSITY, -1);
     }
+
+
 
     // INIT CUSTOM NEGATIVE MOOD
     public void setInitCustomNegativeMood(String s) {
@@ -291,6 +360,7 @@ public class AppSharedPrefs {
     public String getCustomDrinking() {
         return mPrefs.getString(CUSTOM_DRINKING, "Other");
     }
+
 
 
     // PRE-EXIT MEASURES

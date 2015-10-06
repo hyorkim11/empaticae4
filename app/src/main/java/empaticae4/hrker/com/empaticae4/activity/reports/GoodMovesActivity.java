@@ -9,8 +9,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.text.format.Time;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -35,11 +33,12 @@ import empaticae4.hrker.com.empaticae4.wrapper.ReportDataWrapper;
 public class GoodMovesActivity extends Activity implements View.OnClickListener {
 
 
+    private long tempTime;
     private RadioButton mInitialOther, mOther;
     private RadioGroup mForm;
     private BootstrapButton bCancel, bContinue;
     private MediaPlayer mPlayer;
-    private String tempString;
+    private String tempString, tempString2;
     private Time cal;
 
     private AppSharedPrefs mPrefs;
@@ -55,9 +54,14 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
 
     private void init() {
 
+        // Capture time in millis as soon as activity begins
+        tempTime = Calendar.getInstance().getTimeInMillis();
+
         mPrefs = new AppSharedPrefs(GoodMovesActivity.this);
         mCachedReportData = mPrefs.getReportResponseCache();
+
         tempString = mPrefs.getInitCustomGoodmove();
+        tempString2 = mPrefs.getCustomGoodmove();
 
         mForm = (RadioGroup)findViewById(R.id.form1);
         mForm.setOnCheckedChangeListener(listener1);
@@ -128,9 +132,20 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
         mOther.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openCustom2();
+                String t = mPrefs.getCustomGoodmove();
+
+                if (t.equals("Other")) {
+
+                    openCustom2();
+                } else {
+
+                    mForm.clearCheck();
+                    mOther.setChecked(true);
+                    mInitialOther.setChecked(false);
+                }
             }
         });
+
 
         if (Objects.equals(tempString, "Other")) {
             mInitialOther.setText("Other");
@@ -138,6 +153,11 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
             mInitialOther.setText(tempString);
         }
 
+        if (Objects.equals(tempString2, "Other")) {
+            mOther.setText("Other");
+        } else {
+            mOther.setText(tempString2);
+        }
 
         mPlayer = MediaPlayer.create(GoodMovesActivity.this, R.raw.meditation_audio);
 
@@ -275,6 +295,7 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
                     String ts = editor.getText().toString();
                     mOther.setText(ts);
                     mOther.setChecked(true);
+                    tempString2 = ts;
                     mPrefs.setCustomGoodmove(ts);
                     mCachedReportData.setCgm(ts);
                     dialog.cancel();
@@ -358,41 +379,36 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
         temp = (new SimpleDateFormat("mm:ss:SSS")).format(new Date(duration));
         spEditor.putString("Report_duration", temp).commit();
         */
-        long tempTime = Calendar.getInstance().getTimeInMillis();
+        long tempT = Calendar.getInstance().getTimeInMillis();
         long tempTime2 = mCachedReportData.getStartTime().getTimeInMillis();
-        return (tempTime - tempTime2);
+        return (tempT - tempTime2);
 
     }
 
     private void finalizeReport() {
 
+        mCachedReportData.setDuration_5(getPageDuration());
+
         // Set Duration of Current Report
         mCachedReportData.setDuration(getReportDuration());
-        int duration = (int) ((mCachedReportData.getDuration() / 1000) % 60);
+        //int duration = (int) ((mCachedReportData.getDuration() / 1000) % 60);
+        float duration = mCachedReportData.getDuration();
 
         // Set Current Time String: timeStamp
         cal = new Time(Time.getCurrentTimezone());
         cal.setToNow();
-        String currentTime = cal.month + "/" + cal.monthDay + "/" + cal.year + "/" + cal.format("%k:%M:%S");
-        String timeStamp = "log," + currentTime + "," + "report_type," +
-                mCachedReportData.getReportType()+ "," + "temp: 00," + duration + "\n";
+        String currentTime = (cal.month+1) + "/" + cal.monthDay + "/" + cal.year + "/" + cal.format("%k:%M:%S");
+        String timeStamp = mCachedReportData.getUserID() + "," + currentTime + "," + "report_type," +
+                mCachedReportData.getReportType()+ "," + duration + "\n";
         // Current timeStamp format:
 
         // Set Data String: rowData
-        String rowData = ",answer1," + Integer.toString(mCachedReportData.getAnswer1()) + ",I: " +
-                mCachedReportData.getIntensity() + "\n" +
-                ",answer2," + Integer.toString(mCachedReportData.getAnswer2()) + "\n" +
-                ",answer3," + Integer.toString(mCachedReportData.getAnswer3()) + "\n" +
-                ",answer4," + Integer.toString(mCachedReportData.getAnswer4()) + "\n" +
-                ",answer5," + Integer.toString(mCachedReportData.getAnswer5()) + "\n";
-        /* Current data format:
-        log | 8/18/2015/23:56:19 | report_type | RT | temp:00 | 245424
-            | answer1            | #           | I:#|
-        *   | answer2            | #
-        *   | answer3            | #
-        *   | answer4            | #
-        *   | answer5            | #
-        * */
+        String rowData = ",answer1," + Integer.toString(mCachedReportData.getAnswer1()) + "," + Long.toString(mCachedReportData.getDuration_1()) + ",I: " + mCachedReportData.getIntensity() + "\n" +
+                ",answer2," + Integer.toString(mCachedReportData.getAnswer2()) + "," + Long.toString(mCachedReportData.getDuration_2()) + "\n" +
+                ",answer3," + Integer.toString(mCachedReportData.getAnswer3()) + "," + Long.toString(mCachedReportData.getDuration_3()) + "\n" +
+                ",answer4," + Integer.toString(mCachedReportData.getAnswer4()) + "," + Long.toString(mCachedReportData.getDuration_4()) + "\n" +
+                ",answer5," + Integer.toString(mCachedReportData.getAnswer5()) + "," + Long.toString(mCachedReportData.getDuration_5()) + "\n" +
+                ",answer6,," + Long.toString(mCachedReportData.getDuration_6()) + "\n";
 
         String finalLog = timeStamp + rowData;
 
@@ -428,26 +444,11 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
         mPrefs.setReportResponseCache(mCachedReportData);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_good_moves, menu);
-        return true;
-    }
+    private long getPageDuration() {
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        long tempTime2 = Calendar.getInstance().getTimeInMillis();
+        return (tempTime2 - tempTime);
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

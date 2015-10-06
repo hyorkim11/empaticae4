@@ -4,11 +4,18 @@ import java.util.Calendar;
 
 public class ReportDataWrapper  {
 
+    private String userID;
     private String reportType;
 
     private Calendar startTime;
     private Calendar endTime;
     private long duration;
+    private long duration_1;
+    private long duration_2;
+    private long duration_3;
+    private long duration_4;
+    private long duration_5;
+    private long duration_6;
 
     private int answer1;
     private int intensity;
@@ -38,7 +45,18 @@ public class ReportDataWrapper  {
     public ReportDataWrapper()  {
 
         // Initialize default values
+        userID = "Uninitialized";
+
         reportType = "N/A";
+
+        duration = 0;
+        duration_1 = 0;
+        duration_2 = 0;
+        duration_3 = 0;
+        duration_4 = 0;
+        duration_5 = 0;
+        duration_6 = 0;
+
         answer1 = -1;
         intensity = -1;
         answer2 = -1;
@@ -47,6 +65,25 @@ public class ReportDataWrapper  {
         answer5 = -1;
         drinking = false;
 
+        icnm = "Other";
+        cnm = "Other";
+        ice = "Other";
+        ce = "Other";
+        icgm = "Other";
+        cgm = "Other";
+        icct = "Other";
+        cct = "Other";
+        icd = "Other";
+        cd = "Other";
+
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     public long getDuration() {
@@ -55,6 +92,54 @@ public class ReportDataWrapper  {
 
     public void setDuration(long duration) {
         this.duration = duration;
+    }
+
+    public long getDuration_1() {
+        return duration_1;
+    }
+
+    public void setDuration_1(long duration_1) {
+        this.duration_1 = duration_1;
+    }
+
+    public long getDuration_2() {
+        return duration_2;
+    }
+
+    public void setDuration_2(long duration_2) {
+        this.duration_2 = duration_2;
+    }
+
+    public long getDuration_3() {
+        return duration_3;
+    }
+
+    public void setDuration_3(long duration_3) {
+        this.duration_3 = duration_3;
+    }
+
+    public long getDuration_4() {
+        return duration_4;
+    }
+
+    public void setDuration_4(long duration_4) {
+        this.duration_4 = duration_4;
+    }
+
+    public long getDuration_5() {
+        return duration_5;
+    }
+
+    public void setDuration_5(long duration_5) {
+        this.duration_5 = duration_5;
+    }
+
+    public long getDuration_6() {
+        return duration_6;
+    }
+
+    public void setDuration_6(long duration_6) {
+        this.duration_6 = duration_6;
     }
 
     public int getAnswer1() {

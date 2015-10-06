@@ -1,4 +1,4 @@
-package empaticae4.hrker.com.empaticae4.activity;
+package empaticae4.hrker.com.empaticae4.activity.empatica;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;

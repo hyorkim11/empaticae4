@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="15dp"
+    android:padding="5dp"
     tools:context="empaticae4.hrker.com.empaticae4.activity.settings.SettingsActivity">
 
     <TextView
@@ -10,20 +10,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
-        android:textStyle="bold"
         android:text="Settings"
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:id="@+id/texts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/title"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
@@ -32,12 +32,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="DEBUG LOG" />
+            android:layout_marginBottom="10dp"
+            android:text="DEBUG LOG"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginBottom="5dp"
             android:text="All content for debugging purposes, please do not touch." />
 
         <TextView
@@ -82,32 +85,47 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/bUserID"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bSend"
+        android:layout_centerHorizontal="true"
+        android:background="@android:drawable/dialog_holo_dark_frame"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF" />
+
+    <Button
         android:id="@+id/bSend"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/texts"
+        android:layout_above="@+id/bResetCSV"
         android:layout_centerHorizontal="true"
+        android:background="@android:drawable/dialog_holo_dark_frame"
         android:drawableLeft="@mipmap/ic_report"
         android:drawablePadding="5dp"
-        android:text="Send CSV" />
+        android:text="Send CSV"
+        android:textColor="#FFFFFF" />
 
     <Button
         android:id="@+id/bResetCSV"
-        android:layout_width="200dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/bSend"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:drawableLeft="@mipmap/ic_close"
-        android:drawablePadding="5dp"
-        android:text="Reset CSV" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:background="@android:drawable/dialog_holo_dark_frame"
+        android:textSize="10sp"
+        android:text="Reset CSV"
+        android:textColor="#FFFFFF" />
 
     <Button
         android:id="@+id/resetPrefs"
-        android:layout_width="200dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/bResetCSV"
-        android:layout_centerHorizontal="true"
-        android:text="Reset SharedPrefs" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@android:drawable/dialog_holo_dark_frame"
+        android:textSize="10sp"
+        android:text="Reset SharedPrefs"
+        android:textColor="#FFFFFF" />
 
 </RelativeLayout>

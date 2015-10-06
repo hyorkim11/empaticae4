@@ -56,7 +56,7 @@
         android:clickable="false"
         bootstrapbutton:bb_roundedCorners="true"
         bootstrapbutton:bb_size="large"
-        bootstrapbutton:bb_type="warning" />
+        bootstrapbutton:bb_type="danger" />
 
     <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/b3"

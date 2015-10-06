@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.format.Time;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -31,6 +29,7 @@ import empaticae4.hrker.com.empaticae4.wrapper.ReportDataWrapper;
 public class PositiveActivity extends Activity {
 
 
+    private long tempTime;
     private EditText etResponse;
     private BootstrapButton bContinue, bCancel;
     private Time cal;
@@ -47,6 +46,9 @@ public class PositiveActivity extends Activity {
     }
 
     private void init() {
+
+        // Capture time in millis as soon as activity begins
+        tempTime = Calendar.getInstance().getTimeInMillis();
 
         mPrefs = new AppSharedPrefs(PositiveActivity.this);
         mCachedReportData = mPrefs.getReportResponseCache();
@@ -79,35 +81,36 @@ public class PositiveActivity extends Activity {
         temp = (new SimpleDateFormat("mm:ss:SSS")).format(new Date(duration));
         spEditor.putString("Report_duration", temp).commit();
         */
-        long tempTime = Calendar.getInstance().getTimeInMillis();
+        long tempT = Calendar.getInstance().getTimeInMillis();
         long tempTime2 = mCachedReportData.getStartTime().getTimeInMillis();
-        return (tempTime - tempTime2);
+        return (tempT - tempTime2);
 
     }
 
     private void finalizeReport() {
 
+        mCachedReportData.setDuration_6(getPageDuration());
+
         // Set Duration of Current Report
         mCachedReportData.setDuration(getReportDuration());
-        int duration = (int) ((mCachedReportData.getDuration() / 1000) % 60);
+        //int duration = (int) ((mCachedReportData.getDuration() / 1000) % 60);
+        float duration = mCachedReportData.getDuration();
 
         // Set Current Time String: timeStamp
         cal = new Time(Time.getCurrentTimezone());
         cal.setToNow();
-        String currentTime = cal.month + "/" + cal.monthDay + "/" + cal.year + "/" + cal.format("%k:%M:%S");
-        String timeStamp = "log," + currentTime + "," + "report_type," +
+        String currentTime = (cal.month+1) + "/" + cal.monthDay + "/" + cal.year + "/" + cal.format("%k:%M:%S");
+        String timeStamp = mCachedReportData.getUserID() + "," + currentTime + "," + "report_type," +
                 mCachedReportData.getReportType()+ "," + "temp: 00," + duration + "\n";
         // Current timeStamp format:
 
         // Set Data String: rowData
-        String rowData = ",answer1," + Integer.toString(mCachedReportData.getAnswer1()) + ",I: " +
-                mCachedReportData.getIntensity() + "\n," +
-                "Positive Event"+ ",,,," + etResponse.getText().toString() + ",\n";
-        /* Current data format:
-        log | 8/18/2015/23:56:19 | report_type | RT | temp:00 | 245424
-            | answer1            | #           | I:#|
-        *   | Positive Event     |             |    |         | TEXT
-        * */
+        String rowData = ",answer1," + Integer.toString(mCachedReportData.getAnswer1()) + "," + Long.toString(mCachedReportData.getDuration_1()) + ",I: " + mCachedReportData.getIntensity() + "\n" +
+                ",answer2," + Integer.toString(mCachedReportData.getAnswer2()) + "," + Long.toString(mCachedReportData.getDuration_2()) + "\n" +
+                ",answer3," + Integer.toString(mCachedReportData.getAnswer3()) + "," + Long.toString(mCachedReportData.getDuration_3()) + "\n" +
+                ",answer4," + Integer.toString(mCachedReportData.getAnswer4()) + "," + Long.toString(mCachedReportData.getDuration_4()) + "\n" +
+                ",answer5," + Integer.toString(mCachedReportData.getAnswer5()) + "," + Long.toString(mCachedReportData.getDuration_5()) + "\n" +
+                ",answer6,," + Long.toString(mCachedReportData.getDuration_6()) + "\n";
 
         String finalLog = timeStamp + rowData;
 
@@ -151,7 +154,7 @@ public class PositiveActivity extends Activity {
         } else {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(PositiveActivity.this);
             alertDialogBuilder.setTitle("");
-            alertDialogBuilder.setMessage("Glad to hear it! \nKeep up the good work!");
+            alertDialogBuilder.setMessage("Great Job,\nKeep up the good work!");
 
             // set positive button: Finish
             alertDialogBuilder.setPositiveButton("Finish", new DialogInterface.OnClickListener() {
@@ -201,25 +204,10 @@ public class PositiveActivity extends Activity {
         alertDialog.show();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_response2, menu);
-        return true;
-    }
+    private long getPageDuration() {
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        long tempTime2 = Calendar.getInstance().getTimeInMillis();
+        return (tempTime2 - tempTime);
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

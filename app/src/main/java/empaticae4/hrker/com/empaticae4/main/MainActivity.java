@@ -14,6 +14,7 @@ import android.view.View;
 import com.beardedhen.androidbootstrap.BootstrapButton;
 
 import empaticae4.hrker.com.empaticae4.R;
+import empaticae4.hrker.com.empaticae4.activity.empatica.LiveStreamActivity;
 import empaticae4.hrker.com.empaticae4.activity.reports.ReportActivity;
 import empaticae4.hrker.com.empaticae4.activity.settings.SettingsActivity;
 
@@ -51,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                //Intent i = new Intent(getApplicationContext(), LiveStreamActivity.class);
-                //startActivity(i);
+                Intent i = new Intent(getApplicationContext(), LiveStreamActivity.class);
+                startActivity(i);
             }
         });
         b3.setOnClickListener(new View.OnClickListener() {
