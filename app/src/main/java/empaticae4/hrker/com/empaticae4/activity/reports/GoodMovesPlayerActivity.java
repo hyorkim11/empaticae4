@@ -33,6 +33,7 @@ public class GoodMovesPlayerActivity extends Activity {
             //mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.SOOTHINGMP3);
 
         } else if (mediakey == 3) {
+
             // MEDITATION
             mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.meditation_audio);
             mp3Play();
