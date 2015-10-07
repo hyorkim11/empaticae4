@@ -1,12 +1,21 @@
 package empaticae4.hrker.com.empaticae4.activity.empatica;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +27,8 @@ import com.empatica.empalink.config.EmpaSensorType;
 import com.empatica.empalink.config.EmpaStatus;
 import com.empatica.empalink.delegate.EmpaDataDelegate;
 import com.empatica.empalink.delegate.EmpaStatusDelegate;
+
+import java.util.ArrayList;
 
 import empaticae4.hrker.com.empaticae4.R;
 
@@ -37,8 +48,6 @@ public class LiveStreamActivity extends AppCompatActivity implements EmpaDataDel
 
 
     private static final int REQUEST_ENABLE_BT = 1;
-    private static final long STREAMING_TIME = 10000;
-    // Stops streaming 10 seconds after connection
 
     private EmpaDeviceManager deviceManager;
 
@@ -54,11 +63,15 @@ public class LiveStreamActivity extends AppCompatActivity implements EmpaDataDel
     private TextView statusLabel;
     private TextView deviceNameLabel;
     private RelativeLayout dataCnt;
-    private boolean run;
+
+    private ListView listView;
+    private ArrayList<String> mDeviceList = new ArrayList<>();
+    private BluetoothAdapter mBluetoothAdapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_stream);
         initialSetup();
@@ -84,12 +97,15 @@ public class LiveStreamActivity extends AppCompatActivity implements EmpaDataDel
         // Initialize the Device Manager using your API key. You need to have Internet access at this point.
         deviceManager.authenticateWithAPIKey(EMPATICA_API_KEY);
 
+        // Start Scanning
+        deviceManager.startScanning();
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        deviceManager.stopScanning();
+        //deviceManager.stopScanning();
     }
 
     @Override
@@ -98,6 +114,7 @@ public class LiveStreamActivity extends AppCompatActivity implements EmpaDataDel
         // export captured data into a csv file before destroying cache
 
         super.onDestroy();
+        unregisterReceiver(mReceiver);
         deviceManager.cleanUp();
 
     }
@@ -106,9 +123,13 @@ public class LiveStreamActivity extends AppCompatActivity implements EmpaDataDel
     public void didDiscoverDevice(BluetoothDevice bluetoothDevice,
                                   String deviceName, int rssi, boolean allowed) {
 
+        Toast.makeText(LiveStreamActivity.this, "Devices discovered", Toast.LENGTH_SHORT).show();
+
         if (allowed) {
             // Stop scanning. The first allowed device will do.
-            deviceManager.stopScanning();
+            //deviceManager.stopScanning();
+            showAvailableDevices();
+
             try {
                 // Connect to the device
                 deviceManager.connectDevice(bluetoothDevice);
@@ -221,8 +242,41 @@ public class LiveStreamActivity extends AppCompatActivity implements EmpaDataDel
     }
 
 
+    private void showAvailableDevices() {
 
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        mBluetoothAdapter.startDiscovery();
 
+        // Create and Build Dialog
+        final Dialog builder = new Dialog (this);
+        builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        LayoutInflater inflater = getLayoutInflater();
+        final View view = inflater.inflate(R.layout.dialog_device_list, null);
+        builder.setContentView(view);
+        listView = (ListView) findViewById(R.id.listView);
+
+        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        registerReceiver(mReceiver, filter);
+
+        builder.setCanceledOnTouchOutside(true);
+        builder.show();
+
+    }
+
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                BluetoothDevice device = intent
+                        .getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                mDeviceList.add(device.getName() + "\n" + device.getAddress());
+                Log.i("BT", device.getName() + "\n" + device.getAddress());
+                listView.setAdapter(new ArrayAdapter<>(context,
+                        android.R.layout.simple_list_item_1, mDeviceList));
+            }
+        }
+    };
 
 
 }

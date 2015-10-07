@@ -33,4 +33,5 @@ dependencies {
     compile 'com.beardedhen:androidbootstrap:+'
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.jjoe64:graphview:4.0.1'
+    compile 'com.android.support:design:22.2.1'
 }

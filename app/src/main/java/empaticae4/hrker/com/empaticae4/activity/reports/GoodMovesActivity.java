@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.format.Time;
@@ -37,9 +36,9 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
     private RadioButton mInitialOther, mOther;
     private RadioGroup mForm;
     private BootstrapButton bCancel, bContinue;
-    private MediaPlayer mPlayer;
     private String tempString, tempString2;
     private Time cal;
+    private int mediaChoice;
 
     private AppSharedPrefs mPrefs;
     private ReportDataWrapper mCachedReportData;
@@ -159,7 +158,7 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
             mOther.setText(tempString2);
         }
 
-        mPlayer = MediaPlayer.create(GoodMovesActivity.this, R.raw.meditation_audio);
+        mediaChoice = 0;
 
     }
 
@@ -200,6 +199,7 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
         public void onClick(View v) {
             // OPEN CONTACT
             Toast.makeText(GoodMovesActivity.this, "Contact selected", Toast.LENGTH_SHORT).show();
+            mediaChoice = 1;
 
         }
     };
@@ -209,6 +209,7 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
         public void onClick(View v) {
             // OPEN MP3
             Toast.makeText(GoodMovesActivity.this, "Mp3 selected", Toast.LENGTH_SHORT).show();
+            mediaChoice = 2;
 
         }
     };
@@ -218,6 +219,7 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
         public void onClick(View v) {
             // OPEN MEDITATION
             Toast.makeText(GoodMovesActivity.this, "Meditation selected", Toast.LENGTH_SHORT).show();
+            mediaChoice = 3;
 
         }
     };
@@ -361,10 +363,23 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
 
                 // save DATA before exiting
                 finalizeReport();
-
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(i);
                 Toast.makeText(getApplicationContext(), "Your response has been recorded", Toast.LENGTH_SHORT).show();
+
+                if (mediaChoice == 0) {
+
+                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(i);
+
+                } else {
+
+                    Bundle b = new Bundle();
+                    b.putInt("media_key", mediaChoice);
+                    Intent i = new Intent(getApplicationContext(), GoodMovesPlayerActivity.class);
+                    i.putExtras(b);
+                    startActivity(i);
+                }
+
+
             }
         });
 
