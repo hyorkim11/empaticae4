@@ -1,5 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,7 +18,7 @@
         android:layout_marginBottom="20dp"
         android:gravity="center_horizontal"
         android:text="What is Going On Right Now?"
-        android:textColor="@color/white"
+        android:textColor="#FFFFFF"
         android:textSize="30sp"
         android:textStyle="bold" />
 
@@ -44,8 +44,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:text="Cancel"
-            bootstrap:bb_roundedCorners="true"
-            bootstrap:bb_type="danger" />
+            app:roundedCorners="true"
+            app:bootstrapBrand="danger" />
 
         <com.beardedhen.androidbootstrap.BootstrapButton
             android:id="@+id/bContinue"
@@ -53,8 +53,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="Continue"
-            bootstrap:bb_roundedCorners="true"
-            bootstrap:bb_type="success" />
+            app:roundedCorners="true"
+            app:bootstrapBrand="success" />
 
     </RelativeLayout>
 

@@ -6,10 +6,12 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Vibrator;
+import android.provider.ContactsContract;
 import android.support.v4.app.NotificationCompat;
 import android.text.format.Time;
 import android.view.LayoutInflater;
@@ -37,7 +39,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
     private ReportDataWrapper mCachedReportData;
     private Time cal;
 
-    private Button bUserID, resetButton, sendButton, mResetCSV;
+    private Button bUserID, resetButton, sendButton, mResetCSV, mSetCallContact;
     private TextView sp0, sp1, sp2, sp3, sp4, sp5, sp6, sp7;
 
     @Override
@@ -73,6 +75,8 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
         resetButton.setOnClickListener(this);
         mResetCSV = (Button) findViewById(R.id.bResetCSV);
         mResetCSV.setOnClickListener(this);
+        mSetCallContact = (Button) findViewById(R.id.bSetCallContact);
+        mSetCallContact.setOnClickListener(this);
 
         sp0 = (TextView) findViewById(R.id.sp0);
         sp1 = (TextView) findViewById(R.id.sp1);
@@ -112,6 +116,10 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
             sendCSV();
         } else if (v.getId() == R.id.bResetCSV) {
             resetCSV();
+        } else if (v.getId() == R.id.bSetCallContact) {
+            // user types in name of friend to call
+            // set in mPrefs.setCallContact()
+            // getNumber(name, context)
         }
     }
 
@@ -255,6 +263,22 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
         builder.setCanceledOnTouchOutside(true);
         builder.show();
 
+    }
+
+    private String getNumber(String name, Context context) {
+        String number = null;
+        String selection = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " like'%" + name + "%'";
+        String[] projection = new String[] { ContactsContract.CommonDataKinds.Phone.NUMBER };
+        Cursor c = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                projection, selection, null, null);
+
+        if (c.moveToFirst()) {
+            number = c.getString(0);
+        }
+        c.close();
+        if(number == null)
+            number = "Unsaved";
+        return number;
     }
 
 }

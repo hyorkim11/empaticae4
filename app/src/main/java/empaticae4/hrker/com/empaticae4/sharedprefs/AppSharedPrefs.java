@@ -17,6 +17,7 @@ public class AppSharedPrefs {
 
     private static final String USERID = "user_id";
     private static final String REPORT_TYPE = "report_type";
+    private static final String CALLCONTACT = "call_contact";
 
     private static final String DURATION = "duration";
     private static final String DURATION_1 = "duration1";
@@ -160,6 +161,14 @@ public class AppSharedPrefs {
     public String getReportType() {
         return mPrefs.getString(REPORT_TYPE, "Uninitialized");
     }
+
+    public void setCallcontact(String i) {
+        setProperty(CALLCONTACT, i);
+    }
+    public String getCallcontact() {
+        return mPrefs.getString(CALLCONTACT, "Unsaved");
+    }
+
 
     // GETTER & SETTER for Durations
     public void setDuration(long i) {

@@ -6,6 +6,7 @@ public class ReportDataWrapper  {
 
     private String userID;
     private String reportType;
+    private String callContact;
 
     private Calendar startTime;
     private Calendar endTime;
@@ -48,6 +49,8 @@ public class ReportDataWrapper  {
         userID = "Uninitialized";
 
         reportType = "N/A";
+
+        callContact = "Unsaved";
 
         duration = 0;
         duration_1 = 0;
