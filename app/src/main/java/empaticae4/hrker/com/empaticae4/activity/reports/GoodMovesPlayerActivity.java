@@ -1,22 +1,25 @@
 package empaticae4.hrker.com.empaticae4.activity.reports;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.IOException;
 
 import empaticae4.hrker.com.empaticae4.R;
 import empaticae4.hrker.com.empaticae4.main.MainActivity;
 
 public class GoodMovesPlayerActivity extends Activity {
 
-    private static MediaPlayer mediaPlayer;
+    private MediaPlayer mediaPlayer;
     private int mediakey;
 
     private Button bPlay;
@@ -35,6 +38,7 @@ public class GoodMovesPlayerActivity extends Activity {
         mediakey = b.getInt("media_key");
 
         bPlay = (Button) findViewById(R.id.bMp3);
+        mediaPlayer = new MediaPlayer();
 
         if (mediakey == 1) {
             // CONTACT
@@ -43,7 +47,22 @@ public class GoodMovesPlayerActivity extends Activity {
         } else if (mediakey == 2) {
             // MP3
             bPlay.setVisibility(View.VISIBLE);
-            //mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.SOOTHINGMP3);
+            File root = Environment.getExternalStorageDirectory();
+
+            if (root.canRead()) {
+
+                File dir = new File(root.getAbsolutePath() + "/mtmFile");
+                File file = new File(dir, "soothingMusic.mp3");
+
+                try {
+                    Uri mp3Uri = Uri.fromFile(file);  // initialize Uri here
+                    mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                    mediaPlayer.setDataSource(getApplicationContext(), mp3Uri);
+                    mediaPlayer.prepare();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
 
         } else if (mediakey == 3) {
             // MEDITATION
@@ -78,11 +97,13 @@ public class GoodMovesPlayerActivity extends Activity {
     protected void onPause() {
         super.onPause();
         mp3Pause();
+        bPlay.setBackgroundResource(R.mipmap.ic_play);
     }
     @Override
     protected void onResume() {
         super.onResume();
-        mp3Resume();
+        mp3Play();
+        bPlay.setBackgroundResource(R.mipmap.ic_pause);
     }
     @Override
     protected void onDestroy() {
@@ -90,17 +111,14 @@ public class GoodMovesPlayerActivity extends Activity {
         mp3Stop();
     }
 
-    public static void mp3Play(){
+    private void mp3Play(){
         mediaPlayer.start();
     }
-    public static void mp3Stop(){
+    private void mp3Stop(){
         mediaPlayer.release();
     }
-    public static void mp3Pause(){
+    private void mp3Pause(){
         mediaPlayer.pause();
-    }
-    public static void mp3Resume(){
-        mediaPlayer.start();
     }
 
 
