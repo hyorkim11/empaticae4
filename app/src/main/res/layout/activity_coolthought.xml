@@ -17,7 +17,7 @@
         android:text="FREEZE"
         app:roundedCorners="true"
         app:bootstrapBrand="danger"
-        app:bootstrapSize="sm"
+        app:bootstrapSize="md"
         app:buttonMode="regular"
         app:showOutline="false"/>
 
@@ -41,7 +41,7 @@
         android:clickable="false"
         android:text="BREATHE"
         app:roundedCorners="true"
-        app:bootstrapSize="sm"
+        app:bootstrapSize="md"
         app:bootstrapBrand="warning" />
 
     <TextView
@@ -60,10 +60,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tvBreathe"
         android:layout_centerHorizontal="true"
-        android:text="CHOOSE COOLTHOUGHT"
+        android:text="CHOOSE"
         android:clickable="false"
         app:roundedCorners="true"
-        app:bootstrapSize="sm"
+        app:bootstrapSize="md"
         app:bootstrapBrand="success" />
 
 
@@ -104,6 +104,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:text="Cancel"
+            app:bootstrapSize="lg"
             app:roundedCorners="true"
             app:bootstrapBrand="danger" />
 
@@ -113,6 +114,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="Continue"
+            app:bootstrapSize="lg"
             app:roundedCorners="true"
             app:bootstrapBrand="success" />
 

@@ -1,7 +1,10 @@
 package empaticae4.hrker.com.empaticae4.activity.reports;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +28,7 @@ import java.util.Calendar;
 import java.util.Objects;
 
 import empaticae4.hrker.com.empaticae4.R;
+import empaticae4.hrker.com.empaticae4.activity.settings.AlarmReceiver;
 import empaticae4.hrker.com.empaticae4.main.MainActivity;
 import empaticae4.hrker.com.empaticae4.sharedprefs.AppSharedPrefs;
 import empaticae4.hrker.com.empaticae4.wrapper.ReportDataWrapper;
@@ -395,12 +399,14 @@ public class DrinkActivity extends Activity {
 
                 // save DATA before exiting
                 finalizeReport();
+                registerAlarm();
 
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
                 finish();
                 Toast.makeText(getApplicationContext(), "Your response has been recorded", Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -421,6 +427,18 @@ public class DrinkActivity extends Activity {
         tempTime = Calendar.getInstance().getTimeInMillis();
 
         super.onResume();
+    }
+
+    private void registerAlarm(){
+
+        AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+
+
+        // INACTIVITY ALARM CURRENTLY SET TO 3 SECONDS
+        alarmMgr.set(AlarmManager.RTC, Calendar.getInstance().getTimeInMillis() + 3000, alarmIntent);
+
     }
 
 }

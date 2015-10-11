@@ -2,17 +2,13 @@ package empaticae4.hrker.com.empaticae4.activity.settings;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Vibrator;
 import android.provider.ContactsContract;
-import android.support.v4.app.NotificationCompat;
 import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,10 +22,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Date;
 
 import empaticae4.hrker.com.empaticae4.R;
-import empaticae4.hrker.com.empaticae4.activity.reports.ReportActivity;
 import empaticae4.hrker.com.empaticae4.sharedprefs.AppSharedPrefs;
 import empaticae4.hrker.com.empaticae4.wrapper.ReportDataWrapper;
 
@@ -39,7 +33,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
     private ReportDataWrapper mCachedReportData;
     private Time cal;
 
-    private Button bUserID, resetButton, sendButton, mResetCSV, mSetCallContact;
+    private Button bUserID, resetButton, sendButton, mResetCSV, mSetCallContact, mAlarmPick;
     private TextView sp0, sp1, sp2, sp3, sp4, sp5, sp6, sp7;
 
     @Override
@@ -47,6 +41,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
         init();
     }
 
@@ -58,7 +53,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
         bUserID = (Button) findViewById(R.id.bUserID);
 
         if (mCachedReportData.getUserID() != "Uninitialized") {
-            bUserID.setText("ID: " + mCachedReportData.getUserID());
+            bUserID.setText("ID: " + mPrefs.getUserID());
         } else {
             bUserID.setText("Set ID");
         }
@@ -122,6 +117,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
             // getNumber(name, context)
         }
     }
+
 
     private void sendCSV() {
 
@@ -193,45 +189,6 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    // Notifications
-    public void sendNotification(View v) {
-
-        Vibrator vNoti = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-        // Vibrate for 500 milliseconds
-        vNoti.vibrate(500);
-
-        Intent notificationIntent = new Intent(this, ReportActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                Intent.FLAG_ACTIVITY_SINGLE_TOP |
-                Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_drawer)
-                .setAutoCancel(true)
-                .setContentTitle("Nudge from Your Empatica")
-                .setContentText("Would you like to make a report? \n (swipe to dismiss)")
-                .addAction(R.drawable.ic_drawer, "Sure", contentIntent);
-
-        builder.setContentIntent(contentIntent);
-
-        // Create semi-unique notification ID
-        long time = new Date().getTime();
-        String tempStr = String.valueOf(time);
-        String last4Str = tempStr.substring(tempStr.length() - 5);
-        int notificationID = Integer.valueOf(last4Str);
-
-        // Push notification
-        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        // hide the notification after its selected
-        //builder.flags |= NotificationCompat.FLAG_AUTO_CANCEL;
-
-        manager.notify(notificationID, builder.build());
-
-    }
-
     private void openUserID() {
 
         // Create and Build Dialog
@@ -252,6 +209,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
                     Toast.makeText(SettingsActivity.this, "Please enter valid ID", Toast.LENGTH_SHORT).show();
                 } else {
                     mCachedReportData.setUserID(et.getText().toString());
+                    mPrefs.setUserID(et.getText().toString());
                     mPrefs.setReportResponseCache(mCachedReportData);
                     Toast.makeText(SettingsActivity.this, "ID set as: " + et.getText().toString(), Toast.LENGTH_SHORT).show();
                     bUserID.setText("ID: " + mCachedReportData.getUserID());
@@ -281,4 +239,10 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
         return number;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mPrefs.setReportResponseCache(mCachedReportData);
+        finish();
+    }
 }

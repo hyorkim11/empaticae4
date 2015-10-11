@@ -82,6 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:text="Cancel"
+            app:bootstrapSize="lg"
             app:roundedCorners="true"
             app:bootstrapBrand="danger" />
 
@@ -91,6 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="Continue"
+            app:bootstrapSize="lg"
             app:roundedCorners="true"
             app:bootstrapBrand="success" />
 

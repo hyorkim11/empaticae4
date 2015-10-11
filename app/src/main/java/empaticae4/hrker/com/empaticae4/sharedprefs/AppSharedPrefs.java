@@ -148,10 +148,10 @@ public class AppSharedPrefs {
 
 
     // USERID & REPORT TYPE
-    public void setUserid(String i) {
+    public void setUserID(String i) {
         setProperty(USERID, i);
     }
-    public String getUserid() {
+    public String getUserID() {
         return mPrefs.getString(USERID, "Uninitialized");
     }
 
