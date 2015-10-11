@@ -374,7 +374,7 @@ public class AppSharedPrefs {
 
     // PRE-EXIT MEASURES
     public void wrapUp() {
-        mPrefs.edit().clear().commit();
+        mPrefs.edit().clear().apply();
     }
 
 }

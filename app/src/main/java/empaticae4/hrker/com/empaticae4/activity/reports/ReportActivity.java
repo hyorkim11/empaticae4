@@ -3,6 +3,8 @@ package empaticae4.hrker.com.empaticae4.activity.reports;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,6 +29,7 @@ import empaticae4.hrker.com.empaticae4.wrapper.ReportDataWrapper;
 public class ReportActivity extends Activity {
 
 
+    public BroadcastReceiver mBroadcastReceiver;
     private long tempTime;
     private BootstrapButton bContinue, bCancel;
     private RadioGroup mForm1, mForm2;
@@ -42,6 +45,14 @@ public class ReportActivity extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
+
+        mBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+            }
+        };
+        // register the receiver
 
         init();
     }
