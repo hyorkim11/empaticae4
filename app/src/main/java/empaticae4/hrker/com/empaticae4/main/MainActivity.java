@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent i = new Intent(getApplicationContext(), ReportActivity.class);
                 i.putExtra("report_type", "SI"); // self initiated
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
             }
         });

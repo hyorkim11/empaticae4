@@ -279,7 +279,9 @@ public class CoolThoughtActivity extends Activity {
             public void onClick(DialogInterface dialog, int id) {
 
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
+                finish();
                 Toast.makeText(getApplicationContext(), "You have quit your report", Toast.LENGTH_SHORT).show();
             }
         });
@@ -311,7 +313,9 @@ public class CoolThoughtActivity extends Activity {
                 mCachedReportData.setAnswer3(getAnswerChoice());
                 mPrefs.setReportResponseCache(mCachedReportData);
                 Intent i = new Intent(getApplicationContext(), DrinkActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
+                finish();
             }
         });
 
@@ -323,7 +327,9 @@ public class CoolThoughtActivity extends Activity {
                 mCachedReportData.setAnswer3(getAnswerChoice());
                 mPrefs.setReportResponseCache(mCachedReportData);
                 Intent i = new Intent(getApplicationContext(), GoodMovesActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
+                finish();
             }
         });
 
@@ -336,5 +342,13 @@ public class CoolThoughtActivity extends Activity {
         long tempTime2 = Calendar.getInstance().getTimeInMillis();
         return (tempTime2 - tempTime);
 
+    }
+
+    @Override
+    protected void onResume() {
+
+        tempTime = Calendar.getInstance().getTimeInMillis();
+
+        super.onResume();
     }
 }

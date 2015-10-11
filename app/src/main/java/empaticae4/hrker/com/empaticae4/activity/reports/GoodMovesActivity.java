@@ -329,7 +329,9 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
             public void onClick(DialogInterface dialog, int id) {
 
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
+                finish();
                 Toast.makeText(getApplicationContext(), "You have quit your report", Toast.LENGTH_SHORT).show();
             }
         });
@@ -368,7 +370,9 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
                 if (mediaChoice == 0) {
 
                     Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
+                    finish();
 
                 } else {
 
@@ -376,7 +380,9 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
                     b.putInt("media_key", mediaChoice);
                     Intent i = new Intent(getApplicationContext(), GoodMovesPlayerActivity.class);
                     i.putExtras(b);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
+                    finish();
                 }
 
 
@@ -467,7 +473,13 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
     }
 
     @Override
-    public void onClick(View view) {
+    public void onClick(View view) {}
 
+    @Override
+    protected void onResume() {
+
+        tempTime = Calendar.getInstance().getTimeInMillis();
+
+        super.onResume();
     }
 }

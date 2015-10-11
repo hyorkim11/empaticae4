@@ -413,12 +413,16 @@ public class ReportActivity extends Activity {
                     if (PoN()) {
                         // if positive emotion selected
                         Intent j = new Intent(getApplicationContext(), PositiveActivity.class);
+                        j.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(j);
+                        finish();
 
                     } else {
                         // negative emotion selected or by default
-                        Intent j = new Intent(getApplicationContext(), NegativeActivity.class);
-                        startActivity(j);
+                        Intent k = new Intent(getApplicationContext(), NegativeActivity.class);
+                        k.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(k);
+                        finish();
                     }
                 }
             }
@@ -443,9 +447,17 @@ public class ReportActivity extends Activity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
     protected void onResume() {
 
         tempIntensity = 0;
+        tempTime = Calendar.getInstance().getTimeInMillis();
+
         super.onResume();
     }
 }

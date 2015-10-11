@@ -85,8 +85,11 @@ public class NegativeActivity extends Activity {
                     mCachedReportData.setDuration_2(getPageDuration());
                     mCachedReportData.setAnswer2(getAnswerChoice());
                     mPrefs.setReportResponseCache(mCachedReportData);
+
                     Intent i = new Intent(getApplicationContext(), CoolThoughtActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
+                    finish();
                 } else {
                     Toast.makeText(getApplicationContext(), "Please make a selection", Toast.LENGTH_SHORT).show();
                 }
@@ -305,6 +308,14 @@ public class NegativeActivity extends Activity {
         long tempTime2 = Calendar.getInstance().getTimeInMillis();
         return (tempTime2 - tempTime);
 
+    }
+
+    @Override
+    protected void onResume() {
+
+        tempTime = Calendar.getInstance().getTimeInMillis();
+
+        super.onResume();
     }
 
 }
