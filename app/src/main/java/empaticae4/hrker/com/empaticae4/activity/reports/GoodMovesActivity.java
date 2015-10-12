@@ -1,7 +1,10 @@
 package empaticae4.hrker.com.empaticae4.activity.reports;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +28,7 @@ import java.util.Calendar;
 import java.util.Objects;
 
 import empaticae4.hrker.com.empaticae4.R;
+import empaticae4.hrker.com.empaticae4.activity.settings.AlarmReceiver;
 import empaticae4.hrker.com.empaticae4.main.MainActivity;
 import empaticae4.hrker.com.empaticae4.sharedprefs.AppSharedPrefs;
 import empaticae4.hrker.com.empaticae4.wrapper.ReportDataWrapper;
@@ -365,6 +369,7 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
 
                 // save DATA before exiting
                 finalizeReport();
+                registerAlarm();
                 Toast.makeText(getApplicationContext(), "Your response has been recorded", Toast.LENGTH_SHORT).show();
 
                 if (mediaChoice == 0) {
@@ -472,8 +477,42 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
 
     }
 
+    private void openAlert() {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(GoodMovesActivity.this);
+        alertDialogBuilder.setTitle("");
+        alertDialogBuilder.setMessage("Are you sure you want to quit?");
+
+        // set positive button: Yes
+        alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int id) {
+
+                finish();
+                Toast.makeText(getApplicationContext(), "You have quit your report", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // set negative button: No
+        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
     @Override
     public void onClick(View view) {}
+
+    @Override
+    public void onBackPressed() {
+
+        openAlert();
+    }
 
     @Override
     protected void onResume() {
@@ -481,5 +520,16 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
         tempTime = Calendar.getInstance().getTimeInMillis();
 
         super.onResume();
+    }
+
+    private void registerAlarm(){
+
+        AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+
+        // INACTIVITY ALARM CURRENTLY SET TO 24 hrs
+        alarmMgr.set(AlarmManager.RTC, Calendar.getInstance().getTimeInMillis() + 3600000, alarmIntent);
+
     }
 }

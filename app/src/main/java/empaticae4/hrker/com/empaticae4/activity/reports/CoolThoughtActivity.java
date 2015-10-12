@@ -337,11 +337,45 @@ public class CoolThoughtActivity extends Activity {
         alertDialog.show();
     }
 
+    private void openAlert() {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CoolThoughtActivity.this);
+        alertDialogBuilder.setTitle("");
+        alertDialogBuilder.setMessage("Are you sure you want to quit?");
+
+        // set positive button: Yes
+        alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int id) {
+
+                finish();
+                Toast.makeText(getApplicationContext(), "You have quit your report", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // set negative button: No
+        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
     private long getPageDuration() {
 
         long tempTime2 = Calendar.getInstance().getTimeInMillis();
         return (tempTime2 - tempTime);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        openAlert();
     }
 
     @Override

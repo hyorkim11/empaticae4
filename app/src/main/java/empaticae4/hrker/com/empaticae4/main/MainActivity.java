@@ -22,7 +22,7 @@ import empaticae4.hrker.com.empaticae4.activity.settings.SettingsActivity;
 public class MainActivity extends AppCompatActivity {
 
 
-    private BootstrapButton b1, b2, b3;
+    private BootstrapButton b1, b2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         b1 = (BootstrapButton) findViewById(R.id.b1);
         b2 = (BootstrapButton) findViewById(R.id.b2);
-        b3 = (BootstrapButton) findViewById(R.id.b3);
+        //b3 = (BootstrapButton) findViewById(R.id.b3);
 
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,15 +57,18 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        b3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                //Intent i = new Intent(getApplicationContext(), SOMEACTIVITY.class);
-                //startActivity(i);
-
-            }
-        });
+//        b3.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                Bundle b = new Bundle();
+//                b.putInt("media_key", 4);
+//                Intent i = new Intent(getApplicationContext(), GoodMovesPlayerActivity.class);
+//                i.putExtras(b);
+//                startActivity(i);
+//
+//            }
+//        });
 
     }
 

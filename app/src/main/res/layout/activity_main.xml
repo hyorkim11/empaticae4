@@ -35,7 +35,7 @@
     <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/b1"
         android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_height="75dp"
         android:layout_gravity="center"
         android:layout_marginTop="100dp"
         android:text="Make a report"
@@ -47,27 +47,28 @@
     <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/b2"
         android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_height="75dp"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:clickable="false"
         android:text="Current status"
         android:textSize="15sp"
-        app:bootstrapBrand="danger"
-        app:bootstrapSize="lg"
-        app:roundedCorners="true" />
-
-    <com.beardedhen.androidbootstrap.BootstrapButton
-        android:id="@+id/b3"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:clickable="false"
-        android:text="Good moves"
-        android:textSize="15sp"
         app:bootstrapBrand="warning"
         app:bootstrapSize="lg"
-        app:roundedCorners="true" />
+        app:roundedCorners="true"/>
+
+    <!--<com.beardedhen.androidbootstrap.BootstrapButton-->
+        <!--android:id="@+id/b3"-->
+        <!--android:layout_width="200dp"-->
+        <!--android:layout_height="75dp"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:clickable="false"-->
+        <!--android:text="Good moves"-->
+        <!--android:textSize="15sp"-->
+        <!--app:bootstrapBrand="danger"-->
+        <!--app:bootstrapSize="lg"-->
+        <!--app:roundedCorners="true"-->
+        <!--app:showOutline="true" />-->
 
 </LinearLayout>

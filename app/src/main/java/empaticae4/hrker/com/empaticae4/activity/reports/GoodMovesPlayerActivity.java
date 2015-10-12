@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -23,6 +24,7 @@ public class GoodMovesPlayerActivity extends Activity {
     private int mediakey;
 
     private Button bPlay;
+    private TextView tvMarquee;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,16 +39,21 @@ public class GoodMovesPlayerActivity extends Activity {
         Bundle b = in.getExtras();
         mediakey = b.getInt("media_key");
 
+        tvMarquee = (TextView) findViewById(R.id.marqueeText);
+        tvMarquee.setSelected(true);
+
         bPlay = (Button) findViewById(R.id.bMp3);
         mediaPlayer = new MediaPlayer();
 
         if (mediakey == 1) {
             // CONTACT
             bPlay.setVisibility(View.INVISIBLE);
+            tvMarquee.setVisibility(View.INVISIBLE);
 
         } else if (mediakey == 2) {
             // MP3
             bPlay.setVisibility(View.VISIBLE);
+            tvMarquee.setText("Personal soothing soundtrack is currently playing. Enjoy!");
             File root = Environment.getExternalStorageDirectory();
 
             if (root.canRead()) {
@@ -67,7 +74,12 @@ public class GoodMovesPlayerActivity extends Activity {
         } else if (mediakey == 3) {
             // MEDITATION
             bPlay.setVisibility(View.VISIBLE);
+            tvMarquee.setText("A calming meditation track is currently playing.");
             mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.meditation_audio);
+
+        } else if (mediakey == 4) {
+          // ACCESSED FROM MAIN MENU
+
 
         } else {
             // ERROR

@@ -421,6 +421,34 @@ public class DrinkActivity extends Activity {
 
     }
 
+    private void openAlert() {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DrinkActivity.this);
+        alertDialogBuilder.setTitle("");
+        alertDialogBuilder.setMessage("Are you sure you want to quit?");
+
+        // set positive button: Yes
+        alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int id) {
+
+                finish();
+                Toast.makeText(getApplicationContext(), "You have quit your report", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // set negative button: No
+        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
     @Override
     protected void onResume() {
 
@@ -429,15 +457,20 @@ public class DrinkActivity extends Activity {
         super.onResume();
     }
 
+    @Override
+    public void onBackPressed() {
+
+        openAlert();
+    }
+
     private void registerAlarm(){
 
         AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlarmReceiver.class);
         PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
 
-
-        // INACTIVITY ALARM CURRENTLY SET TO 3 SECONDS
-        alarmMgr.set(AlarmManager.RTC, Calendar.getInstance().getTimeInMillis() + 3000, alarmIntent);
+        // INACTIVITY ALARM CURRENTLY SET TO 24 hrs
+        alarmMgr.set(AlarmManager.RTC, Calendar.getInstance().getTimeInMillis() + 3600000, alarmIntent);
 
     }
 
