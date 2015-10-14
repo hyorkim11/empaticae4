@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.empatica.empalink.ConnectionNotAllowedException;
 import com.empatica.empalink.EmpaDeviceManager;
@@ -22,26 +21,32 @@ import java.util.Date;
 
 public class dataService extends Service implements EmpaDataDelegate, EmpaStatusDelegate {
 
-    private static final String TAG = "BroadcastService";
+    private static final String TAG = "dataService";
     public static final String BROADCAST_ACTION = "com.websmithing.broadcasttest.displayevent";
     private final Handler handler = new Handler();
     Intent intent;
     int counter = 0;
 
     private EmpaDeviceManager deviceManager;
+    public BluetoothAdapter mBluetoothAdapter;
+
 
     public void onCreate() {
         super.onCreate();
         intent = new Intent(BROADCAST_ACTION);
 
+        Log.d(TAG, "entered onCreate");
+
         // Create a new EmpaDeviceManager. MainActivity is both its data and status delegate.
         deviceManager = new EmpaDeviceManager(getApplicationContext(), this, this);
         // Initialize the Device Manager using your API key. You need to have Internet access at this point.
         deviceManager.authenticateWithAPIKey(LiveStreamActivity.EMPATICA_API_KEY);
+
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d(TAG, "entered onStartCommand");
         handler.removeCallbacks(sendUpdatesToUI);
         handler.postDelayed(sendUpdatesToUI, 1000); // 1 second
 
@@ -71,13 +76,25 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
 
     @Override
     public void onDestroy() {
+        Log.d(TAG, "Destroying dataService");
         handler.removeCallbacks(sendUpdatesToUI);
+        deviceManager.cleanUp();
         super.onDestroy();
+    }
+
+    @Override
+    public void didRequestEnableBluetooth() {
+        // Request the user to enable Bluetooth
+        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+        enableBtIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        this.startActivity(enableBtIntent);
     }
 
     @Override
     public void didDiscoverDevice(BluetoothDevice bluetoothDevice, String deviceName, int rssi, boolean allowed) {
 
+
+        Log.d(TAG, "entered didDiscoverDevice");
         if (allowed) {
             // Stop scanning. The first allowed device will do.
             deviceManager.stopScanning();
@@ -87,21 +104,15 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
                 //updateLabel(deviceNameLabel, "To: " + deviceName);
             } catch (ConnectionNotAllowedException e) {
                 // This should happen only if you try to connect when allowed == false.
-                Toast.makeText(this, "Sorry, you can't connect to this device", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Sorry, you can't connect to this device", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
     @Override
-    public void didRequestEnableBluetooth() {
-        // Request the user to enable Bluetooth
-        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        //startActivityForResult(enableBtIntent, LiveStreamActivity.REQUEST_ENABLE_BT);
-    }
-
-    @Override
     public void didUpdateSensorStatus(EmpaSensorStatus status, EmpaSensorType type) {
         // No need to implement this right now
+        Log.d(TAG, "entered didUpdateSensorStatus");
     }
 
     @Override
@@ -109,14 +120,19 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
         // Update the UI
         //updateLabel(statusLabel, status.name());
 
+        Log.d(TAG, "entered didUpdateStatus");
         // The device manager is ready for use
         if (status == EmpaStatus.READY) {
             //updateLabel(statusLabel, status.name() + " - Turn on your device");
             // Start scanning
             deviceManager.startScanning();
+
+
             // The device manager has established a connection
         } else if (status == EmpaStatus.CONNECTED) {
             // Stop streaming after STREAMING_TIME
+
+
 
             // The device manager disconnected from a device
         } else if (status == EmpaStatus.DISCONNECTED) {
@@ -127,6 +143,7 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
     @Override
     public void didReceiveAcceleration(int x, int y, int z, double timestamp) {
 
+        Log.d(TAG, "received Acc from E4");
     }
 
     @Override
@@ -145,8 +162,11 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
     public void didReceiveGSR(float gsr, double timestamp) {
         //updateLabel(edaLabel, "" + gsr);
 
+        Log.d(TAG, "received EDA of: " + gsr);
+
         if (gsr > LiveStreamActivity.EDAthreshold) {
-            Toast.makeText(this, "broke EDA threshold", Toast.LENGTH_LONG).show();
+            // throw notification if EDA breaks threshold defined in LivestreamActivity
+            Log.d(TAG, "broke EDA threshold: " + gsr);
         }
     }
 
