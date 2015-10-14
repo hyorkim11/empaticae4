@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="com.alarm.permission.SET_ALARM"/>
+    <uses-permission android:name="com.alarm.permission.SET_ALARM" />
 
     <application
         android:allowBackup="true"
@@ -56,8 +56,13 @@
             android:label="@string/title_activity_drink" />
         <activity android:name=".activity.reports.GoodMovesPlayerActivity" />
 
-        <receiver android:name=".activity.settings.AlarmReceiver">
+        <receiver android:name=".activity.settings.AlarmReceiver" >
         </receiver>
+
+        <service
+            android:name=".activity.empatica.dataService"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>
