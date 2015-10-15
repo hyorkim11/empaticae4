@@ -465,6 +465,14 @@ public class DrinkActivity extends Activity {
         openAlert();
     }
 
+    @Override
+    protected void onPause() {
+
+        mPrefs.setReportResponseCache(mCachedReportData);
+        super.onPause();
+
+    }
+
     private void registerAlarm() {
 
         AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);

@@ -75,8 +75,7 @@ public class GoodMovesPlayerActivity extends Activity {
             mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.meditation_audio);
 
         } else if (mediakey == 4) {
-          // ACCESSED FROM MAIN MENU
-
+          // ACCESSED FROM MAIN MENU (currently not available)
 
         } else {
             // ERROR

@@ -461,6 +461,7 @@ public class ReportActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
+        mPrefs.setReportResponseCache(mCachedReportData);
 
     }
 

@@ -352,4 +352,11 @@ public class NegativeActivity extends Activity {
         super.onResume();
     }
 
+    @Override
+    protected void onPause() {
+
+        mPrefs.setReportResponseCache(mCachedReportData);
+        super.onPause();
+
+    }
 }
