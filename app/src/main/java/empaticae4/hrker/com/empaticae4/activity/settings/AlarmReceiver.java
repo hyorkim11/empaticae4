@@ -28,7 +28,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         PendingIntent p = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification notification = new NotificationCompat.Builder(context)
-                .setContentTitle("Nudge from MtM")
+                .setContentTitle("Inactivity Notice")
                 .setContentText("Would you like to make a report?")
                 .setTicker("Nudge from MtM")
                 .setSmallIcon(R.mipmap.ic_launcher)

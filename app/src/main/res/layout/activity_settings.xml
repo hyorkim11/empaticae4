@@ -23,10 +23,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/title"
-        android:visibility="gone"
         android:layout_margin="5dp"
         android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/sptitle"
@@ -85,58 +85,83 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/bUserID"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/bSetCallContact"
-        android:layout_centerHorizontal="true"
-        android:background="@android:drawable/dialog_holo_dark_frame"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#FFFFFF" />
 
-    <Button
-        android:id="@+id/bSetCallContact"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/bSend"
-        android:background="@android:drawable/dialog_holo_dark_frame"
-        android:textColor="#FFFFFF"
-        android:text="Set Call Contact"
-        android:layout_centerHorizontal="true"/>
-
-    <Button
-        android:id="@+id/bSend"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/bResetCSV"
-        android:layout_centerHorizontal="true"
-        android:background="@android:drawable/dialog_holo_dark_frame"
-        android:drawableLeft="@mipmap/ic_report"
-        android:drawablePadding="5dp"
-        android:text="Send CSV"
-        android:textColor="#FFFFFF" />
-
-    <Button
-        android:id="@+id/bResetCSV"
-        android:layout_width="150dp"
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:background="@android:drawable/dialog_holo_dark_frame"
-        android:textSize="10sp"
-        android:text="Reset CSV"
-        android:textColor="#FFFFFF" />
+        android:weightSum="2"
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/resetPrefs"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:background="@android:drawable/dialog_holo_dark_frame"
-        android:textSize="10sp"
-        android:text="Reset SharedPrefs"
-        android:textColor="#FFFFFF" />
+        <!-- LEFT SIDE-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
+            <Button
+                android:id="@+id/bUserID"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@android:drawable/btn_default"
+                android:text="Set User ID"
+                android:textColor="@color/bootstrap_blue" />
+
+            <Button
+                android:id="@+id/bSetEDAThresh"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@android:drawable/btn_default"
+                android:text="Set EDA"
+                android:textColor="@color/bootstrap_blue" />
+
+            <Button
+                android:id="@+id/bSetCallContact"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@android:drawable/btn_default"
+                android:text="Set Contact"
+                android:textColor="@color/bootstrap_blue" />
+
+        </LinearLayout>
+
+
+        <!-- RIGHT SIDE-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/bSend"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@android:drawable/btn_default"
+                android:text="Send Report"
+                android:textColor="@color/bootstrap_blue" />
+
+            <Button
+                android:id="@+id/bResetCSV"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/btn_default"
+                android:text="Reset CSV"
+                android:textColor="@color/bootstrap_red" />
+
+            <Button
+                android:id="@+id/resetPrefs"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/btn_default"
+                android:text="Reset Prefs"
+                android:textColor="@color/bootstrap_red" />
+
+        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>

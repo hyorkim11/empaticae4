@@ -104,9 +104,9 @@ public class PositiveActivity extends Activity {
         cal = new Time(Time.getCurrentTimezone());
         cal.setToNow();
         String currentTime = (cal.month+1) + "/" + cal.monthDay + "/" + cal.year + "/" + cal.format("%k:%M:%S");
-        String timeStamp = mCachedReportData.getUserID() + "," + currentTime + "," + "report_type," +
-                mCachedReportData.getReportType()+ "," + "temp: 00," + duration + "\n";
-        // Current timeStamp format:
+        String timeStamp = mCachedReportData.getUserID() + "," + currentTime + "," +
+                mCachedReportData.getReportType() + "," + duration + "," +
+                "Triggered EDA: " + mCachedReportData.getEDA() + " / " + mCachedReportData.getEDAThresh() + "\n";
 
         // Set Data String: rowData
         String rowData = ",answer1," + Integer.toString(mCachedReportData.getAnswer1()) + "," + Long.toString(mCachedReportData.getDuration_1()) + ",I: " + mCachedReportData.getIntensity() + "\n" +
@@ -269,7 +269,7 @@ public class PositiveActivity extends Activity {
         PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
 
         // INACTIVITY ALARM CURRENTLY SET TO 24 hrs
-        alarmMgr.set(AlarmManager.RTC, Calendar.getInstance().getTimeInMillis() + 3600000, alarmIntent);
+        alarmMgr.set(AlarmManager.RTC, Calendar.getInstance().getTimeInMillis() + 86400000, alarmIntent);
 
     }
 }

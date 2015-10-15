@@ -66,7 +66,7 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
         tempString = mPrefs.getInitCustomGoodmove();
         tempString2 = mPrefs.getCustomGoodmove();
 
-        mForm = (RadioGroup)findViewById(R.id.form1);
+        mForm = (RadioGroup) findViewById(R.id.form1);
         mForm.setOnCheckedChangeListener(listener1);
 
         String[] goodMoves = new String[]{"Walk away from the situation",
@@ -423,9 +423,11 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
         // Set Current Time String: timeStamp
         cal = new Time(Time.getCurrentTimezone());
         cal.setToNow();
-        String currentTime = (cal.month+1) + "/" + cal.monthDay + "/" + cal.year + "/" + cal.format("%k:%M:%S");
-        String timeStamp = mCachedReportData.getUserID() + "," + currentTime + "," + "report_type," +
-                mCachedReportData.getReportType()+ "," + duration + "\n";
+        String currentTime = (cal.month + 1) + "/" + cal.monthDay + "/" + cal.year + "/" + cal.format("%k:%M:%S");
+        String timeStamp = mCachedReportData.getUserID() + "," + currentTime + "," +
+                mCachedReportData.getReportType() + "," + duration + "," +
+                "Triggered EDA: " + mCachedReportData.getEDA() + " / " + mCachedReportData.getEDAThresh() + "\n";
+
         // Current timeStamp format:
 
         // Set Data String: rowData
@@ -506,7 +508,8 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
     }
 
     @Override
-    public void onClick(View view) {}
+    public void onClick(View view) {
+    }
 
     @Override
     public void onBackPressed() {
@@ -522,14 +525,14 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
         super.onResume();
     }
 
-    private void registerAlarm(){
+    private void registerAlarm() {
 
         AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlarmReceiver.class);
         PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
 
         // INACTIVITY ALARM CURRENTLY SET TO 24 hrs
-        alarmMgr.set(AlarmManager.RTC, Calendar.getInstance().getTimeInMillis() + 3600000, alarmIntent);
+        alarmMgr.set(AlarmManager.RTC, Calendar.getInstance().getTimeInMillis() + 86400000, alarmIntent);
 
     }
 }

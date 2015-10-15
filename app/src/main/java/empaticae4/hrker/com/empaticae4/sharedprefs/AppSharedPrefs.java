@@ -18,6 +18,8 @@ public class AppSharedPrefs {
     private static final String USERID = "user_id";
     private static final String REPORT_TYPE = "report_type";
     private static final String CALLCONTACT = "call_contact";
+    private static final String TRIGGERED_EDA = "triggered_eda";
+    private static final String EDA_THRESHOLD = "eda_threshold";
 
     private static final String DURATION = "duration";
     private static final String DURATION_1 = "duration1";
@@ -160,6 +162,20 @@ public class AppSharedPrefs {
     }
     public String getReportType() {
         return mPrefs.getString(REPORT_TYPE, "Uninitialized");
+    }
+
+    public void setEdaThreshold(float i) {
+        setProperty(EDA_THRESHOLD, String.valueOf(i));
+    }
+    public float getEdaThrehold() {
+        return mPrefs.getFloat(EDA_THRESHOLD, 0.0f);
+    }
+
+    public void setTriggeredEDA(float i) {
+        setProperty(TRIGGERED_EDA, String.valueOf(i));
+    }
+    public float getSetTriggeredEDA() {
+        return mPrefs.getFloat(TRIGGERED_EDA, 0.0f);
     }
 
     public void setCallcontact(String i) {

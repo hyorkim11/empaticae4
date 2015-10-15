@@ -6,6 +6,7 @@ public class ReportDataWrapper  {
 
     private String userID;
     private String reportType;
+    private float EDA, EDAT;
     private String callContact;
 
     private Calendar startTime;
@@ -46,9 +47,11 @@ public class ReportDataWrapper  {
     public ReportDataWrapper()  {
 
         // Initialize default values
-        userID = "Uninitialized";
+        userID = "No_ID";
 
         reportType = "N/A";
+        EDA = 0.0f;
+        EDAT = 0.0f;
 
         callContact = "Unsaved";
 
@@ -296,6 +299,23 @@ public class ReportDataWrapper  {
     public void setReportType(String reportType) {
         this.reportType = reportType;
     }
+
+    public float getEDA() {
+        return EDA;
+    }
+
+    public void setEDA(float i) {
+        this.EDA = i;
+    }
+
+    public float getEDAThresh() {
+        return EDAT;
+    }
+
+    public void setEDAThresh(float i) {
+        this.EDAT = i;
+    }
+
 
     public Calendar getStartTime() {
         return startTime;

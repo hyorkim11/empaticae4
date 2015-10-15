@@ -1,12 +1,18 @@
 package empaticae4.hrker.com.empaticae4.activity.empatica;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Vibrator;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.empatica.empalink.ConnectionNotAllowedException;
 import com.empatica.empalink.EmpaDeviceManager;
@@ -18,17 +24,20 @@ import com.empatica.empalink.delegate.EmpaStatusDelegate;
 
 import java.util.Date;
 
+import empaticae4.hrker.com.empaticae4.R;
+import empaticae4.hrker.com.empaticae4.activity.reports.ReportActivity;
+
 
 public class dataService extends Service implements EmpaDataDelegate, EmpaStatusDelegate {
 
     private static final String TAG = "dataService";
     public static final String BROADCAST_ACTION = "com.websmithing.broadcasttest.displayevent";
     private final Handler handler = new Handler();
-    Intent intent;
-    int counter = 0;
+    private Intent intent;
+    private int counter = 0;
+    private float tempEDA, tempBattery;
 
     private EmpaDeviceManager deviceManager;
-    public BluetoothAdapter mBluetoothAdapter;
 
 
     public void onCreate() {
@@ -46,26 +55,78 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
         Log.d(TAG, "entered onStartCommand");
         handler.removeCallbacks(sendUpdatesToUI);
-        handler.postDelayed(sendUpdatesToUI, 1000); // 1 second
-
+        handler.postDelayed(sendUpdatesToUI, 1000); // 1 second buffer time
         return Service.START_STICKY;
     }
 
     private Runnable sendUpdatesToUI = new Runnable() {
+
         public void run() {
             DisplayLoggingInfo();
-            handler.postDelayed(this, 10000); // 10 seconds
+            handler.postDelayed(this, 10000); // Grab every 10 seconds
         }
     };
 
+    private void EDANotice(Context context, float EDA) {
+
+        Vibrator vNoti = (Vibrator) context.getSystemService(context.VIBRATOR_SERVICE);
+        // Vibrate for 1 second
+        vNoti.vibrate(1000);
+
+        Intent i = new Intent(context, ReportActivity.class);
+        i.putExtra("report_type", "EDA");
+        i.putExtra("EDA", EDA);
+        PendingIntent p = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(this)
+                        .setContentTitle("EDA Notice")
+                        .setContentText("Your EDA has broke the threshold")
+                        .setTicker("Nudge from MtM")
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setContentIntent(p)
+                        .setAutoCancel(true)
+                        .setPriority(2);
+
+        int NOTIFICATION_ID = 1;
+
+        NotificationManager nManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        nManager.notify(NOTIFICATION_ID, builder.build());
+
+    }
+
+    private void BluetoothNotice(Context context) {
+
+        Intent i = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent p = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(this)
+                        .setContentTitle("Bluetooth Notice")
+                        .setContentText("Connect with the Empatica has been lost")
+                        .setTicker("Nudge from MtM")
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setContentIntent(p)
+                        .setAutoCancel(true)
+                        .setPriority(1);
+        int NOTIFICATION_ID = 2;
+
+        NotificationManager nManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        nManager.notify(NOTIFICATION_ID, builder.build());
+
+    }
 
     private void DisplayLoggingInfo() {
         Log.d(TAG, "entered DisplayLoggingInfo");
 
         intent.putExtra("time", new Date().toLocaleString());
         intent.putExtra("counter", String.valueOf(++counter));
+        intent.putExtra("curEDA", tempEDA);
+        intent.putExtra("battery", tempBattery);
         sendBroadcast(intent);
     }
 
@@ -76,6 +137,7 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
 
     @Override
     public void onDestroy() {
+
         Log.d(TAG, "Destroying dataService");
         handler.removeCallbacks(sendUpdatesToUI);
         deviceManager.cleanUp();
@@ -84,6 +146,7 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
 
     @Override
     public void didRequestEnableBluetooth() {
+
         // Request the user to enable Bluetooth
         Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
         enableBtIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -92,7 +155,6 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
 
     @Override
     public void didDiscoverDevice(BluetoothDevice bluetoothDevice, String deviceName, int rssi, boolean allowed) {
-
 
         Log.d(TAG, "entered didDiscoverDevice");
         if (allowed) {
@@ -104,13 +166,14 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
                 //updateLabel(deviceNameLabel, "To: " + deviceName);
             } catch (ConnectionNotAllowedException e) {
                 // This should happen only if you try to connect when allowed == false.
-                //Toast.makeText(this, "Sorry, you can't connect to this device", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Sorry, you can't connect to this device", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
     @Override
     public void didUpdateSensorStatus(EmpaSensorStatus status, EmpaSensorType type) {
+
         // No need to implement this right now
         Log.d(TAG, "entered didUpdateSensorStatus");
     }
@@ -123,16 +186,11 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
         Log.d(TAG, "entered didUpdateStatus");
         // The device manager is ready for use
         if (status == EmpaStatus.READY) {
-            //updateLabel(statusLabel, status.name() + " - Turn on your device");
             // Start scanning
             deviceManager.startScanning();
 
-
             // The device manager has established a connection
         } else if (status == EmpaStatus.CONNECTED) {
-            // Stop streaming after STREAMING_TIME
-
-
 
             // The device manager disconnected from a device
         } else if (status == EmpaStatus.DISCONNECTED) {
@@ -142,41 +200,47 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
 
     @Override
     public void didReceiveAcceleration(int x, int y, int z, double timestamp) {
-
         Log.d(TAG, "received Acc from E4");
     }
 
     @Override
     public void didReceiveBVP(float bvp, double timestamp) {
+
         //updateLabel(bvpLabel, "" + bvp);
 
     }
 
     @Override
     public void didReceiveBatteryLevel(float battery, double timestamp) {
+        tempBattery = battery;
         //updateLabel(batteryLabel, String.format("%.0f %%", battery * 100));
 
     }
 
     @Override
     public void didReceiveGSR(float gsr, double timestamp) {
+
         //updateLabel(edaLabel, "" + gsr);
 
         Log.d(TAG, "received EDA of: " + gsr);
 
+        tempEDA = gsr;
         if (gsr > LiveStreamActivity.EDAthreshold) {
             // throw notification if EDA breaks threshold defined in LivestreamActivity
             Log.d(TAG, "broke EDA threshold: " + gsr);
+            EDANotice(this, gsr);
         }
     }
 
     @Override
     public void didReceiveIBI(float ibi, double timestamp) {
+
         //updateLabel(ibiLabel, "" + ibi);
     }
 
     @Override
     public void didReceiveTemperature(float temp, double timestamp) {
+
         //updateLabel(temperatureLabel, "" + temp);
     }
 }

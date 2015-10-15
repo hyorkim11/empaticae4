@@ -35,6 +35,7 @@ public class ReportActivity extends Activity {
     private RadioGroup mForm1, mForm2;
     private RadioButton mInitialOther, mOther;
     private int mIntensity, tempIntensity;
+    private float mEDA;
     private String mReport_Type, tempString, tempString2;
 
     private AppSharedPrefs mPrefs;
@@ -48,9 +49,7 @@ public class ReportActivity extends Activity {
 
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
-            public void onReceive(Context context, Intent intent) {
-
-            }
+            public void onReceive(Context context, Intent intent) {}
         };
         // register the receiver
 
@@ -64,6 +63,7 @@ public class ReportActivity extends Activity {
 
         // Get report type based on "report_type" extra passed into this activity
         mReport_Type = getIntent().getExtras().getString("report_type", "N/A");
+        mEDA = getIntent().getExtras().getFloat("EDA", 0.0f);
         mPrefs = new AppSharedPrefs(ReportActivity.this);
 
         // Reset SharedPrefs
@@ -74,6 +74,7 @@ public class ReportActivity extends Activity {
 
         mCachedReportData.setStartTime(Calendar.getInstance());
         mCachedReportData.setReportType(mReport_Type);
+        mCachedReportData.setEDA(mEDA);
 
         tempString = mPrefs.getInitCustomNegativeMood();
         tempString2 = mPrefs.getCustomNegativeMood();

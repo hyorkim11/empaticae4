@@ -20,7 +20,7 @@ import empaticae4.hrker.com.empaticae4.R;
 public class LiveStreamActivity extends Activity {
 
     public static final int REQUEST_ENABLE_BT = 1;
-    public static final float EDAthreshold = 0.39f;
+    public static final float EDAthreshold = 0.4f;
     public static final String EMPATICA_API_KEY = "6c8d1b1459ff473fbc6e71d6ae76aa19";
 
     private EmpaDeviceManager deviceManager;
@@ -39,6 +39,7 @@ public class LiveStreamActivity extends Activity {
     private TextView deviceNameLabel;
     private RelativeLayout dataCnt;
 
+    private TextView tvEDA, tvBatt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,8 @@ public class LiveStreamActivity extends Activity {
         batteryLabel = (TextView) findViewById(R.id.battery);
         deviceNameLabel = (TextView) findViewById(R.id.deviceName);
 
+        tvEDA = (TextView) findViewById(R.id.curEDA);
+        tvBatt = (TextView) findViewById(R.id.tvBattery);
 
     }
 
@@ -67,18 +70,6 @@ public class LiveStreamActivity extends Activity {
         @Override
         public void onReceive(Context context, Intent intent) {
             updateUI(intent);
-
-            String action = intent.getAction();
-
-//            if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {
-//                if (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1) == BluetoothAdapter.STATE_OFF) {
-//                    // Bluetooth is disconnected, do handling here
-//
-//                    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-//                    enableBtIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-//                }
-//            }
         }
     };
 
@@ -97,6 +88,11 @@ public class LiveStreamActivity extends Activity {
     }
 
     @Override
+    public void onBackPressed() {
+
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(broadcastReceiver);
@@ -107,13 +103,18 @@ public class LiveStreamActivity extends Activity {
     private void updateUI(Intent intent) {
         String counter = intent.getStringExtra("counter");
         String time = intent.getStringExtra("time");
+        float curEDA = intent.getFloatExtra("curEDA", 0.0f);
+        float curBatt = intent.getFloatExtra("battery", 0.0f);
         Log.d(TAG, counter);
         Log.d(TAG, time);
+        Log.d(TAG, " " + curEDA);
 
         TextView txtDateTime = (TextView) findViewById(R.id.txtDateTime);
         TextView txtCounter = (TextView) findViewById(R.id.txtCounter);
         txtDateTime.setText(time);
         txtCounter.setText(counter);
+        tvEDA.setText("EDA: " + curEDA);
+        tvBatt.setText("E4 Battery: " + String.format("%.0f %%", curBatt * 100));
     }
 
 
@@ -128,14 +129,4 @@ public class LiveStreamActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-
-    // Update a label with some text, making sure this is run in the UI thread
-    private void updateLabel(final TextView label, final String text) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                label.setText(text);
-            }
-        });
-    }
 }

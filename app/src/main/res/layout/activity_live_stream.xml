@@ -158,6 +158,22 @@
 
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/tvBattery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:text="current Battery"
+        android:layout_above="@+id/curEDA"/>
+
+    <TextView
+        android:id="@+id/curEDA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/txtDateTime"
+        android:layout_alignParentLeft="true"
+        android:text="current EDA"
+        />
 
     <TextView
         android:id="@+id/txtDateTime"

@@ -32,8 +32,10 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
     private AppSharedPrefs mPrefs;
     private ReportDataWrapper mCachedReportData;
     private Time cal;
+    private float edat;
 
-    private Button bUserID, resetButton, sendButton, mResetCSV, mSetCallContact, mAlarmPick;
+    private Button bUserID, resetButton, sendButton, mResetCSV,
+            mSetCallContact, mAlarmPick, bSetEDAThresh;
     private TextView sp0, sp1, sp2, sp3, sp4, sp5, sp6, sp7;
 
     @Override
@@ -58,12 +60,14 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
             bUserID.setText("Set ID");
         }
 
-        bUserID.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openUserID();
-            }
-        });
+        bSetEDAThresh = (Button) findViewById(R.id.bSetEDAThresh);
+
+        if (mCachedReportData.getEDAThresh() != 0.0f) {
+            bSetEDAThresh.setText("EDAT: " + mPrefs.getEdaThrehold());
+        } else {
+            bSetEDAThresh.setText("Set EDAT");
+        }
+
         sendButton = (Button) findViewById(R.id.bSend);
         sendButton.setOnClickListener(this);
         resetButton = (Button) findViewById(R.id.resetPrefs);
@@ -72,6 +76,8 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
         mResetCSV.setOnClickListener(this);
         mSetCallContact = (Button) findViewById(R.id.bSetCallContact);
         mSetCallContact.setOnClickListener(this);
+        bUserID = (Button) findViewById(R.id.bUserID);
+        bUserID.setOnClickListener(this);
 
         sp0 = (TextView) findViewById(R.id.sp0);
         sp1 = (TextView) findViewById(R.id.sp1);
@@ -115,9 +121,45 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
             // user types in name of friend to call
             // set in mPrefs.setCallContact()
             // getNumber(name, context)
+        } else if (v.getId() == R.id.bSetEDAThresh) {
+            setEDAThreshold();
+        } else if (v.getId() == R.id.bUserID) {
+            openUserID();
         }
     }
 
+    private void setEDAThreshold() {
+
+        // Create and Build Dialog
+        final Dialog builder = new Dialog(this);
+        builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        LayoutInflater inflater = getLayoutInflater();
+        final View view = inflater.inflate(R.layout.dialog_set_user_eda, null);
+        builder.setContentView(view);
+
+        final EditText et = (EditText) builder.findViewById(R.id.etUserEDA);
+
+        Button bContinue = (Button) builder.findViewById(R.id.bContinue);
+        bContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (et.getText().toString().length() == 0) {
+                    Toast.makeText(SettingsActivity.this, "Please enter valid EDAT", Toast.LENGTH_SHORT).show();
+                } else {
+                    mCachedReportData.setEDAThresh(Float.parseFloat(et.getText().toString()));
+                    mPrefs.setEdaThreshold(Float.parseFloat(et.getText().toString()));
+                    mPrefs.setReportResponseCache(mCachedReportData);
+                    Toast.makeText(SettingsActivity.this, "EDAT set as: " + et.getText().toString(), Toast.LENGTH_SHORT).show();
+                    bSetEDAThresh.setText("EDAT: " + mCachedReportData.getEDAThresh());
+                    builder.dismiss();
+                }
+            }
+        });
+
+        builder.setCanceledOnTouchOutside(true);
+        builder.show();
+    }
 
     private void sendCSV() {
 
