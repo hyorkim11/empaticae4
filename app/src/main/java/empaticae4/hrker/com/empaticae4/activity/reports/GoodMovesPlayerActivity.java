@@ -2,18 +2,12 @@ package empaticae4.hrker.com.empaticae4.activity.reports;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.io.File;
-import java.io.IOException;
 
 import empaticae4.hrker.com.empaticae4.R;
 import empaticae4.hrker.com.empaticae4.main.MainActivity;
@@ -53,8 +47,9 @@ public class GoodMovesPlayerActivity extends Activity {
         } else if (mediakey == 2) {
             // MP3
             bPlay.setVisibility(View.VISIBLE);
-            tvMarquee.setText("Personal soothing soundtrack is currently playing. Enjoy!");
-            File root = Environment.getExternalStorageDirectory();
+            tvMarquee.setText("Soothing soundtrack is currently playing. Enjoy!");
+
+            /*File root = Environment.getExternalStorageDirectory();
 
             if (root.canRead()) {
 
@@ -69,7 +64,9 @@ public class GoodMovesPlayerActivity extends Activity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
+            }*/
+
+            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.soothing_audio);
 
         } else if (mediakey == 3) {
             // MEDITATION

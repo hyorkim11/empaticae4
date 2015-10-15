@@ -35,7 +35,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
     private float edat;
 
     private Button bUserID, resetButton, sendButton, mResetCSV,
-            mSetCallContact, mAlarmPick, bSetEDAThresh;
+            mSetCallContact, bSetEDAThresh;
     private TextView sp0, sp1, sp2, sp3, sp4, sp5, sp6, sp7;
 
     @Override
@@ -60,13 +60,15 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
             bUserID.setText("Set ID");
         }
 
-        bSetEDAThresh = (Button) findViewById(R.id.bSetEDAThresh);
+        bSetEDAThresh = (Button) findViewById(R.id.SetEDAThresh);
 
         if (mCachedReportData.getEDAThresh() != 0.0f) {
             bSetEDAThresh.setText("EDAT: " + mPrefs.getEdaThrehold());
         } else {
             bSetEDAThresh.setText("Set EDAT");
         }
+
+        bSetEDAThresh.setOnClickListener(this);
 
         sendButton = (Button) findViewById(R.id.bSend);
         sendButton.setOnClickListener(this);
@@ -121,7 +123,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
             // user types in name of friend to call
             // set in mPrefs.setCallContact()
             // getNumber(name, context)
-        } else if (v.getId() == R.id.bSetEDAThresh) {
+        } else if (v.getId() == R.id.SetEDAThresh) {
             setEDAThreshold();
         } else if (v.getId() == R.id.bUserID) {
             openUserID();

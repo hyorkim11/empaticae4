@@ -110,7 +110,7 @@
                 android:textColor="@color/bootstrap_blue" />
 
             <Button
-                android:id="@+id/bSetEDAThresh"
+                android:id="@+id/SetEDAThresh"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"

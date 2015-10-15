@@ -88,11 +88,6 @@ public class LiveStreamActivity extends Activity {
     }
 
     @Override
-    public void onBackPressed() {
-
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(broadcastReceiver);
