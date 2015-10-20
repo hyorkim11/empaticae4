@@ -477,6 +477,7 @@ public class DrinkActivity extends Activity {
 
         AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlarmReceiver.class);
+        intent.putExtra("alarm_type", 0);
         PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
 
         // INACTIVITY ALARM CURRENTLY SET TO 24 hrs

@@ -10,32 +10,64 @@ import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 
 import empaticae4.hrker.com.empaticae4.R;
+import empaticae4.hrker.com.empaticae4.activity.empatica.LiveStreamActivity;
 import empaticae4.hrker.com.empaticae4.activity.reports.ReportActivity;
 
 public class AlarmReceiver extends BroadcastReceiver {
+
+    private int tempInt;
+    private Intent i;
+
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Vibrator vNoti = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        // Vibrate for 500 milliseconds
-        vNoti.vibrate(500);
-
-        Intent i = new Intent(context, ReportActivity.class);
-        i.putExtra("report_type", "IN");
-
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification notification = new NotificationCompat.Builder(context).build();
 
         PendingIntent p = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Notification notification = new NotificationCompat.Builder(context)
-                .setContentTitle("Inactivity Notice")
-                .setContentText("Would you like to make a report?")
-                .setTicker("Nudge from MtM")
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentIntent(p)
-                .setAutoCancel(true)
-                .setPriority(2)
-                .build();
+        tempInt = intent.getExtras().getInt("alarm_type", 0);
+
+        if (tempInt == 0) {
+            // 24 HR alarm
+
+            i = new Intent(context, ReportActivity.class);
+            i.putExtra("report_type", "IN");
+
+            notification = new NotificationCompat.Builder(context)
+                    .setContentTitle("Inactivity Notice")
+                    .setContentText("Would you like to make a report?")
+                    .setTicker("Nudge from MtM")
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentIntent(p)
+                    .setAutoCancel(true)
+                    .setPriority(2)
+                    .build();
+
+        } else if (tempInt == 1) {
+            // Reminder to connect to E4
+            // remind the user to connect to the E4 whenever
+
+            i = new Intent(context, LiveStreamActivity.class);
+            i.putExtra("report_type", "Dev");
+
+            notification = new NotificationCompat.Builder(context)
+                    .setContentTitle("Connection Reminder Notice")
+                    .setContentText("Remember to connect to your E4 device!")
+                    .setTicker("Nudge from MtM")
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentIntent(p)
+                    .setAutoCancel(true)
+                    .setPriority(2)
+                    .build();
+        }
+
+        Vibrator vNoti = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 250 milliseconds
+        vNoti.vibrate(250);
         notificationManager.notify(0, notification);
+
+
+
     }
 }

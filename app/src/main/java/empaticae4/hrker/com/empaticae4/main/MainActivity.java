@@ -111,14 +111,14 @@ public class MainActivity extends AppCompatActivity {
     private void openContact() {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
-        alertDialogBuilder.setTitle("Contact Administrators");
-        alertDialogBuilder.setMessage("Dr. Noelle Leonard");
+        alertDialogBuilder.setTitle("Contact Study Administrator");
+        alertDialogBuilder.setMessage("Dawa S.");
 
         alertDialogBuilder.setPositiveButton("Call", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int id) {
 
-                String number = "0000000000";
+                String number = "2129927178";
                 Intent intent = new Intent(Intent.ACTION_DIAL);
                 intent.setData(Uri.parse("tel:" + number));
                 startActivity(intent);

@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
+import android.text.format.Time;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -13,6 +15,10 @@ import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Objects;
 
@@ -31,6 +37,7 @@ public class NegativeActivity extends Activity {
     private RadioButton mInitialOther, mOther;
     private BootstrapButton bCancel, bContinue;
     private String tempString, tempString2;
+    private Time cal;
 
     private AppSharedPrefs mPrefs;
     private ReportDataWrapper mCachedReportData;
@@ -358,5 +365,67 @@ public class NegativeActivity extends Activity {
         mPrefs.setReportResponseCache(mCachedReportData);
         super.onPause();
 
+    }
+
+    private void backupReport() {
+
+        mCachedReportData.setDuration_2(getPageDuration());
+
+        // Set Duration of Current Report
+
+        // Set Current Time String: timeStamp
+        cal = new Time(Time.getCurrentTimezone());
+        cal.setToNow();
+        String currentTime = (cal.month + 1) + "/" + cal.monthDay + "/" + cal.year + "/" + cal.format("%k:%M:%S");
+        String timeStamp = mCachedReportData.getUserID() + "," + currentTime + "," +
+                mCachedReportData.getReportType() + "," + "exited" + "," +
+                "Triggered EDA: " + mCachedReportData.getEDA() + " / " + mCachedReportData.getEDAThresh() + "\n";
+
+        // Set Data String: rowData
+        String rowData = ",answer1," + Integer.toString(mCachedReportData.getAnswer1()) + "," + Long.toString(mCachedReportData.getDuration_1()) + ",I: " + mCachedReportData.getIntensity() + "\n" +
+                ",answer2," + Integer.toString(mCachedReportData.getAnswer2()) + "," + Long.toString(mCachedReportData.getDuration_2()) + "\n" +
+                ",answer3," + Integer.toString(mCachedReportData.getAnswer3()) + "," + Long.toString(mCachedReportData.getDuration_3()) + "\n" +
+                ",answer4," + Integer.toString(mCachedReportData.getAnswer4()) + "," + Long.toString(mCachedReportData.getDuration_4()) + "\n" +
+                ",answer5," + Integer.toString(mCachedReportData.getAnswer5()) + "," + Long.toString(mCachedReportData.getDuration_5()) + "\n" +
+                ",answer6,," + Long.toString(mCachedReportData.getDuration_6()) + "\n";
+
+        String finalLog = timeStamp + rowData;
+
+        File file = null;
+        File root = Environment.getExternalStorageDirectory();
+
+        if (root.canWrite()) {
+
+            File dir = new File(root.getAbsolutePath() + "/mtmData");
+            dir.mkdirs();
+            file = new File(dir, "userData.csv");
+            FileOutputStream out = null;
+
+            try {
+                out = new FileOutputStream(file, true);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            try {
+                out.write(finalLog.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Toast.makeText(this, "External Storage Can't Be Accessed", Toast.LENGTH_SHORT).show();
+        }
+
+        mPrefs.setReportResponseCache(mCachedReportData);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        backupReport();
     }
 }

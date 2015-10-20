@@ -36,6 +36,7 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
     private Intent intent;
     private int counter = 0;
     private float tempEDA, tempBattery;
+    private int vibrateCounter = 0;
 
     private EmpaDeviceManager deviceManager;
 
@@ -43,7 +44,6 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
     public void onCreate() {
         super.onCreate();
         intent = new Intent(BROADCAST_ACTION);
-
         Log.d(TAG, "entered onCreate");
 
         // Create a new EmpaDeviceManager. MainActivity is both its data and status delegate.
@@ -74,7 +74,7 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
 
         Vibrator vNoti = (Vibrator) context.getSystemService(context.VIBRATOR_SERVICE);
         // Vibrate for 1 second
-        vNoti.vibrate(1000);
+        vNoti.vibrate(500);
 
         Intent i = new Intent(context, ReportActivity.class);
         i.putExtra("report_type", "EDA");
@@ -84,7 +84,7 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(this)
                         .setContentTitle("EDA Notice")
-                        .setContentText("Your EDA has broke the threshold")
+                        .setContentText("Your EDA broke the threshold")
                         .setTicker("Nudge from MtM")
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setContentIntent(p)
@@ -228,7 +228,13 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
         if (gsr > LiveStreamActivity.EDAthreshold) {
             // throw notification if EDA breaks threshold defined in LivestreamActivity
             Log.d(TAG, "broke EDA threshold: " + gsr);
-            EDANotice(this, gsr);
+            vibrateCounter++;
+
+            if (vibrateCounter == 10) {
+                EDANotice(this, gsr);
+                vibrateCounter = 0;
+            }
+
         }
     }
 
