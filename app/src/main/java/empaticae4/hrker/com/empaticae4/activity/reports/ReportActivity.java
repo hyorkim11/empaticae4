@@ -1,8 +1,10 @@
 package empaticae4.hrker.com.empaticae4.activity.reports;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -29,6 +31,7 @@ import java.util.Calendar;
 import java.util.Objects;
 
 import empaticae4.hrker.com.empaticae4.R;
+import empaticae4.hrker.com.empaticae4.activity.settings.AlarmReceiver;
 import empaticae4.hrker.com.empaticae4.sharedprefs.AppSharedPrefs;
 import empaticae4.hrker.com.empaticae4.wrapper.ReportDataWrapper;
 
@@ -64,6 +67,9 @@ public class ReportActivity extends Activity {
     }
 
     private void init() {
+
+        // Disable alarms for during report and 10 minutes after
+        disableAlarm();
 
         // Capture time in millis as soon as activity begins
         tempTime = Calendar.getInstance().getTimeInMillis();
@@ -542,4 +548,13 @@ public class ReportActivity extends Activity {
 
         super.onResume();
     }
+
+    private void disableAlarm() {
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(getBaseContext(), AlarmReceiver.class);
+        PendingIntent p = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.cancel(p);
+    }
+
 }
