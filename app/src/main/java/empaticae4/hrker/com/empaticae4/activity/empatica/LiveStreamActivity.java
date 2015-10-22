@@ -12,18 +12,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.empatica.empalink.EmpaDeviceManager;
-
 import empaticae4.hrker.com.empaticae4.R;
 
 
 public class LiveStreamActivity extends Activity {
 
     public static final int REQUEST_ENABLE_BT = 1;
-    public static final float EDAthreshold = 0.4f;
     public static final String EMPATICA_API_KEY = "6c8d1b1459ff473fbc6e71d6ae76aa19";
 
-    private EmpaDeviceManager deviceManager;
     private static final String TAG = "BroadcastTest";
     private Intent intent;
 

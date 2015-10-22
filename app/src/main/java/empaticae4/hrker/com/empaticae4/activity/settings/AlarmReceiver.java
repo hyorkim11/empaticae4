@@ -35,9 +35,9 @@ public class AlarmReceiver extends BroadcastReceiver {
             i.putExtra("report_type", "IN");
 
             notification = new NotificationCompat.Builder(context)
-                    .setContentTitle("Inactivity Notice")
+                    .setContentTitle("")
                     .setContentText("Would you like to make a report?")
-                    .setTicker("Nudge from MtM")
+                    .setTicker("Inactivity Notice")
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setContentIntent(p)
                     .setAutoCancel(true)
@@ -52,14 +52,30 @@ public class AlarmReceiver extends BroadcastReceiver {
             i.putExtra("report_type", "Dev");
 
             notification = new NotificationCompat.Builder(context)
-                    .setContentTitle("Connection Reminder Notice")
+                    .setContentTitle("E4 Device Reminder")
                     .setContentText("Remember to connect to your E4 device!")
-                    .setTicker("Nudge from MtM")
+                    .setTicker("Connection Reminder Notice")
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setContentIntent(p)
                     .setAutoCancel(true)
                     .setPriority(2)
                     .build();
+        } else if (tempInt == 2) {
+            // EDAT broken
+
+            i = new Intent(context, ReportActivity.class);
+            i.putExtra("report_type", "EDA");
+
+            notification = new NotificationCompat.Builder(context)
+                            .setContentTitle("")
+                            .setContentText("")
+                            .setTicker("EDA Notice")
+                            .setSmallIcon(R.mipmap.ic_launcher)
+                            .setContentIntent(p)
+                            .setAutoCancel(true)
+                            .setPriority(2)
+                            .build();
+
         }
 
         Vibrator vNoti = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);

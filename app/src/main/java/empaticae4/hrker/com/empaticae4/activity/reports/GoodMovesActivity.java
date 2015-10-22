@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.format.Time;
@@ -83,6 +84,7 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
             // set dynamic OnClickListeners for contact/mp3/meditation
             if (i == 1) {
                 array[i].setOnClickListener(contactListener);
+                array[i].setText(mPrefs.getCallcontact());
             } else if (i == 2) {
                 array[i].setOnClickListener(mp3Listener);
             } else if (i == 4) {
@@ -202,7 +204,7 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
         @Override
         public void onClick(View v) {
             // OPEN CONTACT
-            Toast.makeText(GoodMovesActivity.this, "Contact selected", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(GoodMovesActivity.this, "Contact selected", Toast.LENGTH_SHORT).show();
             mediaChoice = 1;
 
         }
@@ -212,7 +214,7 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
         @Override
         public void onClick(View v) {
             // OPEN MP3
-            Toast.makeText(GoodMovesActivity.this, "Mp3 selected", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(GoodMovesActivity.this, "Mp3 selected", Toast.LENGTH_SHORT).show();
             mediaChoice = 2;
 
         }
@@ -222,7 +224,7 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
         @Override
         public void onClick(View v) {
             // OPEN MEDITATION
-            Toast.makeText(GoodMovesActivity.this, "Meditation selected", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(GoodMovesActivity.this, "Meditation selected", Toast.LENGTH_SHORT).show();
             mediaChoice = 3;
 
         }
@@ -377,6 +379,15 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
                     Intent i = new Intent(getApplicationContext(), MainActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
+                    finish();
+
+                } else if (mediaChoice == 1) {
+
+                    String tempName = mPrefs.getCallcontact();
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse("tel:" + tempName));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                     finish();
 
                 } else {

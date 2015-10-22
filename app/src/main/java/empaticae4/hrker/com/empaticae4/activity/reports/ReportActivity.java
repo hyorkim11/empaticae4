@@ -59,9 +59,11 @@ public class ReportActivity extends Activity {
 
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
-            public void onReceive(Context context, Intent intent) {}
+            public void onReceive(Context context, Intent intent) {
+                unregisterReceiver(mBroadcastReceiver);
+                context.stopService(intent);
+            }
         };
-        // register the receiver
 
         init();
     }

@@ -26,6 +26,8 @@ import java.util.Date;
 
 import empaticae4.hrker.com.empaticae4.R;
 import empaticae4.hrker.com.empaticae4.activity.reports.ReportActivity;
+import empaticae4.hrker.com.empaticae4.sharedprefs.AppSharedPrefs;
+import empaticae4.hrker.com.empaticae4.wrapper.ReportDataWrapper;
 
 
 public class dataService extends Service implements EmpaDataDelegate, EmpaStatusDelegate {
@@ -37,19 +39,30 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
     private int counter = 0;
     private float tempEDA, tempBattery;
     private int vibrateCounter = 0;
+    private float EDAT;
+    private boolean notificationTrigger;
 
     private EmpaDeviceManager deviceManager;
+    private AppSharedPrefs mPrefs;
+    private ReportDataWrapper mCachedReportData;
 
 
     public void onCreate() {
         super.onCreate();
+        mPrefs = new AppSharedPrefs(this);
+        mCachedReportData = mPrefs.getReportResponseCache();
+        EDAT = mCachedReportData.getEDAThresh();
+        // or EDAT = mPrefs.getEdaThrehold();
+
         intent = new Intent(BROADCAST_ACTION);
-        Log.d(TAG, "entered onCreate");
+        Log.d(TAG, "entered onCreate with EDAT: " + EDAT);
 
         // Create a new EmpaDeviceManager. MainActivity is both its data and status delegate.
         deviceManager = new EmpaDeviceManager(getApplicationContext(), this, this);
         // Initialize the Device Manager using your API key. You need to have Internet access at this point.
         deviceManager.authenticateWithAPIKey(LiveStreamActivity.EMPATICA_API_KEY);
+
+        notificationTrigger = false;
 
     }
 
@@ -73,13 +86,12 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
     private void EDANotice(Context context, float EDA) {
 
         Vibrator vNoti = (Vibrator) context.getSystemService(context.VIBRATOR_SERVICE);
-        // Vibrate for 1 second
         vNoti.vibrate(500);
 
         Intent i = new Intent(context, ReportActivity.class);
         i.putExtra("report_type", "EDA");
         i.putExtra("EDA", EDA);
-        PendingIntent p = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent p = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_ONE_SHOT);
 
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(this)
@@ -200,7 +212,7 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
 
     @Override
     public void didReceiveAcceleration(int x, int y, int z, double timestamp) {
-        Log.d(TAG, "received Acc from E4");
+        //Log.d(TAG, "received Acc from E4");
     }
 
     @Override
@@ -225,14 +237,15 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
         Log.d(TAG, "received EDA of: " + gsr);
 
         tempEDA = gsr;
-        if (gsr > LiveStreamActivity.EDAthreshold) {
-            // throw notification if EDA breaks threshold defined in LivestreamActivity
-            Log.d(TAG, "broke EDA threshold: " + gsr);
+        if (gsr > EDAT) {
             vibrateCounter++;
+            Log.d(TAG, "broke EDAT: " + gsr + " vc: " + vibrateCounter);
 
-            if (vibrateCounter == 10) {
+            if ((vibrateCounter == 20) && (notificationTrigger == false)) {
+                // after this first shot of notification, block service until dataService is restarted
                 EDANotice(this, gsr);
                 vibrateCounter = 0;
+                notificationTrigger = true;
             }
 
         }

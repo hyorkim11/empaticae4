@@ -92,6 +92,14 @@ public class ReportDataWrapper  {
         this.userID = userID;
     }
 
+    public String getCallContact() {
+        return callContact;
+    }
+
+    public void setCallContact(String contact) {
+        this.callContact = contact;
+    }
+
     public long getDuration() {
         return duration;
     }
