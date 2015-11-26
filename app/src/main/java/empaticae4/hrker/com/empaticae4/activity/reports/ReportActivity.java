@@ -10,8 +10,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
-import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -23,10 +21,6 @@ import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.Objects;
 
@@ -46,7 +40,6 @@ public class ReportActivity extends Activity {
     private int mIntensity, tempIntensity;
     private float mEDA;
     private String mReport_Type, tempString, tempString2;
-    private Time cal;
 
     private AppSharedPrefs mPrefs;
     private ReportDataWrapper mCachedReportData;
@@ -117,7 +110,7 @@ public class ReportActivity extends Activity {
         for (int j = 0; j < 4; j++) {
             PC[j] = new RadioButton(this);
             PC[j].setText(positiveChoices[j].toString());
-            PC[j].setId(j + 9); // take into consideration the negative choice ids (+8)
+            PC[j].setId(j + 9);
             mForm2.addView(PC[j]);
         }
 
@@ -150,7 +143,9 @@ public class ReportActivity extends Activity {
                     openIntensity();
                 } else {
 
-                    Toast.makeText(getApplicationContext(), "Please make a selection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),
+                            "Please make a selection",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -209,7 +204,7 @@ public class ReportActivity extends Activity {
             if (checkedId != -1) {
                 mForm2.setOnCheckedChangeListener(null);
                 mForm2.clearCheck();
-                mForm2.setOnCheckedChangeListener(listener2); //reset the listener
+                mForm2.setOnCheckedChangeListener(listener2);
                 mInitialOther.setChecked(false);
                 mOther.setChecked(false);
             }
@@ -261,9 +256,7 @@ public class ReportActivity extends Activity {
 
 
     private Boolean PoN() {
-        // Checks to see if a selection made was either Positive or Negative
-        // Positive = True
-        // Negative = False (default)
+        // returns true if selection is positive
 
         int temp = getAnswerChoice();
 
@@ -288,7 +281,8 @@ public class ReportActivity extends Activity {
             public void onClick(DialogInterface dialog, int id) {
 
                 finish();
-                Toast.makeText(getApplicationContext(), "You have quit your report", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),
+                        "You have quit your report", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -323,7 +317,8 @@ public class ReportActivity extends Activity {
 
                 if (editor.getText().toString().trim().length() == 0) {
 
-                    Toast.makeText(ReportActivity.this, "Please enter a mood", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ReportActivity.this,
+                            "Please enter a mood", Toast.LENGTH_SHORT).show();
                     mInitialOther.setChecked(false);
                 } else {
 
@@ -370,7 +365,8 @@ public class ReportActivity extends Activity {
 
                 if (editor.getText().toString().trim().length() == 0) {
 
-                    Toast.makeText(ReportActivity.this, "Please enter a mood", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ReportActivity.this,
+                            "Please enter a mood", Toast.LENGTH_SHORT).show();
                     mOther.setChecked(false);
                 } else {
 
@@ -428,14 +424,18 @@ public class ReportActivity extends Activity {
                 mIntensity = tempIntensity;
 
                 if (mIntensity == -1) {
-                    Toast.makeText(ReportActivity.this, "Please select intensity", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ReportActivity.this,
+                            "Please select intensity", Toast.LENGTH_SHORT).show();
                     builder.dismiss();
                 } else {
                     mCachedReportData.setDuration_1(getPageDuration());
                     mCachedReportData.setIntensity(mIntensity);
                     mCachedReportData.setAnswer1(getAnswerChoice());
                     mPrefs.setReportResponseCache(mCachedReportData);
-                    Toast.makeText(ReportActivity.this, "AnswerChoice: " + mCachedReportData.getAnswer1() + " Intensity: " + mCachedReportData.getIntensity(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(ReportActivity.this,
+                            "AnswerChoice: " + mCachedReportData.getAnswer1() +
+                                    " Intensity: " + mCachedReportData.getIntensity(),
+                                    Toast.LENGTH_LONG).show();
 
                     if (PoN()) {
                         // if positive emotion selected
@@ -480,66 +480,9 @@ public class ReportActivity extends Activity {
 
     }
 
-    private void backupReport() {
-
-        mCachedReportData.setDuration_1(getPageDuration());
-
-        // Set Duration of Current Report
-
-        // Set Current Time String: timeStamp
-        cal = new Time(Time.getCurrentTimezone());
-        cal.setToNow();
-        String currentTime = (cal.month + 1) + "/" + cal.monthDay + "/" + cal.year + "/" + cal.format("%k:%M:%S");
-        String timeStamp = mCachedReportData.getUserID() + "," + currentTime + "," +
-                mCachedReportData.getReportType() + "," + "exited" + "," +
-                "Triggered EDA: " + mCachedReportData.getEDA() + " / " + mCachedReportData.getEDAThresh() + "\n";
-
-        // Set Data String: rowData
-        String rowData = ",answer1," + Integer.toString(mCachedReportData.getAnswer1()) + "," + Long.toString(mCachedReportData.getDuration_1()) + ",I: " + mCachedReportData.getIntensity() + "\n" +
-                ",answer2," + Integer.toString(mCachedReportData.getAnswer2()) + "," + Long.toString(mCachedReportData.getDuration_2()) + "\n" +
-                ",answer3," + Integer.toString(mCachedReportData.getAnswer3()) + "," + Long.toString(mCachedReportData.getDuration_3()) + "\n" +
-                ",answer4," + Integer.toString(mCachedReportData.getAnswer4()) + "," + Long.toString(mCachedReportData.getDuration_4()) + "\n" +
-                ",answer5," + Integer.toString(mCachedReportData.getAnswer5()) + "," + Long.toString(mCachedReportData.getDuration_5()) + "\n" +
-                ",answer6,," + Long.toString(mCachedReportData.getDuration_6()) + "\n";
-
-        String finalLog = timeStamp + rowData;
-
-        File file = null;
-        File root = Environment.getExternalStorageDirectory();
-
-        if (root.canWrite()) {
-
-            File dir = new File(root.getAbsolutePath() + "/mtmData");
-            dir.mkdirs();
-            file = new File(dir, "userData.csv");
-            FileOutputStream out = null;
-
-            try {
-                out = new FileOutputStream(file, true);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            try {
-                out.write(finalLog.getBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            try {
-                out.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            Toast.makeText(this, "External Storage Can't Be Accessed", Toast.LENGTH_SHORT).show();
-        }
-
-        mPrefs.setReportResponseCache(mCachedReportData);
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        backupReport();
     }
 
     @Override

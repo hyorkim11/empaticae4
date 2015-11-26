@@ -106,10 +106,10 @@ public class PositiveActivity extends Activity {
         String currentTime = (cal.month+1) + "/" + cal.monthDay + "/" + cal.year + "/" + cal.format("%k:%M:%S");
         String timeStamp = mCachedReportData.getUserID() + "," + currentTime + "," +
                 mCachedReportData.getReportType() + "," + duration + "," +
-                "Triggered EDA: " + mCachedReportData.getEDA() + " / " + mCachedReportData.getEDAThresh() + "\n";
+                mCachedReportData.getEDA() + "\n";
 
         // Set Data String: rowData
-        String rowData = ",answer1," + Integer.toString(mCachedReportData.getAnswer1()) + "," + Long.toString(mCachedReportData.getDuration_1()) + ",I: " + mCachedReportData.getIntensity() + "\n" +
+        String rowData = ",answer1," + Integer.toString(mCachedReportData.getAnswer1()) + "," + Long.toString(mCachedReportData.getDuration_1()) + "," + mCachedReportData.getIntensity() + "\n" +
                 ",answer2," + Integer.toString(mCachedReportData.getAnswer2()) + "," + Long.toString(mCachedReportData.getDuration_2()) + "\n" +
                 ",answer3," + Integer.toString(mCachedReportData.getAnswer3()) + "," + Long.toString(mCachedReportData.getDuration_3()) + "\n" +
                 ",answer4," + Integer.toString(mCachedReportData.getAnswer4()) + "," + Long.toString(mCachedReportData.getDuration_4()) + "\n" +
@@ -144,7 +144,9 @@ public class PositiveActivity extends Activity {
                 e.printStackTrace();
             }
         } else {
-            Toast.makeText(PositiveActivity.this, "External Storage Can't Be Accessed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(PositiveActivity.this,
+                    "External Storage Can't Be Accessed",
+                    Toast.LENGTH_SHORT).show();
         }
 
         mPrefs.setReportResponseCache(mCachedReportData);
@@ -153,7 +155,8 @@ public class PositiveActivity extends Activity {
     private void openContinueAlert() {
 
         if (etResponse.getText().toString() == "") {
-            Toast.makeText(getApplicationContext(), "Please Enter a Response", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),
+                    "Please Enter a Response", Toast.LENGTH_SHORT).show();
 
         } else {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(PositiveActivity.this);
@@ -173,7 +176,9 @@ public class PositiveActivity extends Activity {
                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
                     finish();
-                    Toast.makeText(getApplicationContext(), "Your response has been recorded", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),
+                            "Your response has been recorded",
+                            Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -197,7 +202,9 @@ public class PositiveActivity extends Activity {
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
                 finish();
-                Toast.makeText(getApplicationContext(), "You have quit your report", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),
+                        "You have quit your report",
+                        Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -232,7 +239,8 @@ public class PositiveActivity extends Activity {
             public void onClick(DialogInterface dialog, int id) {
 
                 finish();
-                Toast.makeText(getApplicationContext(), "You have quit your report", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),
+                        "You have quit your report", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -281,4 +289,6 @@ public class PositiveActivity extends Activity {
         alarmMgr.set(AlarmManager.RTC, Calendar.getInstance().getTimeInMillis() + 86400000, alarmIntent);
 
     }
+
+
 }

@@ -3,6 +3,7 @@ package empaticae4.hrker.com.empaticae4.activity.settings;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -24,13 +25,11 @@ import empaticae4.hrker.com.empaticae4.R;
 import empaticae4.hrker.com.empaticae4.sharedprefs.AppSharedPrefs;
 import empaticae4.hrker.com.empaticae4.wrapper.ReportDataWrapper;
 
-public class SettingsActivity extends Activity implements View.OnClickListener {
+public class SettingsActivity extends Activity implements View.OnClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private AppSharedPrefs mPrefs;
     private ReportDataWrapper mCachedReportData;
     private Time cal;
-    private float edat;
-
     private Button bUserID, resetButton, sendButton, mResetCSV,
             mSetCallContact, bSetEDAThresh;
     private TextView sp0, sp1, sp2, sp3, sp4, sp5, sp6, sp7;
@@ -59,23 +58,47 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
 
         sendButton = (Button) findViewById(R.id.bSend);
         sendButton.setOnClickListener(this);
-        resetButton = (Button) findViewById(R.id.resetPrefs);
-        resetButton.setOnClickListener(this);
-        mResetCSV = (Button) findViewById(R.id.bResetCSV);
-        mResetCSV.setOnClickListener(this);
+//        resetButton = (Button) findViewById(R.id.resetPrefs);
+//        resetButton.setOnLongClickListener(this);
+//        mResetCSV = (Button) findViewById(R.id.bResetCSV);
+//        mResetCSV.setOnLongClickListener(this);
         mSetCallContact = (Button) findViewById(R.id.bSetCallContact);
         mSetCallContact.setOnClickListener(this);
         bUserID = (Button) findViewById(R.id.bUserID);
         bUserID.setOnClickListener(this);
 
         sp0 = (TextView) findViewById(R.id.sp0);
+        if (mCachedReportData.getUserID() != "Other") {
+            sp0.setText("ID: " + mCachedReportData.getUserID());
+        }
         sp1 = (TextView) findViewById(R.id.sp1);
+        if (mCachedReportData.getEDAThresh() != 0.0f) {
+            sp1.setText("EDAT: " + mCachedReportData.getEDAThresh());
+        }
         sp2 = (TextView) findViewById(R.id.sp2);
+        if (mCachedReportData.getCallContact() != "Other") {
+            sp2.setText("Contact: " + mCachedReportData.getCallContact());
+        }
         sp3 = (TextView) findViewById(R.id.sp3);
+        if (mCachedReportData.getIcct() != "Other") {
+            sp3.setText("ICCT: " + mCachedReportData.getIcct());
+        }
         sp4 = (TextView) findViewById(R.id.sp4);
+        if (mCachedReportData.getIcd() != "Other") {
+            sp4.setText("ICD: " + mCachedReportData.getIcd());
+        }
         sp5 = (TextView) findViewById(R.id.sp5);
+        if (mCachedReportData.getIce() != "Other") {
+            sp5.setText("ICE: " + mCachedReportData.getIce());
+        }
         sp6 = (TextView) findViewById(R.id.sp6);
+        if (mCachedReportData.getIcgm() != "Other") {
+            sp6.setText("ICGM: " + mCachedReportData.getIcgm());
+        }
         sp7 = (TextView) findViewById(R.id.sp7);
+        if (mCachedReportData.getIcnm() != "Other") {
+            sp7.setText("ICNM: " + mCachedReportData.getIcnm());
+        }
     }
 
     @Override
@@ -83,15 +106,15 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
 
         if (v.getId() == R.id.resetPrefs) {
 
-            mPrefs.wrapUp();
-            Toast.makeText(SettingsActivity.this, "SharedPref has been reset", Toast.LENGTH_SHORT).show();
-            finish();
-            startActivity(getIntent());
+//            mPrefs.wrapUp();
+//            Toast.makeText(SettingsActivity.this, "SharedPref has been reset", Toast.LENGTH_SHORT).show();
+//            finish();
+//            startActivity(getIntent());
         } else if (v.getId() == R.id.bSend) {
 
             sendCSV();
         } else if (v.getId() == R.id.bResetCSV) {
-            resetCSV();
+            //resetCSV();
         } else if (v.getId() == R.id.bSetCallContact) {
             openContact();
         } else if (v.getId() == R.id.SetEDAThresh) {
@@ -100,6 +123,8 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
             openUserID();
         }
     }
+
+
 
     private void setEDAThreshold() {
 
@@ -180,7 +205,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
 
         Intent sendIntent = new Intent(Intent.ACTION_SEND);
         sendIntent.setType("text/html");
-        sendIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"hyorim@umich.edu"});
+        sendIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"ds4578@nyu.edu"});
         sendIntent.putExtra(Intent.EXTRA_SUBJECT, "MtM - Update");
         sendIntent.putExtra(Intent.EXTRA_TEXT, "This is a data update email");
         sendIntent.putExtra(Intent.EXTRA_STREAM, u1);
@@ -276,5 +301,10 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
         super.onBackPressed();
         mPrefs.setReportResponseCache(mCachedReportData);
         finish();
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+
     }
 }

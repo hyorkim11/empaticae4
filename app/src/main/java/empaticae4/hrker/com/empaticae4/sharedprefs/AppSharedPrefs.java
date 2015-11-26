@@ -154,14 +154,14 @@ public class AppSharedPrefs {
         setProperty(USERID, i);
     }
     public String getUserID() {
-        return mPrefs.getString(USERID, "Uninitialized");
+        return mPrefs.getString(USERID, "Other");
     }
 
     public void setReportType(String i) {
         setProperty(REPORT_TYPE, i);
     }
     public String getReportType() {
-        return mPrefs.getString(REPORT_TYPE, "Uninitialized");
+        return mPrefs.getString(REPORT_TYPE, "Other");
     }
 
     public void setEdaThreshold(float i) {
@@ -182,7 +182,7 @@ public class AppSharedPrefs {
         setProperty(CALLCONTACT, i);
     }
     public String getCallcontact() {
-        return mPrefs.getString(CALLCONTACT, "Unsaved");
+        return mPrefs.getString(CALLCONTACT, "Other");
     }
 
 

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/pink_1_tsbs"
-    android:padding="20dp"
+    android:padding="5dp"
     tools:context="empaticae4.hrker.com.empaticae4.activity.reports.PositiveActivity">
 
     <TextView
@@ -12,14 +12,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="20dp"
         android:gravity="center_horizontal"
         android:text="What is Going On Right Now?"
         android:textColor="#FFFFFF"
-        android:textSize="30sp"
+        android:textSize="25sp"
         android:textStyle="bold" />
 
     <EditText

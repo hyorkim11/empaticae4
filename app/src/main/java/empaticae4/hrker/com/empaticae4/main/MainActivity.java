@@ -57,18 +57,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-//        b3.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                Bundle b = new Bundle();
-//                b.putInt("media_key", 4);
-//                Intent i = new Intent(getApplicationContext(), GoodMovesPlayerActivity.class);
-//                i.putExtras(b);
-//                startActivity(i);
-//
-//            }
-//        });
+
 
     }
 

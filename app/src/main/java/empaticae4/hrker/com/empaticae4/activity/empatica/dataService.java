@@ -1,5 +1,6 @@
 package empaticae4.hrker.com.empaticae4.activity.empatica;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -52,7 +53,6 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
         mPrefs = new AppSharedPrefs(this);
         mCachedReportData = mPrefs.getReportResponseCache();
         EDAT = mCachedReportData.getEDAThresh();
-        // or EDAT = mPrefs.getEdaThrehold();
 
         intent = new Intent(BROADCAST_ACTION);
         Log.d(TAG, "entered onCreate with EDAT: " + EDAT);
@@ -79,7 +79,7 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
 
         public void run() {
             DisplayLoggingInfo();
-            handler.postDelayed(this, 10000); // Grab every 10 seconds
+            handler.postDelayed(this, 1000); // Grab every 10 seconds
         }
     };
 
@@ -110,6 +110,30 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
 
     }
 
+    private void StickyNotification(Context context) {
+
+        Intent i = new Intent(context, LiveStreamActivity.class);
+        PendingIntent p = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_ONE_SHOT);
+
+
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(this)
+                        .setContentTitle("Empatica")
+                        .setContentText("Connected to E4")
+                        .setTicker("MTM")
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setContentIntent(p)
+                        .setPriority(2);
+
+        Notification n;
+
+        n = builder.build();
+        n.flags |= Notification.FLAG_ONGOING_EVENT;
+        NotificationManager nManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        nManager.notify(10, n);
+
+    }
+
     private void BluetoothNotice(Context context) {
 
         Intent i = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -119,12 +143,11 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(this)
                         .setContentTitle("Bluetooth Notice")
-                        .setContentText("Connect with the Empatica has been lost")
+                        .setContentText("Connection with the Empatica has been lost")
                         .setTicker("Nudge from MtM")
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setContentIntent(p)
-                        .setAutoCancel(true)
-                        .setPriority(1);
+                        .setAutoCancel(true);
         int NOTIFICATION_ID = 2;
 
         NotificationManager nManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -133,7 +156,7 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
     }
 
     private void DisplayLoggingInfo() {
-        Log.d(TAG, "entered DisplayLoggingInfo");
+//        Log.d(TAG, "entered DisplayLoggingInfo");
 
         intent.putExtra("time", new Date().toLocaleString());
         intent.putExtra("counter", String.valueOf(++counter));
@@ -203,11 +226,19 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
 
             // The device manager has established a connection
         } else if (status == EmpaStatus.CONNECTED) {
-
+            StickyNotification(this);
             // The device manager disconnected from a device
         } else if (status == EmpaStatus.DISCONNECTED) {
             //updateLabel(deviceNameLabel, "");
+            DissmissNotification();
+            onUnbind(intent);
         }
+    }
+
+    public void DissmissNotification() {
+        NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(10);
+        notificationManager.cancel(1);
     }
 
     @Override
@@ -217,49 +248,43 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
 
     @Override
     public void didReceiveBVP(float bvp, double timestamp) {
-
         //updateLabel(bvpLabel, "" + bvp);
-
     }
 
     @Override
     public void didReceiveBatteryLevel(float battery, double timestamp) {
         tempBattery = battery;
         //updateLabel(batteryLabel, String.format("%.0f %%", battery * 100));
-
     }
 
     @Override
     public void didReceiveGSR(float gsr, double timestamp) {
-
-        //updateLabel(edaLabel, "" + gsr);
-
-        Log.d(TAG, "received EDA of: " + gsr);
-
+//        Log.d(TAG, "received EDA of: " + gsr);
         tempEDA = gsr;
         if (gsr > EDAT) {
             vibrateCounter++;
-            Log.d(TAG, "broke EDAT: " + gsr + " vc: " + vibrateCounter);
-
+//            Log.d(TAG, "broke EDAT: " + gsr + " vc: " + vibrateCounter);
             if ((vibrateCounter == 20) && (notificationTrigger == false)) {
                 // after this first shot of notification, block service until dataService is restarted
                 EDANotice(this, gsr);
                 vibrateCounter = 0;
                 notificationTrigger = true;
             }
-
         }
     }
 
     @Override
     public void didReceiveIBI(float ibi, double timestamp) {
-
         //updateLabel(ibiLabel, "" + ibi);
     }
 
     @Override
     public void didReceiveTemperature(float temp, double timestamp) {
-
         //updateLabel(temperatureLabel, "" + temp);
+    }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        return super.onUnbind(intent);
     }
 }

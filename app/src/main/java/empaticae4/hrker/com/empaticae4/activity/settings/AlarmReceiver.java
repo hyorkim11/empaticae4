@@ -75,7 +75,6 @@ public class AlarmReceiver extends BroadcastReceiver {
                             .setAutoCancel(true)
                             .setPriority(2)
                             .build();
-
         }
 
         Vibrator vNoti = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);

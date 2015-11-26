@@ -102,7 +102,8 @@ public class DrinkActivity extends Activity {
                     mPrefs.setReportResponseCache(mCachedReportData);
                     openFinishAlert();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Please make a selection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),
+                            "Please make a selection", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -339,10 +340,10 @@ public class DrinkActivity extends Activity {
         String currentTime = (cal.month + 1) + "/" + cal.monthDay + "/" + cal.year + "/" + cal.format("%k:%M:%S");
         String timeStamp = mCachedReportData.getUserID() + "," + currentTime + "," +
                 mCachedReportData.getReportType() + "," + duration + "," +
-                "Triggered EDA: " + mCachedReportData.getEDA() + " / " + mCachedReportData.getEDAThresh() + "\n";
+                mCachedReportData.getEDA() + "\n";
 
         // Set Data String: rowData
-        String rowData = ",answer1," + Integer.toString(mCachedReportData.getAnswer1()) + "," + Long.toString(mCachedReportData.getDuration_1()) + ",I: " + mCachedReportData.getIntensity() + "\n" +
+        String rowData = ",answer1," + Integer.toString(mCachedReportData.getAnswer1()) + "," + Long.toString(mCachedReportData.getDuration_1()) + "," + mCachedReportData.getIntensity() + "\n" +
                 ",answer2," + Integer.toString(mCachedReportData.getAnswer2()) + "," + Long.toString(mCachedReportData.getDuration_2()) + "\n" +
                 ",answer3," + Integer.toString(mCachedReportData.getAnswer3()) + "," + Long.toString(mCachedReportData.getDuration_3()) + "\n" +
                 ",answer4," + Integer.toString(mCachedReportData.getAnswer4()) + "," + Long.toString(mCachedReportData.getDuration_4()) + "\n" +

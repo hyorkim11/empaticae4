@@ -84,7 +84,7 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
             // set dynamic OnClickListeners for contact/mp3/meditation
             if (i == 1) {
                 array[i].setOnClickListener(contactListener);
-                array[i].setText(mPrefs.getCallcontact());
+                array[i].setText("Call " + mPrefs.getCallcontact());
             } else if (i == 2) {
                 array[i].setOnClickListener(mp3Listener);
             } else if (i == 4) {
@@ -110,7 +110,8 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
                     mPrefs.setReportResponseCache(mCachedReportData);
                     openFinishAlert();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Please make a selection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),
+                            "Please make a selection", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -204,7 +205,6 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
         @Override
         public void onClick(View v) {
             // OPEN CONTACT
-            //Toast.makeText(GoodMovesActivity.this, "Contact selected", Toast.LENGTH_SHORT).show();
             mediaChoice = 1;
 
         }
@@ -214,7 +214,6 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
         @Override
         public void onClick(View v) {
             // OPEN MP3
-            //Toast.makeText(GoodMovesActivity.this, "Mp3 selected", Toast.LENGTH_SHORT).show();
             mediaChoice = 2;
 
         }
@@ -224,7 +223,6 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
         @Override
         public void onClick(View v) {
             // OPEN MEDITATION
-            //Toast.makeText(GoodMovesActivity.this, "Meditation selected", Toast.LENGTH_SHORT).show();
             mediaChoice = 3;
 
         }
@@ -437,12 +435,12 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
         String currentTime = (cal.month + 1) + "/" + cal.monthDay + "/" + cal.year + "/" + cal.format("%k:%M:%S");
         String timeStamp = mCachedReportData.getUserID() + "," + currentTime + "," +
                 mCachedReportData.getReportType() + "," + duration + "," +
-                "Triggered EDA: " + mCachedReportData.getEDA() + " / " + mCachedReportData.getEDAThresh() + "\n";
+                mCachedReportData.getEDA() + "\n";
 
         // Current timeStamp format:
 
         // Set Data String: rowData
-        String rowData = ",answer1," + Integer.toString(mCachedReportData.getAnswer1()) + "," + Long.toString(mCachedReportData.getDuration_1()) + ",I: " + mCachedReportData.getIntensity() + "\n" +
+        String rowData = ",answer1," + Integer.toString(mCachedReportData.getAnswer1()) + "," + Long.toString(mCachedReportData.getDuration_1()) + "," + mCachedReportData.getIntensity() + "\n" +
                 ",answer2," + Integer.toString(mCachedReportData.getAnswer2()) + "," + Long.toString(mCachedReportData.getDuration_2()) + "\n" +
                 ",answer3," + Integer.toString(mCachedReportData.getAnswer3()) + "," + Long.toString(mCachedReportData.getDuration_3()) + "\n" +
                 ",answer4," + Integer.toString(mCachedReportData.getAnswer4()) + "," + Long.toString(mCachedReportData.getDuration_4()) + "\n" +
@@ -555,4 +553,6 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
         alarmMgr.set(AlarmManager.RTC, Calendar.getInstance().getTimeInMillis() + 86400000, alarmIntent);
 
     }
+
+
 }
