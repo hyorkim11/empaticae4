@@ -426,25 +426,29 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
 
         // Set Duration of Current Report
         mCachedReportData.setDuration(getReportDuration());
-        //int duration = (int) ((mCachedReportData.getDuration() / 1000) % 60);
         float duration = mCachedReportData.getDuration();
 
         // Set Current Time String: timeStamp
         cal = new Time(Time.getCurrentTimezone());
         cal.setToNow();
-        String currentTime = (cal.month + 1) + "/" + cal.monthDay + "/" + cal.year + "/" + cal.format("%k:%M:%S");
+        String currentTime = (cal.month + 1) + "/" + cal.monthDay + "/" +
+                cal.year + "/" + cal.format("%k:%M:%S");
         String timeStamp = mCachedReportData.getUserID() + "," + currentTime + "," +
                 mCachedReportData.getReportType() + "," + duration + "," +
                 mCachedReportData.getEDA() + "\n";
 
-        // Current timeStamp format:
-
         // Set Data String: rowData
-        String rowData = ",answer1," + Integer.toString(mCachedReportData.getAnswer1()) + "," + Long.toString(mCachedReportData.getDuration_1()) + "," + mCachedReportData.getIntensity() + "\n" +
-                ",answer2," + Integer.toString(mCachedReportData.getAnswer2()) + "," + Long.toString(mCachedReportData.getDuration_2()) + "\n" +
-                ",answer3," + Integer.toString(mCachedReportData.getAnswer3()) + "," + Long.toString(mCachedReportData.getDuration_3()) + "\n" +
-                ",answer4," + Integer.toString(mCachedReportData.getAnswer4()) + "," + Long.toString(mCachedReportData.getDuration_4()) + "\n" +
-                ",answer5," + Integer.toString(mCachedReportData.getAnswer5()) + "," + Long.toString(mCachedReportData.getDuration_5()) + "\n" +
+        String rowData = ",answer1," + Integer.toString(mCachedReportData.getAnswer1()) + "," +
+                Long.toString(mCachedReportData.getDuration_1()) + "," +
+                mCachedReportData.getIntensity() + "\n" +
+                ",answer2," + Integer.toString(mCachedReportData.getAnswer2()) + "," +
+                Long.toString(mCachedReportData.getDuration_2()) + "\n" +
+                ",answer3," + Integer.toString(mCachedReportData.getAnswer3()) + "," +
+                Long.toString(mCachedReportData.getDuration_3()) + "\n" +
+                ",answer4," + Integer.toString(mCachedReportData.getAnswer4()) + "," +
+                Long.toString(mCachedReportData.getDuration_4()) + "\n" +
+                ",answer5," + Integer.toString(mCachedReportData.getAnswer5()) + "," +
+                Long.toString(mCachedReportData.getDuration_5()) + "\n" +
                 ",answer6,," + Long.toString(mCachedReportData.getDuration_6()) + "\n";
 
         String finalLog = timeStamp + rowData;
@@ -517,12 +521,10 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
     }
 
     @Override
-    public void onClick(View view) {
-    }
+    public void onClick(View view) {}
 
     @Override
     public void onBackPressed() {
-
         openAlert();
     }
 
@@ -530,7 +532,6 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
     protected void onResume() {
 
         tempTime = Calendar.getInstance().getTimeInMillis();
-
         super.onResume();
     }
 
@@ -551,7 +552,6 @@ public class GoodMovesActivity extends Activity implements View.OnClickListener 
 
         // INACTIVITY ALARM CURRENTLY SET TO 24 hrs
         alarmMgr.set(AlarmManager.RTC, Calendar.getInstance().getTimeInMillis() + 86400000, alarmIntent);
-
     }
 
 

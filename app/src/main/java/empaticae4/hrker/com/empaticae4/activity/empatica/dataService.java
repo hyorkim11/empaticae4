@@ -8,10 +8,12 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
+import android.text.format.Time;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -23,6 +25,10 @@ import com.empatica.empalink.config.EmpaStatus;
 import com.empatica.empalink.delegate.EmpaDataDelegate;
 import com.empatica.empalink.delegate.EmpaStatusDelegate;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Date;
 
 import empaticae4.hrker.com.empaticae4.R;
@@ -42,6 +48,7 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
     private int vibrateCounter = 0;
     private float EDAT;
     private boolean notificationTrigger;
+    private Time cal;
 
     private EmpaDeviceManager deviceManager;
     private AppSharedPrefs mPrefs;
@@ -156,7 +163,6 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
     }
 
     private void DisplayLoggingInfo() {
-//        Log.d(TAG, "entered DisplayLoggingInfo");
 
         intent.putExtra("time", new Date().toLocaleString());
         intent.putExtra("counter", String.valueOf(++counter));
@@ -208,7 +214,6 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
 
     @Override
     public void didUpdateSensorStatus(EmpaSensorStatus status, EmpaSensorType type) {
-
         // No need to implement this right now
         Log.d(TAG, "entered didUpdateSensorStatus");
     }
@@ -216,8 +221,6 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
     @Override
     public void didUpdateStatus(EmpaStatus status) {
         // Update the UI
-        //updateLabel(statusLabel, status.name());
-
         Log.d(TAG, "entered didUpdateStatus");
         // The device manager is ready for use
         if (status == EmpaStatus.READY) {
@@ -261,6 +264,7 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
     public void didReceiveGSR(float gsr, double timestamp) {
 //        Log.d(TAG, "received EDA of: " + gsr);
         tempEDA = gsr;
+        writeEDA(tempEDA);
         if (gsr > EDAT) {
             vibrateCounter++;
 //            Log.d(TAG, "broke EDAT: " + gsr + " vc: " + vibrateCounter);
@@ -287,4 +291,46 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
     public boolean onUnbind(Intent intent) {
         return super.onUnbind(intent);
     }
+
+    private void writeEDA(float curEDA) {
+
+        // Set Current Time String: timeStamp
+        cal = new Time(Time.getCurrentTimezone());
+        cal.setToNow();
+        String currentTime = (cal.month + 1) + "/" + cal.monthDay + "/" +
+                cal.year + "/" + cal.format("%k:%M:%S");
+        String timeStamp = currentTime + "," + curEDA + "\n";
+
+        File file = null;
+        File root = Environment.getExternalStorageDirectory();
+
+        if (root.canWrite()) {
+
+            File dir = new File(root.getAbsolutePath() + "/mtmData");
+            dir.mkdirs();
+            file = new File(dir, "userEDA.csv");
+            FileOutputStream out = null;
+
+            try {
+                out = new FileOutputStream(file, true);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            try {
+                out.write(timeStamp.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Toast.makeText(this, "External Storage Can't Be Accessed", Toast.LENGTH_SHORT).show();
+        }
+
+        mPrefs.setReportResponseCache(mCachedReportData);
+    }
+
 }

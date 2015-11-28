@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -25,7 +24,6 @@ public class LiveStreamActivity extends Activity {
 
     public static final int REQUEST_ENABLE_BT = 1;
     public static final String EMPATICA_API_KEY = "6c8d1b1459ff473fbc6e71d6ae76aa19";
-    private static final String TAG = "BroadcastTest";
     private Intent intent;
 
     private TextView tvEDA, tvBatt;
@@ -59,6 +57,7 @@ public class LiveStreamActivity extends Activity {
         tempSeries = new LineGraphSeries<>();
         graph.addSeries(tempSeries);
         graph.setTitle("Live EDA Level");
+
     }
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -82,7 +81,8 @@ public class LiveStreamActivity extends Activity {
     }
 
     @Override
-    public void onBackPressed() {}
+    public void onBackPressed() {
+    }
 
     @Override
     protected void onDestroy() {
@@ -103,7 +103,6 @@ public class LiveStreamActivity extends Activity {
         txtCounter.setText(counter);
         tvEDA.setText("EDA: " + curEDA);
         tvBatt.setText("E4 Battery: " + String.format("%.0f %%", curBatt * 100));
-
         xCount++;
         tempSeries.appendData(new DataPoint(xCount, curEDA), true, 20);
     }

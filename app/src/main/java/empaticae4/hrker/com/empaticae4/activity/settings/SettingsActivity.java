@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import empaticae4.hrker.com.empaticae4.R;
 import empaticae4.hrker.com.empaticae4.sharedprefs.AppSharedPrefs;
@@ -125,7 +126,6 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
     }
 
 
-
     private void setEDAThreshold() {
 
         // Create and Build Dialog
@@ -163,36 +163,39 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
 
         cal = new Time(Time.getCurrentTimezone());
         cal.setToNow();
-        String currentTime = (cal.month + 1) + "/" + cal.monthDay + "/" + cal.year + "/" + cal.format("%k:%M:%S");
-
+        String currentTime = (cal.month + 1) + "/" + cal.monthDay +
+                "/" + cal.year + "/" + cal.format("%k:%M:%S");
         String timeStamp = "\n" + ",,,,exported:," + currentTime + "," + "\n\n";
-
         File file = null;
+        File file2 = null;
         File root = Environment.getExternalStorageDirectory();
 
         if (root.canWrite()) {
 
             File dir = new File(root.getAbsolutePath() + "/mtmData");
-
             if (!dir.exists()) {
-
                 dir.mkdir();
             }
 
             file = new File(dir, "userData.csv");
+            file2 = new File(dir, "userEDA.csv");
             FileOutputStream out = null;
+            FileOutputStream out2 = null;
             try {
                 out = new FileOutputStream(file, true);
+                out2 = new FileOutputStream(file2, true);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
             try {
                 out.write(timeStamp.getBytes());
+                out2.write(timeStamp.getBytes());
             } catch (IOException e) {
                 e.printStackTrace();
             }
             try {
                 out.close();
+                out2.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -200,15 +203,19 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
             Toast.makeText(SettingsActivity.this, "External Storage Can't Be Accessed", Toast.LENGTH_SHORT).show();
         }
 
-        Uri u1;
+        Uri u1, u2;
         u1 = Uri.fromFile(file);
+        u2 = Uri.fromFile(file2);
 
-        Intent sendIntent = new Intent(Intent.ACTION_SEND);
+        ArrayList<Uri> uris = new ArrayList<>();
+        uris.add(u1);
+        uris.add(u2);
+        Intent sendIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
         sendIntent.setType("text/html");
         sendIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"ds4578@nyu.edu"});
         sendIntent.putExtra(Intent.EXTRA_SUBJECT, "MtM - Update");
         sendIntent.putExtra(Intent.EXTRA_TEXT, "This is a data update email");
-        sendIntent.putExtra(Intent.EXTRA_STREAM, u1);
+        sendIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
         startActivity(Intent.createChooser(sendIntent, "Send An Email"));
 
     }
