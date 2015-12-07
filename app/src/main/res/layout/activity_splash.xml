@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="av0.2"
+        android:text="av0.7"
         android:textColor="#FFFFFF"
         android:textSize="10sp" />
 

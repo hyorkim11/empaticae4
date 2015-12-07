@@ -7,8 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -42,21 +40,21 @@ public class LiveStreamActivity extends Activity {
         tvEDA = (TextView) findViewById(R.id.curEDA);
         tvBatt = (TextView) findViewById(R.id.tvBattery);
 
-        toggleGraph = (ToggleButton) findViewById(R.id.toggle);
-        toggleGraph.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    graph.setVisibility(View.VISIBLE);
-                } else {
-                    graph.setVisibility(View.INVISIBLE);
-                }
-            }
-        });
-
-        graph = (GraphView) findViewById(R.id.graph);
-        tempSeries = new LineGraphSeries<>();
-        graph.addSeries(tempSeries);
-        graph.setTitle("Live EDA Level");
+//        toggleGraph = (ToggleButton) findViewById(R.id.toggle);
+//        toggleGraph.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if (isChecked) {
+//                    graph.setVisibility(View.VISIBLE);
+//                } else {
+//                    graph.setVisibility(View.INVISIBLE);
+//                }
+//            }
+//        });
+//
+//        graph = (GraphView) findViewById(R.id.graph);
+//        tempSeries = new LineGraphSeries<>();
+//        graph.addSeries(tempSeries);
+//        graph.setTitle("Live EDA Level");
 
     }
 
@@ -82,6 +80,7 @@ public class LiveStreamActivity extends Activity {
 
     @Override
     public void onBackPressed() {
+        Toast.makeText(LiveStreamActivity.this, "Back button is disabled for this session", Toast.LENGTH_SHORT).show();
     }
 
     @Override

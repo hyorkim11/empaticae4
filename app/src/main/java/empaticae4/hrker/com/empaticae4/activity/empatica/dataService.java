@@ -44,6 +44,7 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
     private final Handler handler = new Handler();
     private Intent intent;
     private int counter = 0;
+    private int mx = 0, my = 0, mz = 0;
     private float tempEDA, tempBattery;
     private int vibrateCounter = 0;
     private float EDAT;
@@ -135,32 +136,32 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
         Notification n;
 
         n = builder.build();
-        n.flags |= Notification.FLAG_ONGOING_EVENT;
+        n.flags |= Notification.FLAG_ONGOING_EVENT + Notification.FLAG_NO_CLEAR;
         NotificationManager nManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         nManager.notify(10, n);
 
     }
-
-    private void BluetoothNotice(Context context) {
-
-        Intent i = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent p = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(this)
-                        .setContentTitle("Bluetooth Notice")
-                        .setContentText("Connection with the Empatica has been lost")
-                        .setTicker("Nudge from MtM")
-                        .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentIntent(p)
-                        .setAutoCancel(true);
-        int NOTIFICATION_ID = 2;
-
-        NotificationManager nManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        nManager.notify(NOTIFICATION_ID, builder.build());
-
-    }
+//
+//    private void BluetoothNotice(Context context) {
+//
+//        Intent i = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+//        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        PendingIntent p = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
+//
+//        NotificationCompat.Builder builder =
+//                new NotificationCompat.Builder(this)
+//                        .setContentTitle("Bluetooth Notice")
+//                        .setContentText("Connection with the Empatica has been lost")
+//                        .setTicker("Nudge from MtM")
+//                        .setSmallIcon(R.mipmap.ic_launcher)
+//                        .setContentIntent(p)
+//                        .setAutoCancel(true);
+//        int NOTIFICATION_ID = 2;
+//
+//        NotificationManager nManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//        nManager.notify(NOTIFICATION_ID, builder.build());
+//
+//    }
 
     private void DisplayLoggingInfo() {
 
@@ -247,6 +248,10 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
     @Override
     public void didReceiveAcceleration(int x, int y, int z, double timestamp) {
         //Log.d(TAG, "received Acc from E4");
+        mx = x;
+        my = y;
+        mz = z;
+
     }
 
     @Override
@@ -264,7 +269,7 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
     public void didReceiveGSR(float gsr, double timestamp) {
 //        Log.d(TAG, "received EDA of: " + gsr);
         tempEDA = gsr;
-        writeEDA(tempEDA);
+        writeEDA(tempEDA, mx, my, mz);
         if (gsr > EDAT) {
             vibrateCounter++;
 //            Log.d(TAG, "broke EDAT: " + gsr + " vc: " + vibrateCounter);
@@ -292,14 +297,14 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
         return super.onUnbind(intent);
     }
 
-    private void writeEDA(float curEDA) {
+    private void writeEDA(float curEDA, int x, int y, int z) {
 
         // Set Current Time String: timeStamp
         cal = new Time(Time.getCurrentTimezone());
         cal.setToNow();
         String currentTime = (cal.month + 1) + "/" + cal.monthDay + "/" +
                 cal.year + "/" + cal.format("%k:%M:%S");
-        String timeStamp = currentTime + "," + curEDA + "\n";
+        String timeStamp = currentTime + "," + curEDA + "," + x + "," + y + "," + z + "\n";
 
         File file = null;
         File root = Environment.getExternalStorageDirectory();

@@ -67,39 +67,6 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
         mSetCallContact.setOnClickListener(this);
         bUserID = (Button) findViewById(R.id.bUserID);
         bUserID.setOnClickListener(this);
-
-        sp0 = (TextView) findViewById(R.id.sp0);
-        if (mCachedReportData.getUserID() != "Other") {
-            sp0.setText("ID: " + mCachedReportData.getUserID());
-        }
-        sp1 = (TextView) findViewById(R.id.sp1);
-        if (mCachedReportData.getEDAThresh() != 0.0f) {
-            sp1.setText("EDAT: " + mCachedReportData.getEDAThresh());
-        }
-        sp2 = (TextView) findViewById(R.id.sp2);
-        if (mCachedReportData.getCallContact() != "Other") {
-            sp2.setText("Contact: " + mCachedReportData.getCallContact());
-        }
-        sp3 = (TextView) findViewById(R.id.sp3);
-        if (mCachedReportData.getIcct() != "Other") {
-            sp3.setText("ICCT: " + mCachedReportData.getIcct());
-        }
-        sp4 = (TextView) findViewById(R.id.sp4);
-        if (mCachedReportData.getIcd() != "Other") {
-            sp4.setText("ICD: " + mCachedReportData.getIcd());
-        }
-        sp5 = (TextView) findViewById(R.id.sp5);
-        if (mCachedReportData.getIce() != "Other") {
-            sp5.setText("ICE: " + mCachedReportData.getIce());
-        }
-        sp6 = (TextView) findViewById(R.id.sp6);
-        if (mCachedReportData.getIcgm() != "Other") {
-            sp6.setText("ICGM: " + mCachedReportData.getIcgm());
-        }
-        sp7 = (TextView) findViewById(R.id.sp7);
-        if (mCachedReportData.getIcnm() != "Other") {
-            sp7.setText("ICNM: " + mCachedReportData.getIcnm());
-        }
     }
 
     @Override

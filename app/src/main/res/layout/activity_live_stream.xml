@@ -5,6 +5,7 @@
     android:padding="10dp">
 
     <ToggleButton
+        android:visibility="gone"
         android:id="@+id/toggle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,6 +28,7 @@
         android:layout_below="@id/status" />
 
     <RelativeLayout
+        android:visibility="gone"
         android:id="@+id/dataArea"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
