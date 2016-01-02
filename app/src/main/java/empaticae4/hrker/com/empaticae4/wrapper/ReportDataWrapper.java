@@ -316,11 +316,11 @@ public class ReportDataWrapper  {
         this.EDA = i;
     }
 
-    public float getEDAThresh() {
+    public float getEDAT() {
         return EDAT;
     }
 
-    public void setEDAThresh(float i) {
+    public void setEDAT(float i) {
         this.EDAT = i;
     }
 

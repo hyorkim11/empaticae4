@@ -1,7 +1,9 @@
 package empaticae4.hrker.com.empaticae4.activity.settings;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -31,7 +33,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
     private AppSharedPrefs mPrefs;
     private ReportDataWrapper mCachedReportData;
     private Time cal;
-    private Button bUserID, resetButton, sendButton, mResetCSV,
+    private Button bUserID, bResetPrefs, bSendCSV, bResetCSV,
             mSetCallContact, bSetEDAThresh;
     private TextView sp0, sp1, sp2, sp3, sp4, sp5, sp6, sp7;
 
@@ -40,7 +42,6 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-
         init();
     }
 
@@ -54,35 +55,45 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
 
         bSetEDAThresh = (Button) findViewById(R.id.SetEDAThresh);
         bSetEDAThresh.setText("Set EDAT");
-
         bSetEDAThresh.setOnClickListener(this);
 
-        sendButton = (Button) findViewById(R.id.bSend);
-        sendButton.setOnClickListener(this);
-//        resetButton = (Button) findViewById(R.id.resetPrefs);
-//        resetButton.setOnLongClickListener(this);
-//        mResetCSV = (Button) findViewById(R.id.bResetCSV);
-//        mResetCSV.setOnLongClickListener(this);
+        bSendCSV = (Button) findViewById(R.id.bSend);
+        bSendCSV.setOnClickListener(this);
+
+        bResetPrefs = (Button) findViewById(R.id.resetPrefs);
+        bResetPrefs.setOnClickListener(this);
+
+        bResetCSV = (Button) findViewById(R.id.bResetCSV);
+        bResetCSV.setOnClickListener(this);
+
         mSetCallContact = (Button) findViewById(R.id.bSetCallContact);
         mSetCallContact.setOnClickListener(this);
+
         bUserID = (Button) findViewById(R.id.bUserID);
         bUserID.setOnClickListener(this);
+
+        sp0 = (TextView) findViewById(R.id.sp0);
+        sp0.setText("User ID: " + mPrefs.getUserID());
+        sp1 = (TextView) findViewById(R.id.sp1);
+        sp1.setText("Friend Contact: " + mPrefs.getCallcontact());
+        sp2 = (TextView) findViewById(R.id.sp2);
+        sp3 = (TextView) findViewById(R.id.sp3);
+        sp4 = (TextView) findViewById(R.id.sp4);
+        sp5 = (TextView) findViewById(R.id.sp5);
+        sp6 = (TextView) findViewById(R.id.sp6);
+        sp7 = (TextView) findViewById(R.id.sp7);
+
     }
 
     @Override
     public void onClick(View v) {
 
         if (v.getId() == R.id.resetPrefs) {
-
-//            mPrefs.wrapUp();
-//            Toast.makeText(SettingsActivity.this, "SharedPref has been reset", Toast.LENGTH_SHORT).show();
-//            finish();
-//            startActivity(getIntent());
+            openPrefResetWarning();
         } else if (v.getId() == R.id.bSend) {
-
             sendCSV();
         } else if (v.getId() == R.id.bResetCSV) {
-            //resetCSV();
+            openCSVResetWarning();
         } else if (v.getId() == R.id.bSetCallContact) {
             openContact();
         } else if (v.getId() == R.id.SetEDAThresh) {
@@ -112,11 +123,12 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
                 if (et.getText().toString().length() == 0) {
                     Toast.makeText(SettingsActivity.this, "Please enter valid EDAT", Toast.LENGTH_SHORT).show();
                 } else {
-                    mCachedReportData.setEDAThresh(Float.parseFloat(et.getText().toString()));
-                    mPrefs.setEdaThreshold(Float.parseFloat(et.getText().toString()));
+                    // check if entered EDA is text or numbers
+//                    mCachedReportData.setEDAT(Float.parseFloat(et.getText().toString()));
+                    mPrefs.setEDAT(Float.parseFloat(et.getText().toString()));
                     mPrefs.setReportResponseCache(mCachedReportData);
                     Toast.makeText(SettingsActivity.this, "EDAT set as: " + et.getText().toString(), Toast.LENGTH_SHORT).show();
-                    bSetEDAThresh.setText("EDAT: " + mCachedReportData.getEDAThresh());
+                    bSetEDAThresh.setText("EDAT: " + et.getText().toString());
                     builder.dismiss();
                 }
             }
@@ -203,6 +215,58 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
         }
     }
 
+    private void openCSVResetWarning() {
+
+        // Create and Build Dialog
+        AlertDialog.Builder mDialog = new AlertDialog.Builder(SettingsActivity.this);
+        mDialog.setTitle("Are You Sure?");
+        mDialog.setMessage("Do you wish to reset CSV?");
+        mDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Toast.makeText(SettingsActivity.this, "CSV has been reset", Toast.LENGTH_SHORT).show();
+                resetCSV();
+            }
+        });
+        mDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        AlertDialog alert = mDialog.create();
+        alert.setCanceledOnTouchOutside(true);
+        alert.show();
+    }
+
+    private void openPrefResetWarning() {
+
+        // Create and Build Dialog
+        AlertDialog.Builder mDialog = new AlertDialog.Builder(SettingsActivity.this);
+        mDialog.setTitle("Are You Sure?");
+        mDialog.setMessage("Do you wish to reset User Prefs?");
+        mDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                mPrefs.wrapUp();
+                Toast.makeText(SettingsActivity.this, "SharedPref has been reset", Toast.LENGTH_SHORT).show();
+                finish();
+                startActivity(getIntent());
+            }
+        });
+        mDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        AlertDialog alert = mDialog.create();
+        alert.setCanceledOnTouchOutside(true);
+        alert.show();
+    }
+
     private void openUserID() {
 
         // Create and Build Dialog
@@ -222,11 +286,10 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
                 if (et.getText().toString().length() == 0) {
                     Toast.makeText(SettingsActivity.this, "Please enter valid ID", Toast.LENGTH_SHORT).show();
                 } else {
-                    mCachedReportData.setUserID(et.getText().toString());
                     mPrefs.setUserID(et.getText().toString());
                     mPrefs.setReportResponseCache(mCachedReportData);
                     Toast.makeText(SettingsActivity.this, "ID set as: " + et.getText().toString(), Toast.LENGTH_SHORT).show();
-                    bUserID.setText("ID: " + mCachedReportData.getUserID());
+                    bUserID.setText("ID: " + et.getText().toString());
                     builder.dismiss();
                 }
             }
@@ -256,11 +319,10 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
                 if (et.getText().toString().length() == 0) {
                     Toast.makeText(SettingsActivity.this, "Please enter valid name", Toast.LENGTH_SHORT).show();
                 } else {
-                    mCachedReportData.setCallContact(et.getText().toString());
                     mPrefs.setCallcontact(et.getText().toString());
                     mPrefs.setReportResponseCache(mCachedReportData);
                     Toast.makeText(SettingsActivity.this, "Contact set as: " + et.getText().toString(), Toast.LENGTH_SHORT).show();
-                    mSetCallContact.setText(mCachedReportData.getCallContact());
+                    mSetCallContact.setText(et.getText().toString());
                     builder.dismiss();
                 }
             }

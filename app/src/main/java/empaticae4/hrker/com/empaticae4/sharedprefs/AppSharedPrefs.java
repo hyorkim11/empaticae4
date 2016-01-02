@@ -19,7 +19,7 @@ public class AppSharedPrefs {
     private static final String REPORT_TYPE = "report_type";
     private static final String CALLCONTACT = "call_contact";
     private static final String TRIGGERED_EDA = "triggered_eda";
-    private static final String EDA_THRESHOLD = "eda_threshold";
+    private static final String EDAT = "EDAT";
 
     private static final String DURATION = "duration";
     private static final String DURATION_1 = "duration1";
@@ -89,6 +89,11 @@ public class AppSharedPrefs {
     private void setProperty(String property, long value) {
 
         mPrefs.edit().putLong(property, value).apply();
+    }
+
+    private void setProperty(String property, float value) {
+
+        mPrefs.edit().putFloat(property, value).apply();
     }
 
     private void setProperty(String property, boolean value) {
@@ -164,11 +169,11 @@ public class AppSharedPrefs {
         return mPrefs.getString(REPORT_TYPE, "Other");
     }
 
-    public void setEdaThreshold(float i) {
-        setProperty(EDA_THRESHOLD, String.valueOf(i));
+    public void setEDAT(float i) {
+        setProperty(EDAT, i);
     }
-    public float getEdaThrehold() {
-        return mPrefs.getFloat(EDA_THRESHOLD, 0.0f);
+    public float getEDAT() {
+        return mPrefs.getFloat(EDAT, 0.0f);
     }
 
     public void setTriggeredEDA(float i) {

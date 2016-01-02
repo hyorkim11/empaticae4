@@ -60,7 +60,7 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
         super.onCreate();
         mPrefs = new AppSharedPrefs(this);
         mCachedReportData = mPrefs.getReportResponseCache();
-        EDAT = mCachedReportData.getEDAThresh();
+
 
         intent = new Intent(BROADCAST_ACTION);
         Log.d(TAG, "entered onCreate with EDAT: " + EDAT);
@@ -71,6 +71,7 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
         deviceManager.authenticateWithAPIKey(LiveStreamActivity.EMPATICA_API_KEY);
 
         notificationTrigger = false;
+        EDAT = mCachedReportData.getEDAT();
 
     }
 
@@ -108,7 +109,7 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
                         .setTicker("Nudge from MtM")
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setContentIntent(p)
-                        .setAutoCancel(true)
+                        .setAutoCancel(false)
                         .setPriority(2);
 
         int NOTIFICATION_ID = 1;
@@ -131,12 +132,14 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
                         .setTicker("MTM")
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setContentIntent(p)
+                        .setOngoing(true)
                         .setPriority(2);
 
         Notification n;
 
         n = builder.build();
-        n.flags |= Notification.FLAG_ONGOING_EVENT + Notification.FLAG_NO_CLEAR;
+        n.flags |= Notification.FLAG_ONGOING_EVENT;
+        //  + Notification.FLAG_NO_CLEAR
         NotificationManager nManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         nManager.notify(10, n);
 

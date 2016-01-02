@@ -9,11 +9,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
-
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
 
 import empaticae4.hrker.com.empaticae4.R;
 
@@ -25,10 +20,6 @@ public class LiveStreamActivity extends Activity {
     private Intent intent;
 
     private TextView tvEDA, tvBatt;
-    private GraphView graph;
-    private double xCount = 0;
-    private LineGraphSeries<DataPoint> tempSeries;
-    private ToggleButton toggleGraph;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,22 +30,6 @@ public class LiveStreamActivity extends Activity {
 
         tvEDA = (TextView) findViewById(R.id.curEDA);
         tvBatt = (TextView) findViewById(R.id.tvBattery);
-
-//        toggleGraph = (ToggleButton) findViewById(R.id.toggle);
-//        toggleGraph.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                if (isChecked) {
-//                    graph.setVisibility(View.VISIBLE);
-//                } else {
-//                    graph.setVisibility(View.INVISIBLE);
-//                }
-//            }
-//        });
-//
-//        graph = (GraphView) findViewById(R.id.graph);
-//        tempSeries = new LineGraphSeries<>();
-//        graph.addSeries(tempSeries);
-//        graph.setTitle("Live EDA Level");
 
     }
 
@@ -102,8 +77,6 @@ public class LiveStreamActivity extends Activity {
         txtCounter.setText(counter);
         tvEDA.setText("EDA: " + curEDA);
         tvBatt.setText("E4 Battery: " + String.format("%.0f %%", curBatt * 100));
-        xCount++;
-        tempSeries.appendData(new DataPoint(xCount, curEDA), true, 20);
     }
 
     @Override
