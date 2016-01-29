@@ -47,7 +47,7 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
     private int mx = 0, my = 0, mz = 0;
     private float tempEDA, tempBattery;
     private int vibrateCounter = 0;
-    private float EDAT;
+    private float EDAT, mBVP;
     private boolean notificationTrigger;
     private Time cal;
 
@@ -260,6 +260,9 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
     @Override
     public void didReceiveBVP(float bvp, double timestamp) {
         //updateLabel(bvpLabel, "" + bvp);
+        // blood volume pulse
+        Log.d(TAG, "received BVP of: " + bvp);
+        mBVP = bvp;
     }
 
     @Override
@@ -272,7 +275,7 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
     public void didReceiveGSR(float gsr, double timestamp) {
 //        Log.d(TAG, "received EDA of: " + gsr);
         tempEDA = gsr;
-        writeEDA(tempEDA, mx, my, mz);
+        writeEDA(tempEDA, mBVP, mx, my, mz);
         if (gsr > EDAT) {
             vibrateCounter++;
 //            Log.d(TAG, "broke EDAT: " + gsr + " vc: " + vibrateCounter);
@@ -300,14 +303,14 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
         return super.onUnbind(intent);
     }
 
-    private void writeEDA(float curEDA, int x, int y, int z) {
+    private void writeEDA(float curEDA, float curBVP, int x, int y, int z) {
 
         // Set Current Time String: timeStamp
         cal = new Time(Time.getCurrentTimezone());
         cal.setToNow();
         String currentTime = (cal.month + 1) + "/" + cal.monthDay + "/" +
                 cal.year + "/" + cal.format("%k:%M:%S");
-        String timeStamp = currentTime + "," + curEDA + "," + x + "," + y + "," + z + "\n";
+        String timeStamp = currentTime + "," + curEDA + "," + curBVP + "," + x + "," + y + "," + z + "\n";
 
         File file = null;
         File root = Environment.getExternalStorageDirectory();
