@@ -2,8 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/pink_1_tsbs"
     android:layout_gravity="center"
+    android:background="@drawable/pink_1_tsbs"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -22,11 +22,29 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/txt1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/title"
             android:layout_centerHorizontal="true"
             android:text="Have you made a report today?"
+            android:textColor="@color/grey"
+            android:textSize="15sp"
+            android:textStyle="italic" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt1"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text="\t \t \t Thank you for joining us at Mind the Moment. \t \t Please let us know if you have any questions!"
             android:textColor="@color/grey"
             android:textSize="15sp"
             android:textStyle="italic" />
@@ -55,6 +73,6 @@
         android:textSize="15sp"
         app:bootstrapBrand="danger"
         app:bootstrapSize="lg"
-        app:roundedCorners="true"/>
+        app:roundedCorners="true" />
 
 </LinearLayout>

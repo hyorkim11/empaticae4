@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
     @Override
@@ -71,17 +70,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
+        // Overflow options menu
         switch (item.getItemId()) {
 
             case R.id.action_settings:
-
                 Intent i = new Intent(getApplicationContext(), SettingsActivity.class);
                 startActivity(i);
                 break;
 
             case R.id.action_contact:
-
                 openContact();
                 break;
 
