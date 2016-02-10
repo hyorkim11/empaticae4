@@ -45,11 +45,12 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
     private Intent intent;
     private int counter = 0;
     private int mx = 0, my = 0, mz = 0;
-    private float tempEDA, tempBattery;
-    private int vibrateCounter = 0;
+    private float tempEDA = 0, tempBattery;
     private float EDAT, mBVP;
-    private boolean notificationTrigger;
+    private boolean notificationTrigger = false;
     private Time cal;
+    private Handler bufferHandler = new Handler();
+
 
     private EmpaDeviceManager deviceManager;
     private AppSharedPrefs mPrefs;
@@ -61,16 +62,12 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
         mPrefs = new AppSharedPrefs(this);
         mCachedReportData = mPrefs.getReportResponseCache();
 
-
         intent = new Intent(BROADCAST_ACTION);
         Log.d(TAG, "entered onCreate with EDAT: " + EDAT);
-
         // Create a new EmpaDeviceManager. MainActivity is both its data and status delegate.
         deviceManager = new EmpaDeviceManager(getApplicationContext(), this, this);
         // Initialize the Device Manager using your API key. You need to have Internet access at this point.
         deviceManager.authenticateWithAPIKey(LiveStreamActivity.EMPATICA_API_KEY);
-
-        notificationTrigger = false;
         EDAT = mCachedReportData.getEDAT();
 
     }
@@ -101,7 +98,6 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
         i.putExtra("report_type", "EDA");
         i.putExtra("EDA", EDA);
         PendingIntent p = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_ONE_SHOT);
-
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(this)
                         .setContentTitle("EDA Notice")
@@ -109,11 +105,10 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
                         .setTicker("Nudge from MtM")
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setContentIntent(p)
-                        .setAutoCancel(false)
+                        .setAutoCancel(true)
                         .setPriority(2);
 
         int NOTIFICATION_ID = 1;
-
         NotificationManager nManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         nManager.notify(NOTIFICATION_ID, builder.build());
 
@@ -123,8 +118,6 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
 
         Intent i = new Intent(context, LiveStreamActivity.class);
         PendingIntent p = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_ONE_SHOT);
-
-
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(this)
                         .setContentTitle("Empatica")
@@ -136,7 +129,6 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
                         .setPriority(2);
 
         Notification n;
-
         n = builder.build();
         n.flags |= Notification.FLAG_ONGOING_EVENT;
         //  + Notification.FLAG_NO_CLEAR
@@ -144,27 +136,6 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
         nManager.notify(10, n);
 
     }
-//
-//    private void BluetoothNotice(Context context) {
-//
-//        Intent i = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-//        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        PendingIntent p = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//        NotificationCompat.Builder builder =
-//                new NotificationCompat.Builder(this)
-//                        .setContentTitle("Bluetooth Notice")
-//                        .setContentText("Connection with the Empatica has been lost")
-//                        .setTicker("Nudge from MtM")
-//                        .setSmallIcon(R.mipmap.ic_launcher)
-//                        .setContentIntent(p)
-//                        .setAutoCancel(true);
-//        int NOTIFICATION_ID = 2;
-//
-//        NotificationManager nManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//        nManager.notify(NOTIFICATION_ID, builder.build());
-//
-//    }
 
     private void DisplayLoggingInfo() {
 
@@ -237,12 +208,12 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
             // The device manager disconnected from a device
         } else if (status == EmpaStatus.DISCONNECTED) {
             //updateLabel(deviceNameLabel, "");
-            DissmissNotification();
+            DismissNotification();
             onUnbind(intent);
         }
     }
 
-    public void DissmissNotification() {
+    public void DismissNotification() {
         NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(10);
         notificationManager.cancel(1);
@@ -259,9 +230,9 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
 
     @Override
     public void didReceiveBVP(float bvp, double timestamp) {
-        //updateLabel(bvpLabel, "" + bvp);
+        // updateLabel(bvpLabel, "" + bvp);
         // blood volume pulse
-        Log.d(TAG, "received BVP of: " + bvp);
+        // Log.d(TAG, "received BVP of: " + bvp);
         mBVP = bvp;
     }
 
@@ -271,19 +242,28 @@ public class dataService extends Service implements EmpaDataDelegate, EmpaStatus
         //updateLabel(batteryLabel, String.format("%.0f %%", battery * 100));
     }
 
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            notificationTrigger = false;
+            bufferHandler.postDelayed(this, 600000);
+        }
+    };
+
     @Override
     public void didReceiveGSR(float gsr, double timestamp) {
-//        Log.d(TAG, "received EDA of: " + gsr);
+    // Log.d(TAG, "received EDA of: " + gsr);
         tempEDA = gsr;
         writeEDA(tempEDA, mBVP, mx, my, mz);
-        if (gsr > EDAT) {
-            vibrateCounter++;
-//            Log.d(TAG, "broke EDAT: " + gsr + " vc: " + vibrateCounter);
-            if ((vibrateCounter == 20) && (notificationTrigger == false)) {
-                // after this first shot of notification, block service until dataService is restarted
+
+        if ((gsr >= EDAT) && (gsr != 0.00)) {
+        // EDAT broken
+            Log.d(TAG, "broke EDAT: " + gsr);
+            if (notificationTrigger == false) {
+                // Activate 10 min buffering time after notification is fired
                 EDANotice(this, gsr);
-                vibrateCounter = 0;
                 notificationTrigger = true;
+                bufferHandler.postDelayed(runnable, 600000);
             }
         }
     }
