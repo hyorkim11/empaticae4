@@ -17,7 +17,7 @@ public class GoodMovesPlayerActivity extends Activity {
     private MediaPlayer mediaPlayer;
     private int mediakey;
 
-    private Button bPlay;
+    private Button bPlay, bFinish;
     private TextView tvMarquee;
 
     @Override
@@ -39,6 +39,13 @@ public class GoodMovesPlayerActivity extends Activity {
         bPlay = (Button) findViewById(R.id.bMp3);
         mediaPlayer = new MediaPlayer();
 
+        bFinish = (Button) findViewById(R.id.bFinish);
+        bFinish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finishActivity();
+            }
+        });
         if (mediakey == 1) {
             // CONTACT
             bPlay.setVisibility(View.INVISIBLE);
@@ -46,8 +53,8 @@ public class GoodMovesPlayerActivity extends Activity {
 
         } else if (mediakey == 2) {
             // MP3
-            bPlay.setVisibility(View.VISIBLE);
-            tvMarquee.setText("Soothing soundtrack is currently playing. Enjoy!");
+            bPlay.setVisibility(View.INVISIBLE);
+            tvMarquee.setText("Thank you. You should go enjoy a favorite song!");
 
             /*File root = Environment.getExternalStorageDirectory();
 
@@ -65,8 +72,6 @@ public class GoodMovesPlayerActivity extends Activity {
                     e.printStackTrace();
                 }
             }*/
-
-            mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.soothing_audio);
 
         } else if (mediakey == 3) {
             // MEDITATION
@@ -101,6 +106,14 @@ public class GoodMovesPlayerActivity extends Activity {
 
     }
 
+    private void finishActivity() {
+        mp3Stop();
+        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
+        finish();
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -116,7 +129,7 @@ public class GoodMovesPlayerActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mp3Stop();
+        finishActivity();
     }
 
     private void mp3Play(){
